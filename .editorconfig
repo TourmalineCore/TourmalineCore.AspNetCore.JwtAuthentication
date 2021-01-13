@@ -1,0 +1,212 @@
+﻿[*.cs]
+
+#### Core EditorConfig Options ####
+charset = utf-8
+
+# Indentation and spacing
+indent_size = 4
+indent_style = space
+tab_width = 4
+
+# New line preferences
+end_of_line = crlf
+insert_final_newline = false
+
+
+#### .NET Coding Conventions ####
+
+# Organize usings
+dotnet_separate_import_directive_groups = true:error
+dotnet_sort_system_directives_first = true:error
+
+# Language keywords vs BCL types preferences
+dotnet_style_predefined_type_for_locals_parameters_members = true:error
+dotnet_style_predefined_type_for_member_access = true:error
+
+# this. and Me. preferences
+dotnet_style_qualification_for_event = false:error
+dotnet_style_qualification_for_field = false:error
+dotnet_style_qualification_for_method = false:error
+dotnet_style_qualification_for_property = false:error
+
+# 'using' directive preferences
+csharp_using_directive_placement = outside_namespace:error
+
+# Code-block preferences
+csharp_prefer_braces = true:error
+csharp_prefer_simple_using_statement = false:error
+
+# Expression-bodied members
+csharp_style_expression_bodied_accessors = true:silent
+csharp_style_expression_bodied_local_functions = false:silent
+csharp_style_expression_bodied_methods = false:error
+csharp_style_expression_bodied_operators = false:error
+
+# Code-block preferences
+csharp_prefer_braces = true:error
+csharp_prefer_simple_using_statement = false:error
+
+#### StyleCop settings
+
+# SA1309: Field names should not begin with underscore
+dotnet_diagnostic.SA1309.severity = none
+
+# SA1101: Prefix local calls with this
+dotnet_diagnostic.SA1101.severity = none
+
+# SA1633: The file header is missing or not located at the top of the file.
+dotnet_diagnostic.SA1633.severity = none
+
+# SA1200: Using directive should appear within a namespace declaration
+dotnet_diagnostic.SA1200.severity = none
+
+# SA1503: Braces should not be omitted
+dotnet_diagnostic.SA1503.severity = error
+
+# SA1128: Put constructor initializers on their own line
+dotnet_diagnostic.SA1128.severity = error
+
+# SA1208: Using directive for 'System' should appear before directive for 'Microsoft.AspNetCore.Http'
+dotnet_diagnostic.SA1208.severity = error
+
+# SA1600: Elements should be documented
+dotnet_diagnostic.SA1600.severity = none
+
+# SA0001: XML comment analysis is disabled due to project configuration
+dotnet_diagnostic.SA0001.severity = none
+
+# SA1516: Elements should be separated by blank line
+dotnet_diagnostic.SA1516.severity = error
+
+# SA1119: Statement should not use unnecessary parenthesis
+dotnet_diagnostic.SA1119.severity = error
+
+# SA1024: Colon should be preceded by a space.
+dotnet_diagnostic.SA1024.severity = error
+
+# SA1513: Closing brace should be followed by blank line
+dotnet_diagnostic.SA1513.severity = error
+
+# SA1401: Field should be private
+dotnet_diagnostic.SA1401.severity = suggestion
+
+# SA1005: Single line comment should begin with a space.
+dotnet_diagnostic.SA1005.severity = none
+
+# SA1106: Code should not contain empty statements
+dotnet_diagnostic.SA1106.severity = error
+
+# IDE0055: Fix formatting
+dotnet_diagnostic.IDE0055.severity = none
+
+# SA1204: Static elements should appear before instance elements
+dotnet_diagnostic.SA1204.severity = none
+
+# SA1201: Elements should appear in the correct order
+dotnet_diagnostic.SA1201.severity = none
+
+# SA1407: Arithmetic expressions should declare precedence
+dotnet_diagnostic.SA1407.severity = none
+
+# SA1013: Closing brace should be followed by a space.
+dotnet_diagnostic.SA1013.severity = error
+
+# SA1028: Code should not contain trailing whitespace
+dotnet_diagnostic.SA1028.severity = none
+
+# SA1012: Opening brace should be followed by a space.
+dotnet_diagnostic.SA1012.severity = error
+
+# SA1413: Use trailing comma in multi-line initializers
+dotnet_diagnostic.SA1413.severity = error
+
+# SA1508: A closing brace should not be preceded by a blank line.
+dotnet_diagnostic.SA1508.severity = error
+
+# SA1009: Closing parenthesis should not be preceded by a space.
+dotnet_diagnostic.SA1009.severity = none
+
+# SA1001: Commas should be followed by whitespace.
+dotnet_diagnostic.SA1001.severity = error
+
+# SA1116: The parameters should begin on the line after the declaration, whenever the parameter span across multiple lines
+dotnet_diagnostic.SA1116.severity = none
+
+# SA1111: Closing parenthesis should be on line of last parameter
+dotnet_diagnostic.SA1111.severity = none
+
+# SA1127: Generic type constraints should be on their own line
+dotnet_diagnostic.SA1127.severity = none
+
+# SA1202: 'public' members should come before 'private' members
+dotnet_diagnostic.SA1202.severity = none
+
+# SA1311: Static readonly fields should begin with upper-case letter
+dotnet_diagnostic.SA1311.severity = warning
+
+# SA1642: Constructor summary documentation should begin with standard text
+dotnet_diagnostic.SA1642.severity = none
+
+# SA1402: File may only contain a single type
+dotnet_diagnostic.SA1402.severity = suggestion
+
+# SA1649: File name should match first type name.
+dotnet_diagnostic.SA1649.severity = suggestion
+
+# SA1122: Use string.Empty for empty strings
+dotnet_diagnostic.SA1122.severity = error
+
+# SA1137: Elements should have the same indentation
+dotnet_diagnostic.SA1137.severity = error
+
+# SA1027: Tabs and spaces should be used correctly
+dotnet_diagnostic.SA1027.severity = error
+
+# SA1003: Operator '(int)' should not be followed by whitespace.
+dotnet_diagnostic.SA1003.severity = error
+
+# SA1400: Element '.ctor' should declare an access modifier
+dotnet_diagnostic.SA1400.severity = error
+
+# SA1107: Code should not contain multiple statements on one line
+dotnet_diagnostic.SA1107.severity = error
+
+# SA1505: An opening brace should not be followed by a blank line.
+dotnet_diagnostic.SA1505.severity = error
+
+# SA1507: Code should not contain multiple blank lines in a row
+dotnet_diagnostic.SA1507.severity = error
+
+# SA1025: Code should not contain multiple whitespace characters in a row.
+dotnet_diagnostic.SA1025.severity = error
+
+# SA1515: Single-line comment should be preceded by blank line
+dotnet_diagnostic.SA1515.severity = error
+
+# SA1021: Negative sign should be preceded by a space.
+dotnet_diagnostic.SA1021.severity = error
+
+# SA1117: The parameters should all be placed on the same line or each parameter should be placed on its own line.
+dotnet_diagnostic.SA1117.severity = error
+
+# SA1210: Using directives should be ordered alphabetically by the namespaces.
+dotnet_diagnostic.SA1210.severity = error
+
+# SA1131: Constant values should appear on the right-hand side of comparisons
+dotnet_diagnostic.SA1131.severity = none
+
+# SA1118: The parameter spans multiple lines
+dotnet_diagnostic.SA1118.severity = none
+
+# SA1500: Braces for multi-line statements should not share line
+dotnet_diagnostic.SA1500.severity = none
+
+# IDE0032: Use auto property
+dotnet_diagnostic.IDE0032.severity = none
+
+# SA1306: The name of a field in C# does not begin with a lower-case letter
+dotnet_diagnostic.SA1306.severity = warning
+
+
+# Default severity for analyzer diagnostics with category 'Design'
+dotnet_analyzer_diagnostic.category-Design.severity = none
