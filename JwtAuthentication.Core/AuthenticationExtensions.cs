@@ -20,13 +20,12 @@ namespace JwtAuthentication.Core
         /// <summary>
         /// Adds the ability to use the basic functionality of JWT
         /// </summary>
-        /// <typeparam name="TKey"></typeparam>
         /// <param name="services"></param>
         /// <param name="authenticationOptions"></param>
         /// <returns></returns>
-        public static IServiceCollection AddJwtAuthentication<TKey>(
+        public static IServiceCollection AddJwtAuthentication(
             this IServiceCollection services,
-            AuthenticationOptions authenticationOptions = null) where TKey : IEquatable<TKey>
+            AuthenticationOptions authenticationOptions = null)
         {
             services.AddTransient<ITokenManager, TokenManager>();
             services.AddTransient<ILoginService, LoginService>();
