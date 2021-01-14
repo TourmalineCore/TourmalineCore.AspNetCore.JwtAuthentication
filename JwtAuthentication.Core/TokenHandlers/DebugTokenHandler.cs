@@ -41,6 +41,7 @@ namespace JwtAuthentication.Core.TokenHandlers
         {
             // skip authentication if endpoint has [AllowAnonymous] attribute
             var endpoint = Context.GetEndpoint();
+
             if (endpoint?.Metadata?.GetMetadata<IAllowAnonymous>() != null)
             {
                 return Task.FromResult(AuthenticateResult.NoResult());

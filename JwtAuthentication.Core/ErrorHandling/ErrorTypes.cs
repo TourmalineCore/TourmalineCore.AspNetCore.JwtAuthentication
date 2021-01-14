@@ -10,6 +10,6 @@ namespace JwtAuthentication.Core.ErrorHandling
         InvalidPasswordFormat,
         UserNotFound,
         ReCaptchaTokenIncorrect,
-        RefreshTokenOrFingreprintNotFound
+        RefreshTokenOrFingreprintNotFound,
     }
 }

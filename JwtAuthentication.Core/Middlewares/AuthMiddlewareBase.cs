@@ -11,13 +11,13 @@ namespace JwtAuthentication.Core.Middlewares
 {
     internal abstract class AuthMiddlewareBase<TService, TRequestModel, TResponseModel> where TService : IAuthService
     {
-        private readonly RequestDelegate Next;
+        private readonly RequestDelegate _next;
 
         private readonly JsonSerializerSettings _jsonSerializerSettings;
 
         public AuthMiddlewareBase(RequestDelegate next)
         {
-            Next = next;
+            _next = next;
 
             _jsonSerializerSettings = new JsonSerializerSettings
             {
@@ -44,7 +44,7 @@ namespace JwtAuthentication.Core.Middlewares
                     {
                         var requestModel = await DeserializeModel<TRequestModel>(context.Request);
 
-                        var result = await ServiceMethodInvoke(requestModel, service);
+                        var result = await ExecuteServiceMethod(requestModel, service);
 
                         if (result != null)
                         {
@@ -59,7 +59,7 @@ namespace JwtAuthentication.Core.Middlewares
                 }
             }
 
-            await Next(context);
+            await _next(context);
         }
 
         private async Task Response(HttpContext context, TResponseModel result)
@@ -77,6 +77,6 @@ namespace JwtAuthentication.Core.Middlewares
             }
         }
 
-        protected abstract Task<TResponseModel> ServiceMethodInvoke(TRequestModel model, TService service);
+        protected abstract Task<TResponseModel> ExecuteServiceMethod(TRequestModel model, TService service);
     }
 }

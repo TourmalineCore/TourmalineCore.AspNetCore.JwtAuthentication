@@ -11,7 +11,6 @@ namespace JwtAuthentication.Core.Middlewares
         public LoginMiddleware(RequestDelegate next)
             : base(next)
         {
-
         }
 
         public async Task InvokeAsync(HttpContext context, ILoginService loginService)
@@ -19,7 +18,7 @@ namespace JwtAuthentication.Core.Middlewares
             await InvokeAsyncBase(context, loginService);
         }
 
-        protected override Task<AuthResponseModel> ServiceMethodInvoke(LoginRequestModel model, ILoginService service)
+        protected override Task<AuthResponseModel> ExecuteServiceMethod(LoginRequestModel model, ILoginService service)
         {
             return service.LoginAsync(model);
         }

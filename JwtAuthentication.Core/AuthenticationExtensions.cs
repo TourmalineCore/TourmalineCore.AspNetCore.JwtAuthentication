@@ -17,6 +17,13 @@ namespace JwtAuthentication.Core
 {
     public static class AuthenticationExtensions
     {
+        /// <summary>
+        /// Adds the ability to use the basic functionality of JWT
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <param name="services"></param>
+        /// <param name="authenticationOptions"></param>
+        /// <returns></returns>
         public static IServiceCollection AddJwtAuthentication<TKey>(
             this IServiceCollection services,
             AuthenticationOptions authenticationOptions = null) where TKey : IEquatable<TKey>
@@ -30,12 +37,24 @@ namespace JwtAuthentication.Core
             return services;
         }
 
+        /// <summary>
+        /// Allows to implement custom logic for checking the username and password
+        /// </summary>
+        /// <typeparam name="TUserCredentialsValidator"></typeparam>
+        /// <param name="services"></param>
+        /// <returns></returns>
         public static IServiceCollection AddUserCredentialValidator<TUserCredentialsValidator>(this IServiceCollection services)
             where TUserCredentialsValidator : IUserCredentialsValidator
         {
             return services.AddTransient(typeof(IUserCredentialsValidator), typeof(TUserCredentialsValidator));
         }
 
+        /// <summary>
+        /// Allows to change the default route for calling the login
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="newRoute"></param>
+        /// <returns></returns>
         public static IServiceCollection OverrideLoginRoute(this IServiceCollection services, string newRoute)
         {
             LoginService.OverrideRoute(newRoute);
