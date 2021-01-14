@@ -20,16 +20,8 @@ namespace JwtAuthentication.Core.Options
         private int _accessTokenExpireInMinutes;
         public int AccessTokenExpireInMinutes
         {
-            get => _accessTokenExpireInMinutes == default ? 180 : _accessTokenExpireInMinutes;
+            get => _accessTokenExpireInMinutes == default ? 10080 : _accessTokenExpireInMinutes;
             set => _accessTokenExpireInMinutes = value;
-        }
-
-
-        private int _refreshTokenExpireInMinutes;
-        public int RefreshTokenExpireInMinutes
-        {
-            get => _refreshTokenExpireInMinutes == default ? 10080 : _refreshTokenExpireInMinutes;
-            set => _refreshTokenExpireInMinutes = value;
         }
 
         public bool IsDebugTokenEnabled { get; set; } 

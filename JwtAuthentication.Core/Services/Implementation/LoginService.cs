@@ -11,6 +11,8 @@ namespace JwtAuthentication.Core.Services.Implementation
 {
     internal class LoginService : ILoginService
     {
+        private static string _route = "/auth/login";
+
         private readonly ITokenManager _tokenManager;
 
         private readonly IUserCredentialsValidator _userCredentialsValidator;
@@ -50,6 +52,16 @@ namespace JwtAuthentication.Core.Services.Implementation
                     ExpiresInUtc = token.ExpiresInUtc,
                 },
             };
+        }
+
+        public string GetRoute()
+        {
+            return _route;
+        }
+
+        public static void OverrideRoute(string newRoute)
+        {
+            _route = newRoute;
         }
     }
 }

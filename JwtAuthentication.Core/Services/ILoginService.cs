@@ -4,7 +4,7 @@ using JwtAuthentication.Core.Models.Response;
 
 namespace JwtAuthentication.Core.Services
 {
-    internal interface ILoginService
+    internal interface ILoginService : IAuthService
     {
         public Task<AuthResponseModel> LoginAsync(LoginRequestModel model);
     }

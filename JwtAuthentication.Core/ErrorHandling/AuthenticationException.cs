@@ -9,6 +9,6 @@ namespace JwtAuthentication.Core.ErrorHandling
             ExceptionInfo = errorType;
         }
 
-        private ErrorTypes ExceptionInfo { get; }
+        public ErrorTypes ExceptionInfo { get; }
     }
 }
