@@ -1,7 +1,21 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <PackageId>TourmalineCore.AspNetCore.JwtAuthentication.Core</PackageId>
+    <Version>0.0.1-beta</Version>
+    <Authors>Koval Maxim</Authors>
+    <Company>Tourmaline Core</Company>
+    <Product>JwtAuthentication</Product>
+    <Description>This library contains middleware and authentication extensions.
+With this library, you can very easily connect the JWT-based authentication to your project.
+Also, this library allows to override the logic of username and password validation and allows to override route to login endpoint.
+The library provides the ability to use a debug token to avoid the need to enter a username and password when the lifetime of the JWT expires.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl></PackageProjectUrl>
+    <RepositoryUrl>https://github.com/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication/</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <PackageTags>.NET Core, Authentication, JWT</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
