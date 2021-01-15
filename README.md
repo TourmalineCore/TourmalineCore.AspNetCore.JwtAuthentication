@@ -70,9 +70,19 @@ public void ConfigureServices(IServiceCollection services) {
 }
 ```
 
-##Login validation
+## Login request
 
-By default, login will be valid only for `Login="Admin"` and `Password="Admin"`
+You can call the login endpoint, you need to use the POST method, add to the header `Content-Type: application/json` and pass the login/password in the JSON format in the request body. Like this:
+`
+{
+  "login": "Admin",
+  "password": "Admin"
+}
+`
+ 
+## Login validation
+
+By default, login will be valid only for `Login="Admin"` and `Password="Admin"`.
 You can provide your own implementation of the IUserCredentialsValidator interface, in which implement your own logic for validation of the login and password.
 
 ```csharp
@@ -93,5 +103,32 @@ public void ConfigureServices(IServiceCollection services) {
         .AddJwtAuthentication()
         .AddUserCredentialValidator<UserCredentialsValidator>();
     ...
+}
+```
+
+## Token usage
+
+The token must be passed in the header like this: `Authorization: Bearer {token}`.
+
+To enable token validation, you must add the `[Authorize]` attribute before the controller or method, for example:
+
+For methods:
+```csharp
+[Authorize]
+[HttpGet]
+public IEnumerable<object> Get()
+{
+    //Make something
+}
+```
+
+For controllers:
+```csharp
+[Authorize]
+[ApiController]
+[Route("[controller]")]
+public class ExampleController : ControllerBase
+{
+    //Some methods
 }
 ```
