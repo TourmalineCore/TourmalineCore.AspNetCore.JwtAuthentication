@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using JwtAuthentication.Core.Models;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
 
-namespace JwtAuthentication.Core.Services
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services
 {
     internal interface ITokenManager
     {

@@ -1,7 +1,7 @@
-using JwtAuthentication.Core.Middlewares;
 using Microsoft.AspNetCore.Builder;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares;
 
-namespace JwtAuthentication.Core
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
 {
     public static class ApplicationBuilderExtension
     {

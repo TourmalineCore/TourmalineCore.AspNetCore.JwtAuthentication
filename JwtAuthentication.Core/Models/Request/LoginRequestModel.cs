@@ -1,4 +1,4 @@
-namespace JwtAuthentication.Core.Models.Request
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request
 {
     internal class LoginRequestModel
     {

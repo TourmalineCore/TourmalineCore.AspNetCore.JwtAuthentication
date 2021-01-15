@@ -1,4 +1,4 @@
-namespace JwtAuthentication.Core.Options
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Options
 {
     public class AuthenticationOptions
     {

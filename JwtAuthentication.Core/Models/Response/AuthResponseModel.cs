@@ -1,4 +1,4 @@
-namespace JwtAuthentication.Core.Models.Response
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response
 {
     internal class AuthResponseModel
     {

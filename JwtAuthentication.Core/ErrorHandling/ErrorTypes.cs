@@ -1,4 +1,4 @@
-namespace JwtAuthentication.Core.ErrorHandling
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling
 {
     public enum ErrorTypes
     {

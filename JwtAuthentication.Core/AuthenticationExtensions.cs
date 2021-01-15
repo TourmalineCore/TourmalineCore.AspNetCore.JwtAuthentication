@@ -1,19 +1,19 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using JwtAuthentication.Core.InterfacesForUserImplementation;
-using JwtAuthentication.Core.InterfacesForUserImplementation.DummyImplementations;
-using JwtAuthentication.Core.Services;
-using JwtAuthentication.Core.Services.Implementation;
-using JwtAuthentication.Core.TokenHandlers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.InterfacesForUserImplementation;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.InterfacesForUserImplementation.DummyImplementations;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementation;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.TokenHandlers;
 using Utils;
-using AuthenticationOptions = JwtAuthentication.Core.Options.AuthenticationOptions;
+using AuthenticationOptions = TourmalineCore.AspNetCore.JwtAuthentication.Core.Options.AuthenticationOptions;
 
-namespace JwtAuthentication.Core
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
 {
     public static class AuthenticationExtensions
     {

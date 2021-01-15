@@ -3,13 +3,13 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using JwtAuthentication.Core.Models;
 using System.Threading.Tasks;
-using JwtAuthentication.Core.Options;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 
-namespace JwtAuthentication.Core.Services.Implementation
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementation
 {
     internal class TokenManager : ITokenManager
     {

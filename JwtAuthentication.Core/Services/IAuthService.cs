@@ -1,4 +1,4 @@
-namespace JwtAuthentication.Core.Services
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services
 {
     internal interface IAuthService
     {

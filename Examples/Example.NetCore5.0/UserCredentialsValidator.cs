@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using JwtAuthentication.Core.InterfacesForUserImplementation;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.InterfacesForUserImplementation;
 
 namespace Example.NetCore5._0
 {

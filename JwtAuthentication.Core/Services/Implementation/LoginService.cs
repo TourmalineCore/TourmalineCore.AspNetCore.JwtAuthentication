@@ -1,13 +1,13 @@
 using System.Threading.Tasks;
-using JwtAuthentication.Core.ErrorHandling;
-using JwtAuthentication.Core.InterfacesForUserImplementation;
-using JwtAuthentication.Core.Models;
-using JwtAuthentication.Core.Models.Request;
-using JwtAuthentication.Core.Models.Response;
-using JwtAuthentication.Core.Options;
 using Microsoft.Extensions.Options;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.InterfacesForUserImplementation;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 
-namespace JwtAuthentication.Core.Services.Implementation
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementation
 {
     internal class LoginService : ILoginService
     {

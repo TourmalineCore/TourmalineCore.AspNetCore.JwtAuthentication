@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace JwtAuthentication.Core.TokenHandlers
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.TokenHandlers
 {
     internal class DebugTokenHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {

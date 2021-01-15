@@ -10,15 +10,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{9EB7D0FF-2A9C-4C91-9C6B-0CF2CD4A4473}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utils", "Utils\Utils.csproj", "{9EB7D0FF-2A9C-4C91-9C6B-0CF2CD4A4473}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{ADBF0A06-FF69-40A6-8F32-2F188AE1B6A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore5.0", "Examples\Example.NetCore5.0\Example.NetCore5.0.csproj", "{36F676C3-2C5F-4727-8BE2-8F759C2A3FBE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore5.0", "Examples\Example.NetCore5.0\Example.NetCore5.0.csproj", "{36F676C3-2C5F-4727-8BE2-8F759C2A3FBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore3.0", "Examples\Example.NetCore3.0\Example.NetCore3.0.csproj", "{25D47437-D19B-4283-8974-3D18A0CCB75F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore3.0", "Examples\Example.NetCore3.0\Example.NetCore3.0.csproj", "{25D47437-D19B-4283-8974-3D18A0CCB75F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore3.1", "Examples\Example.NetCore3.1\Example.NetCore3.1.csproj", "{F73B85BE-2211-496E-A874-EE37AC83BFF7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore3.1", "Examples\Example.NetCore3.1\Example.NetCore3.1.csproj", "{F73B85BE-2211-496E-A874-EE37AC83BFF7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

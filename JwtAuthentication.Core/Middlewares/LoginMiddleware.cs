@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
-using JwtAuthentication.Core.Models.Request;
-using JwtAuthentication.Core.Models.Response;
-using JwtAuthentication.Core.Services;
 using Microsoft.AspNetCore.Http;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 
-namespace JwtAuthentication.Core.Middlewares
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
 {
     internal class LoginMiddleware : AuthMiddlewareBase<ILoginService, LoginRequestModel, AuthResponseModel>
     {

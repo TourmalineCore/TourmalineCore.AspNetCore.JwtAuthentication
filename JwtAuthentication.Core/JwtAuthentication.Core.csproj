@@ -7,7 +7,8 @@
     <Authors>Koval Maxim</Authors>
     <Company>Tourmaline Core</Company>
     <Product>JwtAuthentication</Product>
-    <Description>This library contains middleware and authentication extensions.
+    <Description>This library can work with version .NET Core 3.0 and higher. In order to ensure compatibility of the library with .NET Core 3.0, we use Microsoft.AspNetCore.Authentication.JwtBearer version 3.0.3. 
+This library contains middleware and authentication extensions.
 With this library, you can very easily connect the JWT-based authentication to your project.
 Also, this library allows to override the logic of username and password validation and allows to override route to login endpoint.
 The library provides the ability to use a debug token to avoid the need to enter a username and password when the lifetime of the JWT expires.</Description>
@@ -16,15 +17,29 @@ The library provides the ability to use a debug token to avoid the need to enter
     <RepositoryUrl>https://github.com/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication/</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
     <PackageTags>.NET Core, Authentication, JWT</PackageTags>
+    <AssemblyName>TourmalineCore.AspNetCore.JwtAuthentication.Core</AssemblyName>
+    <RootNamespace>TourmalineCore.AspNetCore.JwtAuthentication.Core</RootNamespace>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <DevelopmentDependency>true</DevelopmentDependency>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>.\lib\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.3" />
+    <Compile Remove="lib\**" />
+    <EmbeddedResource Remove="lib\**" />
+    <None Remove="lib\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="[3.0.3]" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.8.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Utils\Utils.csproj" />
+    <ProjectReference Include="..\Utils\Utils.csproj" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>

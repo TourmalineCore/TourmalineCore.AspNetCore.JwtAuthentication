@@ -1,6 +1,6 @@
 using System;
 
-namespace JwtAuthentication.Core.ErrorHandling
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling
 {
     public class AuthenticationException : Exception
     {

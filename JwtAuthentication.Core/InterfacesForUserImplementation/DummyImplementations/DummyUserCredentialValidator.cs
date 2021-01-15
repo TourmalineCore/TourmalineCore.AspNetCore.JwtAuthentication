@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace JwtAuthentication.Core.InterfacesForUserImplementation.DummyImplementations
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.InterfacesForUserImplementation.DummyImplementations
 {
     public class DummyUserCredentialValidator : IUserCredentialsValidator
     {

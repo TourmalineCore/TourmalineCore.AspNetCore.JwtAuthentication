@@ -1,13 +1,13 @@
 using System.IO;
 using System.Threading.Tasks;
-using JwtAuthentication.Core.ErrorHandling;
-using JwtAuthentication.Core.Services;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 
-namespace JwtAuthentication.Core.Middlewares
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
 {
     internal abstract class AuthMiddlewareBase<TService, TRequestModel, TResponseModel> where TService : IAuthService
     {

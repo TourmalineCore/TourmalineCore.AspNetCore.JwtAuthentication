@@ -1,6 +1,6 @@
 using System;
 
-namespace JwtAuthentication.Core.Models
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Models
 {
     internal class TokenModel
     {

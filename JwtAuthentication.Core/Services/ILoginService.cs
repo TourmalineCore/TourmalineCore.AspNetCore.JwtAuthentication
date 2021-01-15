@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
-using JwtAuthentication.Core.Models.Request;
-using JwtAuthentication.Core.Models.Response;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
 
-namespace JwtAuthentication.Core.Services
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services
 {
     internal interface ILoginService : IAuthService
     {

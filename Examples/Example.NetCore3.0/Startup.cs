@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using JwtAuthentication.Core;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core;
 
 namespace Example.NetCore3._0
 {
