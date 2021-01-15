@@ -10,7 +10,7 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.InterfacesForUserImplemen
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementation;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.TokenHandlers;
-using Utils;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Utils;
 using AuthenticationOptions = TourmalineCore.AspNetCore.JwtAuthentication.Core.Options.AuthenticationOptions;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
@@ -27,11 +27,13 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
             this IServiceCollection services,
             AuthenticationOptions authenticationOptions = null)
         {
+            var options = authenticationOptions ?? new AuthenticationOptions();
+
             services.AddTransient<ITokenManager, TokenManager>();
             services.AddTransient<ILoginService, LoginService>();
             services.AddTransient<IUserCredentialsValidator, DummyUserCredentialValidator>();
 
-            services.AddJwtBearer(authenticationOptions);
+            services.AddJwtBearer(options);
 
             return services;
         }

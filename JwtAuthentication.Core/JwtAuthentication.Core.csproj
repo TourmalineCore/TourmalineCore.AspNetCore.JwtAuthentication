@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <PackageId>TourmalineCore.AspNetCore.JwtAuthentication.Core</PackageId>
-    <Version>0.0.1-beta</Version>
+    <Version>0.0.4-beta</Version>
     <Authors>Koval Maxim</Authors>
     <Company>Tourmaline Core</Company>
     <Product>JwtAuthentication</Product>
@@ -17,29 +17,15 @@ The library provides the ability to use a debug token to avoid the need to enter
     <RepositoryUrl>https://github.com/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication/</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
     <PackageTags>.NET Core, Authentication, JWT</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <AssemblyName>TourmalineCore.AspNetCore.JwtAuthentication.Core</AssemblyName>
     <RootNamespace>TourmalineCore.AspNetCore.JwtAuthentication.Core</RootNamespace>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
-    <DevelopmentDependency>true</DevelopmentDependency>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>.\lib\</OutputPath>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="lib\**" />
-    <EmbeddedResource Remove="lib\**" />
-    <None Remove="lib\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="[3.0.3]" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.8.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Utils\Utils.csproj" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>
