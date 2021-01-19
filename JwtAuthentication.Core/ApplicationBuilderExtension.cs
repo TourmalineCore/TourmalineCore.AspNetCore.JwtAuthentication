@@ -17,5 +17,17 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
                 .UseAuthorization()
                 .UseMiddleware<LoginMiddleware>();
         }
+
+        public static IApplicationBuilder WithRegistration(this IApplicationBuilder applicationBuilder)
+        {
+            return applicationBuilder
+                .UseMiddleware<RegistrationMiddleware>();
+        }
+
+        public static IApplicationBuilder WithRoleManagement(this IApplicationBuilder applicationBuilder)
+        {
+            return applicationBuilder
+                .UseMiddleware<RoleCreationMiddleware>();
+        }
     }
 }

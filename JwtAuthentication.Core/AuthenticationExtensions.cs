@@ -3,11 +3,14 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.InterfacesForUserImplementation;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.InterfacesForUserImplementation.DummyImplementations;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.IdentityEntities;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Identity;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementation;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.TokenHandlers;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Utils;
@@ -59,6 +62,26 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         public static IServiceCollection OverrideLoginRoute(this IServiceCollection services, string newRoute)
         {
             LoginService.OverrideRoute(newRoute);
+
+            return services;
+        }
+
+        public static IServiceCollection AddCustomAuthorization(this IServiceCollection services)
+        {
+
+            //services.AddScoped<IUserStore<User>, CustomUserStore<User>>();
+            //services.AddScoped<IRoleStore<Role>, CustomRoleStore>();
+
+            services.AddIdentityCore<User>()
+                .AddRoles<Role>()
+                .AddRoleManager<CustomRoleManager>()
+                .AddUserManager<CustomUserManager>()
+                .AddRoleStore<CustomRoleStore<Role>>()
+                .AddUserStore<CustomUserStore<User>>()
+                .AddDefaultTokenProviders();
+
+            services.AddScoped<IRegistrationService, RegistrationService>();
+            services.AddScoped<IRoleCreationService, RoleCreationService>();
 
             return services;
         }
