@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.InterfacesForUserImplementation;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Interfaces;
 
 namespace Example.NetCore5._0
 {
@@ -11,7 +11,7 @@ namespace Example.NetCore5._0
         {
             return Task.FromResult(new List<Claim>
                     {
-                        new Claim("Permissions", "CanRun"),
+                        new Claim("Permission", "CanUseExample"),
                     }
                 );
         }

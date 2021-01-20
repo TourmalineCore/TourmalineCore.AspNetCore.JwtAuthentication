@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.InterfacesForUserImplementation;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Interfaces;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 

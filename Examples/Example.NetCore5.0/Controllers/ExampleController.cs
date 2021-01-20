@@ -15,7 +15,7 @@ namespace Example.NetCore5._0.Controllers
         };
 
         [Authorize]
-        [RequiresPermissionFilter("CanInvoke")]
+        [RequiresPermissionFilter("CanUseExample")]
         [HttpGet]
         public IEnumerable<object> Get()
         {

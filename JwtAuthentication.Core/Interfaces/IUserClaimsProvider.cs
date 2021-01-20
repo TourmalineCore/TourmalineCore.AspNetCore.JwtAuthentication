@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.InterfacesForUserImplementation
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Interfaces
 {
     public interface IUserClaimsProvider
     {

@@ -3,11 +3,10 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.InterfacesForUserImplementation;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.InterfacesForUserImplementation.DummyImplementations;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Interfaces;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Interfaces.DummyImplementations;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementation;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.TokenHandlers;
@@ -65,6 +64,12 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
             return services;
         }
 
+        /// <summary>
+        /// Adds the ability to implement functionality for creating user permissions
+        /// </summary>
+        /// <typeparam name="TUserClaimsProvider"></typeparam>
+        /// <param name="services"></param>
+        /// <returns></returns>
         public static IServiceCollection AddUserClaimsProvider<TUserClaimsProvider>(this IServiceCollection services)
             where TUserClaimsProvider : IUserClaimsProvider
         {

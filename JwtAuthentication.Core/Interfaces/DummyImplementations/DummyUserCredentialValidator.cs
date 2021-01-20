@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 
-namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.InterfacesForUserImplementation.DummyImplementations
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Interfaces.DummyImplementations
 {
-    public class DummyUserCredentialValidator : IUserCredentialsValidator
+    internal class DummyUserCredentialValidator : IUserCredentialsValidator
     {
         private const string Login = "Admin";
         private const string Password = "Admin";
