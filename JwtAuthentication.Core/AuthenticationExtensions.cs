@@ -8,9 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.InterfacesForUserImplementation;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.InterfacesForUserImplementation.DummyImplementations;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.IdentityEntities;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Identity;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementation;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.TokenHandlers;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Utils;
@@ -35,6 +33,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
             services.AddTransient<ITokenManager, TokenManager>();
             services.AddTransient<ILoginService, LoginService>();
             services.AddTransient<IUserCredentialsValidator, DummyUserCredentialValidator>();
+            services.AddTransient<IUserClaimsProvider, DummyUserClaimsProvider>();
 
             services.AddJwtBearer(options);
 
@@ -66,21 +65,10 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
             return services;
         }
 
-        public static IServiceCollection AddCustomAuthorization(this IServiceCollection services)
+        public static IServiceCollection AddUserClaimsProvider<TUserClaimsProvider>(this IServiceCollection services)
+            where TUserClaimsProvider : IUserClaimsProvider
         {
-
-            services.AddIdentityCore<User>()
-                .AddRoles<Role>()
-                .AddRoleManager<CustomRoleManager>()
-                .AddUserManager<CustomUserManager>()
-                .AddRoleStore<CustomRoleStore<Role>>()
-                .AddUserStore<CustomUserStore<User>>()
-                .AddDefaultTokenProviders();
-
-            services.AddScoped<IRegistrationService, RegistrationService>();
-            services.AddScoped<IRoleCreationService, RoleCreationService>();
-
-            return services;
+            return services.AddTransient(typeof(IUserClaimsProvider), typeof(TUserClaimsProvider));
         }
 
         private static void AddJwtBearer(this IServiceCollection services, AuthenticationOptions authenticationOptions)
