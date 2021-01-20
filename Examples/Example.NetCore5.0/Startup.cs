@@ -10,8 +10,7 @@ namespace Example.NetCore5._0
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddJwtAuthentication()
-                .AddUserClaimsProvider<UserClaimsProvider>();
+            services.AddJwtAuthentication();
 
             services.AddControllers();
         }

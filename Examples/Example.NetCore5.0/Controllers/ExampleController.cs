@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Filters;
 
 namespace Example.NetCore5._0.Controllers
 {
@@ -15,7 +14,6 @@ namespace Example.NetCore5._0.Controllers
         };
 
         [Authorize]
-        [RequiresPermissionFilter("CanUseExample")]
         [HttpGet]
         public IEnumerable<object> Get()
         {
