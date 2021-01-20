@@ -69,9 +69,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         public static IServiceCollection AddCustomAuthorization(this IServiceCollection services)
         {
 
-            //services.AddScoped<IUserStore<User>, CustomUserStore<User>>();
-            //services.AddScoped<IRoleStore<Role>, CustomRoleStore>();
-
             services.AddIdentityCore<User>()
                 .AddRoles<Role>()
                 .AddRoleManager<CustomRoleManager>()

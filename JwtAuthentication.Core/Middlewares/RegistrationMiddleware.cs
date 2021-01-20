@@ -6,7 +6,7 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
 {
-    internal class RegistrationMiddleware : AuthMiddlewareBase<IRegistrationService, RegistrationRequestModel, long>
+    internal class RegistrationMiddleware : AuthMiddlewareBase<IRegistrationService, RegistrationRequestModel, string>
     {
         public RegistrationMiddleware(RequestDelegate next)
             : base(next)
@@ -18,7 +18,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
             await InvokeAsyncBase(context, registrationService);
         }
 
-        protected override Task<long> ExecuteServiceMethod(RegistrationRequestModel model, IRegistrationService service)
+        protected override Task<string> ExecuteServiceMethod(RegistrationRequestModel model, IRegistrationService service)
         {
             return service.RegistrationAsync(model);
         }

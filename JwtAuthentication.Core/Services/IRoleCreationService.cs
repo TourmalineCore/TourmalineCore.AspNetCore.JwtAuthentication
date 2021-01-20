@@ -5,6 +5,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services
 {
     internal interface IRoleCreationService : IAuthService
     {
-        public Task<long> CreateRoleAsync(CreateRoleRequestModel model);
+        public Task<string> CreateRoleAsync(CreateRoleRequestModel model);
     }
 }

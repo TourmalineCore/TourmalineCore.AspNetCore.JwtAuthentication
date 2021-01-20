@@ -5,6 +5,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services
 {
     internal interface IRegistrationService : IAuthService
     {
-        public Task<long> RegistrationAsync(RegistrationRequestModel model);
+        public Task<string> RegistrationAsync(RegistrationRequestModel model);
     }
 }

@@ -10,7 +10,8 @@ namespace Example.NetCore5._0
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddJwtAuthentication();
+            services.AddJwtAuthentication()
+                .AddCustomAuthorization();
 
             services.AddControllers();
         }
@@ -24,7 +25,9 @@ namespace Example.NetCore5._0
 
             app.UseRouting();
 
-            app.UseJwtAuthentication();
+            app.UseJwtAuthentication()
+                .WithRegistration()
+                .WithRoleManagement();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.IdentityEntities;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
@@ -16,10 +17,11 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementati
             _customRoleManager = customRoleManager;
         }
 
-        public async Task<long> CreateRoleAsync(CreateRoleRequestModel model)
+        public async Task<string> CreateRoleAsync(CreateRoleRequestModel model)
         {
             var role = new Role
             {
+                Id = Guid.NewGuid().ToString(),
                 Name = model.Name,
                 NormalizedName = model.Name.ToUpper(),
             };

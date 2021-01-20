@@ -5,7 +5,7 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
 {
-    internal class RoleCreationMiddleware : AuthMiddlewareBase<IRoleCreationService, CreateRoleRequestModel, long>
+    internal class RoleCreationMiddleware : AuthMiddlewareBase<IRoleCreationService, CreateRoleRequestModel, string>
     {
         public RoleCreationMiddleware(RequestDelegate next)
             : base(next)
@@ -17,7 +17,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
             await InvokeAsyncBase(context, roleCreationService);
         }
 
-        protected override Task<long> ExecuteServiceMethod(CreateRoleRequestModel model, IRoleCreationService service)
+        protected override Task<string> ExecuteServiceMethod(CreateRoleRequestModel model, IRoleCreationService service)
         {
             return service.CreateRoleAsync(model);
         }

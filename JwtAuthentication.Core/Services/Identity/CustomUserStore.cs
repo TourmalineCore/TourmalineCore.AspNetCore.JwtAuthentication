@@ -3,107 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Identity;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.IdentityEntities;
-using IdentityResult = Microsoft.AspNetCore.Identity.IdentityResult;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Identity
 {
-    public class CustomUserStore<TUser> : IUserPasswordStore<TUser, long>
+    public class CustomUserStore<TUser> : IUserStore<TUser>
         where TUser : User
     {
-        private static readonly Dictionary<long, TUser> Users = new Dictionary<long, TUser>();
+        private readonly Dictionary<string, TUser> _users = new Dictionary<string, TUser>();
 
-        private bool _disposedValue;
-
-        public Task CreateAsync(TUser user)
+        public Task<IdentityResult> CreateAsync(TUser user, CancellationToken cancellationToken)
         {
-            user.Id = Users.Keys.Last() + 1;
+            var isUserCreated = _users.TryAdd(user.UserName, user);
 
-            var isSuccess = Users.TryAdd(user.Id, user);
-
-            return isSuccess == false
-                ? Task.FromResult(IdentityResult.Failed(
+            return isUserCreated
+                ? Task.FromResult(IdentityResult.Success)
+                : Task.FromResult(IdentityResult.Failed(
                             new IdentityError
                             {
-                                Code = "Registration",
-                                Description = "Invalid user id",
+                                Code = "Create user",
+                                Description = "User already exist",
                             }
                         )
-                    )
-                : Task.FromResult(IdentityResult.Success);
+                    );
         }
 
-        public Task DeleteAsync(TUser user)
+        public Task<IdentityResult> UpdateAsync(TUser user, CancellationToken cancellationToken)
         {
-            var isSuccess = Users.Remove(user.Id);
-
-            return isSuccess == false
-                ? Task.FromResult(IdentityResult.Failed(
-                            new IdentityError
-                            {
-                                Code = "Remove user",
-                                Description = "Invalid user id",
-                            }
-                        )
-                    )
-                : Task.FromResult(IdentityResult.Success);
-        }
-
-        public Task<TUser> FindByIdAsync(long userId)
-        {
-            return Task.FromResult(Users.Values.FirstOrDefault(x => x.Id == userId));
-        }
-
-        public Task<TUser> FindByNameAsync(string normalizedUserName)
-        {
-            return Task.FromResult(Users.Values.FirstOrDefault(x => x.NormalizedUserName == normalizedUserName));
-        }
-
-        public Task<string> GetNormalizedUserNameAsync(TUser user, CancellationToken cancellationToken)
-        {
-            return Task.FromResult(user.NormalizedUserName);
-        }
-
-        public Task<string> GetPasswordHashAsync(TUser user)
-        {
-            return Task.FromResult(user.PasswordHash);
-        }
-
-        public Task<long> GetUserIdAsync(TUser user)
-        {
-            return Task.FromResult(user.Id);
-        }
-
-        public Task<string> GetUserNameAsync(TUser user)
-        {
-            return Task.FromResult(user.UserName);
-        }
-
-        public Task<bool> HasPasswordAsync(TUser user)
-        {
-            return Task.FromResult(user.PasswordHash != null);
-        }
-
-        public Task SetNormalizedUserNameAsync(TUser user, string normalizedName)
-        {
-            return Task.FromResult(user.NormalizedUserName = normalizedName);
-        }
-
-        public Task SetPasswordHashAsync(TUser user, string passwordHash)
-        {
-            return Task.FromResult(user.PasswordHash = passwordHash);
-        }
-
-        public Task SetUserNameAsync(TUser user, string userName)
-        {
-            return Task.FromResult(user.UserName = userName);
-        }
-
-        public Task UpdateAsync(TUser user)
-        {
-            var isUserExist = Users.TryGetValue(user.Id, out _);
+            var isUserExist = _users.TryGetValue(user.UserName, out _);
 
             if (!isUserExist)
             {
@@ -111,43 +39,90 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Identity
                             new IdentityError
                             {
                                 Code = "Remove user",
-                                Description = "Invalid user id",
+                                Description = "Invalid user name",
                             }
                         )
                     );
             }
 
-            Users[user.Id] = user;
+            _users[user.UserName] = user;
 
             return Task.FromResult(IdentityResult.Success);
         }
 
-        protected virtual void Dispose(bool disposing)
+        public Task<IdentityResult> DeleteAsync(TUser user, CancellationToken cancellationToken)
         {
-            if (!_disposedValue)
+            if (_users.Count == 0)
             {
-                if (disposing)
-                {
-                    // TODO: dispose managed state (managed objects)
-                }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
-                _disposedValue = true;
+                return null;
             }
+
+            var isUserDeleted = _users.Remove(user.UserName);
+
+            return isUserDeleted
+                ? Task.FromResult(IdentityResult.Success)
+                : Task.FromResult(IdentityResult.Failed(
+                            new IdentityError
+                            {
+                                Code = "Remove user",
+                                Description = "Invalid user id",
+                            }
+                        )
+                    );
         }
 
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        // ~CustomUserStore()
-        // {
-        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        //     Dispose(disposing: false);
-        // }
+        public Task<TUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(_users.Values.FirstOrDefault(x => x.Id == userId));
+        }
+
+        public Task<TUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(_users.Values.FirstOrDefault(x => x.NormalizedUserName == normalizedUserName));
+        }
+
+        public Task<string> GetNormalizedUserNameAsync(TUser user, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(user.NormalizedUserName);
+        }
+
+        public Task<string> GetPasswordHashAsync(TUser user, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(user.PasswordHash);
+        }
+
+        public Task<string> GetUserIdAsync(TUser user, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(user.Id);
+        }
+
+        public Task<string> GetUserNameAsync(TUser user, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(user.UserName);
+        }
+
+        public Task<bool> HasPasswordAsync(TUser user, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(user.PasswordHash != null);
+        }
+
+        public Task SetNormalizedUserNameAsync(TUser user, string normalizedName, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(user.NormalizedUserName = normalizedName);
+        }
+
+        public Task SetPasswordHashAsync(TUser user, string passwordHash, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(user.PasswordHash = passwordHash);
+        }
+
+        public Task SetUserNameAsync(TUser user, string userName, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(user.UserName = userName);
+        }
 
         public void Dispose()
         {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(true);
             GC.SuppressFinalize(this);
         }
     }

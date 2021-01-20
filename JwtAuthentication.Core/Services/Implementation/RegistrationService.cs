@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.IdentityEntities;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
@@ -16,13 +17,15 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementati
             _customUserManager = customUserManager;
         }
 
-        public async Task<long> RegistrationAsync(RegistrationRequestModel model)
+        public async Task<string> RegistrationAsync(RegistrationRequestModel model)
         {
             var user = new User
             {
+                Id = Guid.NewGuid().ToString(),
                 Email = model.Email,
                 UserName = model.Email,
                 EmailConfirmed = true,
+                NormalizedUserName = model.Email.ToUpper(),
             };
 
             await _customUserManager.CreateAsync(user, model.Password);
