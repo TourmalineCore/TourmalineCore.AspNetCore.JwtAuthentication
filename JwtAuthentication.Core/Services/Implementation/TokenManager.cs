@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.InterfacesForUserImplementation;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 
@@ -14,19 +15,19 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementati
     internal class TokenManager : ITokenManager
     {
         private readonly AuthenticationOptions _options;
+        private readonly IUserClaimsProvider _userClaimsProvider;
 
-        public TokenManager(IOptions<AuthenticationOptions> options)
+        public TokenManager(
+            IOptions<AuthenticationOptions> options,
+            IUserClaimsProvider userClaimsProvider)
         {
             _options = options.Value;
+            _userClaimsProvider = userClaimsProvider;
         }
 
         public async Task<TokenModel> GetAccessToken(string userName, string signingKey, int tokenLiveTime)
         {
-            var claims = new[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, userName),
-                }
-                .ToList();
+            var claims = await _userClaimsProvider.GetUserClaimsAsync(userName);
 
             var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(signingKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
