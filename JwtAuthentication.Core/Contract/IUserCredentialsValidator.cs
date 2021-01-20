@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Interfaces
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract
 {
     public interface IUserCredentialsValidator
     {

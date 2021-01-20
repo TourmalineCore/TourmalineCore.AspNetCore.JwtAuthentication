@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace Example.NetCore.BaseAuthenticationWithOwnCredentialsValidation
+namespace Example.NetCore.AuthenticationWithOwnCredentialsValidation
 {
     public class Program
     {

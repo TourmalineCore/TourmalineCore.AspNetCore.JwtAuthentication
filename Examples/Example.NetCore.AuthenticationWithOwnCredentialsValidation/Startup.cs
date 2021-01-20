@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
 
-namespace Example.NetCore.BaseAuthenticationWithOwnCredentialsValidation
+namespace Example.NetCore.AuthenticationWithOwnCredentialsValidation
 {
     public class Startup
     {

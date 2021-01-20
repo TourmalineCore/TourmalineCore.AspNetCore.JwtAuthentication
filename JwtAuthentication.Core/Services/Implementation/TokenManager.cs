@@ -1,12 +1,10 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Interfaces;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 

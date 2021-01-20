@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Interfaces;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
 
-namespace Example.NetCore.BaseAuthenticationWithOwnCredentialsValidation
+namespace Example.NetCore.AuthenticationWithOwnCredentialsValidation
 {
     public class UserCredentialsValidator : IUserCredentialsValidator
     {

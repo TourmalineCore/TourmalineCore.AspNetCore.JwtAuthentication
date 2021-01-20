@@ -11,7 +11,7 @@ namespace Example.NetCore.PermissionBasedAuthorization
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddJwtAuthentication()
-                .AddUserClaimsProvider<UserClaimsProvider>();
+                .WithUserClaimsProvider<UserClaimsProvider>(UserClaimsProvider.ExampleClaimType);
 
             services.AddControllers();
         }
