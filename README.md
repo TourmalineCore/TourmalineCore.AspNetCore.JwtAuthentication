@@ -147,7 +147,7 @@ public class UserClaimsProvider : IUserClaimsProvider
 {
     public const string ExampleClaimType = "ExamplePermission";
     
-	public const string FirstExampleClaimName = "CanUseExample";
+    public const string FirstExampleClaimName = "CanUseExample";
 
     public const string SecondExampleClaimName = "CanUseExample";
 	
@@ -156,7 +156,7 @@ public class UserClaimsProvider : IUserClaimsProvider
         return Task.FromResult(new List<Claim>
             {
                 new Claim(ExampleClaimType, FirstExampleClaimName),
-				new Claim(ExampleClaimType, SecondExampleClaimName),
+                new Claim(ExampleClaimType, SecondExampleClaimName),
             });
     }
 }
