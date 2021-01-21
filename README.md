@@ -97,12 +97,16 @@ public class UserCredentialsValidator : IUserCredentialsValidator
     }
 }
 	
-public void ConfigureServices(IServiceCollection services) {
-    ...
-    services
-        .AddJwtAuthentication()
-        .AddUserCredentialValidator<UserCredentialsValidator>();
-    ...
+public class Startup
+{
+    public void ConfigureServices(IServiceCollection services) 
+	{
+        ...
+        services
+          .AddJwtAuthentication()
+          .AddUserCredentialValidator<UserCredentialsValidator>();
+        ...
+    }
 }
 ```
 
@@ -132,3 +136,75 @@ public class ExampleController : ControllerBase
     //Some methods
 }
 ```
+
+# Authorization
+
+This library implements claims-based authorization. With this, claims are added to the token payload and verified upon request. In order to use this mechanism, you need:
+
+1. Create a class that implements the IUserClaimsProvider interface that will return a list of the claims that you need. For example:
+```csharp
+public class UserClaimsProvider : IUserClaimsProvider
+{
+    public const string ExampleClaimType = "ExamplePermission";
+    
+	public const string FirstExampleClaimName = "CanUseExample";
+
+    public const string SecondExampleClaimName = "CanUseExample";
+	
+    public Task<List<Claim>> GetUserClaimsAsync(string login)
+    {
+        return Task.FromResult(new List<Claim>
+            {
+                new Claim(ExampleClaimType, FirstExampleClaimName),
+				new Claim(ExampleClaimType, SecondExampleClaimName),
+            });
+    }
+}
+```
+
+2. Connect this provider in the Startup.cs.
+   You can pass the name of the claim type you want to use as a parameter. `Default claim type = "Permission"`.
+```csharp
+public void ConfigureServices(IServiceCollection services) {
+    ...
+    services.AddJwtAuthentication()
+            .WithUserClaimsProvider<UserClaimsProvider>(UserClaimsProvider.ExampleClaimType);
+    ...
+}
+```
+
+The claims in the token will look like this:
+```
+{
+  "ExamplePermission": [ // instead "ExamplePermission" will be "Permission" when using the default option
+    "CanUseExample",
+    "CanInvokeExample"
+  ],
+  "exp": 1611815230
+}
+```
+
+3. To enable checking for pemissions, you must add the `RequiredPermission` attribute before the controller or method and pass as a parameter all permissions that are needed , for example:
+```csharp
+[Authorize]
+[RequiredPermission(UserClaimsProvider.FirstExampleClaimName)]
+[HttpGet]
+public IEnumerable<object> Get()
+{
+    //Make something
+}
+```
+
+For controllers:
+```csharp
+[ApiController]
+[Route("[controller]")]
+[Authorize]
+[RequiredPermission(UserClaimsProvider.FirstExampleClaimName)]
+public class ExampleController : ControllerBase
+{
+    //Some methods
+}
+```
+
+Thus, only those users who have the desired permission will have access to the controller or controller method.
