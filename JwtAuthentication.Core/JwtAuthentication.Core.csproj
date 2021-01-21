@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <PackageId>TourmalineCore.AspNetCore.JwtAuthentication.Core</PackageId>
-    <Version>0.0.4-beta</Version>
+    <Version>0.0.5-beta</Version>
     <Authors>Koval Maxim</Authors>
     <Company>Tourmaline Core</Company>
     <Product>JwtAuthentication</Product>
