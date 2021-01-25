@@ -147,9 +147,9 @@ public class UserClaimsProvider : IUserClaimsProvider
 {
     public const string ExampleClaimType = "ExamplePermission";
     
-    public const string FirstExampleClaimName = "CanUseExample";
+    private const string FirstExampleClaimName = "CanUseExampleFirst";
 
-    public const string SecondExampleClaimName = "CanUseExample";
+    private const string SecondExampleClaimName = "CanUseExampleSecond";
 	
     public Task<List<Claim>> GetUserClaimsAsync(string login)
     {
@@ -177,14 +177,14 @@ The claims in the token will look like this:
 ```
 {
   "ExamplePermission": [ // instead "ExamplePermission" will be "Permission" when using the default option
-    "CanUseExample",
-    "CanInvokeExample"
+    "CanUseExampleFirst",
+    "CanUseExampleSecond"
   ],
   "exp": 1611815230
 }
 ```
 
-3. To enable checking for pemissions, you must add the `RequiredPermission` attribute before the controller or method and pass as a parameter all permissions that are needed , for example:
+3. To enable checking of pemissions, you must add the `RequiredPermission` attribute before the controller or method and pass as a parameter all permissions that are needed , for example:
 ```csharp
 [Authorize]
 [RequiredPermission(UserClaimsProvider.FirstExampleClaimName)]
@@ -200,7 +200,7 @@ For controllers:
 [ApiController]
 [Route("[controller]")]
 [Authorize]
-[RequiredPermission(UserClaimsProvider.FirstExampleClaimName)]
+[RequiredPermission(UserClaimsProvider.FirstExampleClaimName, UserClaimsProvider.SecondExampleClaimName)]
 public class ExampleController : ControllerBase
 {
     //Some methods
