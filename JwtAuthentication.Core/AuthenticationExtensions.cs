@@ -5,8 +5,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.InterfacesForUserImplementation;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.InterfacesForUserImplementation.DummyImplementations;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract.Implementation;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Filters;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementation;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.TokenHandlers;
@@ -31,7 +32,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
 
             services.AddTransient<ITokenManager, TokenManager>();
             services.AddTransient<ILoginService, LoginService>();
-            services.AddTransient<IUserCredentialsValidator, DummyUserCredentialValidator>();
+            services.AddTransient<IUserCredentialsValidator, FakeUserCredentialValidator>();
+            services.AddTransient<IUserClaimsProvider, DefaultUserClaimsProvider>();
 
             services.AddJwtBearer(options);
 
@@ -56,14 +58,35 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         /// <param name="services"></param>
         /// <param name="newRoute"></param>
         /// <returns></returns>
-        public static IServiceCollection OverrideLoginRoute(this IServiceCollection services, string newRoute)
+        public static IServiceCollection OverrideLoginRoute(
+            this IServiceCollection services,
+            string newRoute)
         {
             LoginService.OverrideRoute(newRoute);
 
             return services;
         }
 
-        private static void AddJwtBearer(this IServiceCollection services, AuthenticationOptions authenticationOptions)
+        /// <summary>
+        /// Adds the ability to implement functionality for retrieving user claims
+        /// </summary>
+        /// <typeparam name="TUserClaimsProvider"></typeparam>
+        /// <param name="services"></param>
+        /// <param name="permissionClaimTypeKey"></param>
+        /// <returns></returns>
+        public static IServiceCollection WithUserClaimsProvider<TUserClaimsProvider>(
+            this IServiceCollection services,
+            string permissionClaimTypeKey = "Permission")
+            where TUserClaimsProvider : IUserClaimsProvider
+        {
+            RequiresPermission.ClaimType = permissionClaimTypeKey;
+
+            return services.AddTransient(typeof(IUserClaimsProvider), typeof(TUserClaimsProvider));
+        }
+
+        private static void AddJwtBearer(
+            this IServiceCollection services,
+            AuthenticationOptions authenticationOptions)
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
