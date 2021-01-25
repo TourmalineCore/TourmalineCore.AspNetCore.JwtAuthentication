@@ -9,9 +9,9 @@ namespace Example.NetCore.PermissionBasedAuthorization
     {
         public const string ExampleClaimType = "ExamplePermission";
 
-        private const string FirstExampleClaimName = "CanUseExampleFirst";
+        public const string FirstExampleClaimName = "CanUseExampleFirst";
 
-        private const string SecondExampleClaimName = "CanUseExampleSecond";
+        public const string SecondExampleClaimName = "CanUseExampleSecond";
 
         public Task<List<Claim>> GetUserClaimsAsync(string login)
         {
