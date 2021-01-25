@@ -5,6 +5,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services
 {
     internal interface ITokenManager
     {
-        Task<TokenModel> GetAccessToken(string userName, string signingKey, int tokenLiveTime);
+        Task<TokenModel> GetAccessToken(string login, string signingKey, int tokenLiveTime);
     }
 }

@@ -15,7 +15,7 @@ namespace Example.NetCore.PermissionBasedAuthorization.Controllers
         };
 
         [Authorize]
-        [RequiredPermission(UserClaimsProvider.ExampleClaimName)]
+        [RequiresPermission(UserClaimsProvider.ExampleClaimName)]
         [HttpGet]
         public IEnumerable<object> Get()
         {

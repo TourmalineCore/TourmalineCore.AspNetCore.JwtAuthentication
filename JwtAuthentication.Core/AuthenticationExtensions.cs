@@ -72,14 +72,14 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         /// </summary>
         /// <typeparam name="TUserClaimsProvider"></typeparam>
         /// <param name="services"></param>
-        /// <param name="claimType"></param>
+        /// <param name="permissionClaimTypeKey"></param>
         /// <returns></returns>
         public static IServiceCollection WithUserClaimsProvider<TUserClaimsProvider>(
             this IServiceCollection services,
-            string claimType = "Permission")
+            string permissionClaimTypeKey = "Permission")
             where TUserClaimsProvider : IUserClaimsProvider
         {
-            RequiredPermission.ClaimType = claimType;
+            RequiresPermission.ClaimType = permissionClaimTypeKey;
 
             return services.AddTransient(typeof(IUserClaimsProvider), typeof(TUserClaimsProvider));
         }

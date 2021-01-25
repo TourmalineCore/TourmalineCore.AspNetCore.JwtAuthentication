@@ -7,13 +7,13 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Utils;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Filters
 {
-    public class RequiredPermission : Attribute, IAuthorizationFilter
+    public class RequiresPermission : Attribute, IAuthorizationFilter
     {
         internal static string ClaimType;
 
         private readonly List<string> _permissions;
 
-        public RequiredPermission(params string[] permissions)
+        public RequiresPermission(params string[] permissions)
         {
             _permissions = permissions.ToList();
         }

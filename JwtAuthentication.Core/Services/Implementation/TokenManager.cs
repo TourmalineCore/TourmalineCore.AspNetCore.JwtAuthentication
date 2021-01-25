@@ -23,9 +23,9 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementati
             _userClaimsProvider = userClaimsProvider;
         }
 
-        public async Task<TokenModel> GetAccessToken(string userName, string signingKey, int tokenLiveTime)
+        public async Task<TokenModel> GetAccessToken(string login, string signingKey, int tokenLiveTime)
         {
-            var claims = await _userClaimsProvider.GetUserClaimsAsync(userName);
+            var claims = await _userClaimsProvider.GetUserClaimsAsync(login);
 
             var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(signingKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
