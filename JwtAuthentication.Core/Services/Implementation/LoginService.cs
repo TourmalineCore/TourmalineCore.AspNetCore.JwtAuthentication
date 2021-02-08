@@ -29,7 +29,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementati
             _options = options?.Value;
         }
 
-        public virtual async Task<AuthResponseModel> LoginAsync(LoginRequestModel model)
+        public async Task<AuthResponseModel> LoginAsync(LoginRequestModel model)
         {
             var isUserCredentialsValid = await _userCredentialsValidator.ValidateUserCredentials(model.Login, model.Password);
 

@@ -44,7 +44,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
                     {
                         var requestModel = await DeserializeModel<TRequestModel>(context.Request);
 
-                        var result = await ExecuteServiceMethod(requestModel, service);
+                        var result = await ExecuteServiceMethod(requestModel, service, context);
 
                         if (result != null)
                         {
@@ -77,6 +77,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
             }
         }
 
-        protected abstract Task<TResponseModel> ExecuteServiceMethod(TRequestModel model, TService service);
+        protected abstract Task<TResponseModel> ExecuteServiceMethod(TRequestModel model, TService service, HttpContext context);
     }
 }
