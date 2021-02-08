@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
@@ -18,9 +19,23 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
             await InvokeAsyncBase(context, loginService);
         }
 
-        protected override Task<AuthResponseModel> ExecuteServiceMethod(LoginRequestModel model, ILoginService service)
+        protected override async Task<AuthResponseModel> ExecuteServiceMethod(
+            LoginRequestModel model,
+            ILoginService service,
+            HttpContext context)
         {
-            return service.LoginAsync(model);
+            var result = new AuthResponseModel();
+
+            try
+            {
+                result = await service.LoginAsync(model);
+            }
+            catch (AuthenticationException)
+            {
+                context.Response.StatusCode = 401;
+            }
+
+            return result;
         }
     }
 }
