@@ -1,8 +1,6 @@
-using System;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.CookiePolicy;
-using Microsoft.AspNetCore.Http;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
 {
@@ -26,26 +24,11 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
                 .UseMiddleware<LoginMiddleware>();
         }
 
-        public static IApplicationBuilder UseCookieLoginMiddleware(this IApplicationBuilder applicationBuilder)
+        public static IApplicationBuilder UseCookieLoginMiddleware(this IApplicationBuilder applicationBuilder, CookieAuthOptions options)
         {
             return applicationBuilder
-                .UseMiddleware<CookiesLoginMiddleware>()
-                .UseCookiePolicy(new CookiePolicyOptions
-                {
-                    MinimumSameSitePolicy = SameSiteMode.Strict,
-                    HttpOnly = HttpOnlyPolicy.Always,
-                    Secure = CookieSecurePolicy.Always,
-                })
-                .Use(async (context, next) =>
-                {
-                    var token = context.Request.Cookies[".AspNetCore.Application.Id"];
-                    if (!string.IsNullOrEmpty(token))
-                    {
-                        context.Request.Headers.Add("Authorization", $"Bearer {token}");
-                    }
-
-                    await next();
-                });
+                .UseMiddleware<CookieLoginMiddleware>(options)
+                .UseMiddleware<CookieTokenMiddleware>(options);
         }
     }
 }

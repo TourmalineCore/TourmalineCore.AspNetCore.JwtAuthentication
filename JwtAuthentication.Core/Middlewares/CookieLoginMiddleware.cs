@@ -1,17 +1,23 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
 {
     internal class CookieLoginMiddleware : AuthMiddlewareBase<ILoginService, LoginRequestModel, AuthResponseModel>
     {
-        public CookieLoginMiddleware(RequestDelegate next)
+
+        private readonly CookieAuthOptions _options;
+
+        public CookieLoginMiddleware(RequestDelegate next, CookieAuthOptions options)
             : base(next)
         {
+            _options = options;
         }
 
         public async Task InvokeAsync(HttpContext context, ILoginService loginService)
@@ -28,19 +34,19 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
             {
                 var result = await service.LoginAsync(model);
 
+                Console.WriteLine($"Login: {_options.Key}");
+
                 if (result.AccessToken != null)
                 {
                     context.Response.Cookies.Append(
-                        ".AspNetCore.Application.Id",
+                        _options.Key,
                         result.AccessToken.Value,
                         new CookieOptions
                         {
                             Expires = result.AccessToken.ExpiresInUtc,
+                            HttpOnly = true,
+                            SameSite = SameSiteMode.Lax,
                         });
-
-                    context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
-                    context.Response.Headers.Add("X-Xss-Protection", "1");
-                    context.Response.Headers.Add("X-Frame-Options", "DENY");
                 }
             }
             catch (AuthenticationException)

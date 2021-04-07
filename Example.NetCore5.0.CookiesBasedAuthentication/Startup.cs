@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 
 namespace Example.NetCore5._0.CookiesBasedAuthentication
 {
@@ -24,7 +25,7 @@ namespace Example.NetCore5._0.CookiesBasedAuthentication
 
             app.UseRouting();
 
-            app.UseCookieLoginMiddleware();
+            app.UseCookieLoginMiddleware(new CookieAuthOptions{ Key = "ExampleCookieName" });
             app.UseJwtAuthentication();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
