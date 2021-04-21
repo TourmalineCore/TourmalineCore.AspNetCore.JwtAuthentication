@@ -208,3 +208,50 @@ public class ExampleController : ControllerBase
 ```
 
 Thus, only those users who have the desired permission will have access to the controller or controller method.
+
+# Identity
+If you are using EF Core, you can use JwtAuthentication.Identity package. It will allow you to use advantages of JWT and store necessary users data in a database.
+
+1. You will need to inherit your context from JwtAuthIdentityDbContext, provided by this package.
+```csharp
+public class AppDbContext : JwtAuthIdentityDbContext<CustomUser>
+{
+    public AppDbContext(DbContextOptions<AppDbContext> options)
+        : base(options)
+    {
+    }
+}
+```
+
+2. Then you need to update startup like this:
+```csharp
+public class Startup
+{
+    public void ConfigureServices(IServiceCollection services) 
+	{
+        ...
+        services.AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>();
+        ...
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        ...
+        app.UseJwtAuthentication();
+        ...
+    }
+}
+```
+
+3. Optionally you can add the default user to the database
+```csharp
+public class Startup
+{
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        ...
+        app.UseDefaultDbUser<AppDbContext, CustomUser>("Admin", "Admin");
+        ...
+    }
+}
+```
