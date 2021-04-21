@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\JwtAuthentication.Identity\JwtAuthentication.Identity.csproj" />
-    <ProjectReference Include="..\JwtAuthentication.Identity\JwtAuthentication.Identity.csproj" />
   </ItemGroup>
 
 </Project>
