@@ -24,7 +24,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore3.1.BaseAuth
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JwtAuthentication.Identity", "JwtAuthentication.Identity\JwtAuthentication.Identity.csproj", "{60A8C4FC-D6DC-4C5B-9FA9-6F81F55F3667}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore5.0.AuthenticationUsingIdentityUser", "Example.NetCore5.0.AuthenticationUsingIdentityUser\Example.NetCore5.0.AuthenticationUsingIdentityUser.csproj", "{1DF1D001-0194-4CD8-82DD-40AF57FC1432}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore5.0.AuthenticationUsingIdentityUser", "Examples\Example.NetCore5.0.AuthenticationUsingIdentityUser\Example.NetCore5.0.AuthenticationUsingIdentityUser.csproj", "{1DF1D001-0194-4CD8-82DD-40AF57FC1432}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
