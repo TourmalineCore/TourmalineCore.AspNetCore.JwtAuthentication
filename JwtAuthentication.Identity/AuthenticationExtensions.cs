@@ -9,7 +9,7 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementation;
 
-namespace JwtAuthentication.Identity
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
 {
     public static class AuthenticationExtensions
     {

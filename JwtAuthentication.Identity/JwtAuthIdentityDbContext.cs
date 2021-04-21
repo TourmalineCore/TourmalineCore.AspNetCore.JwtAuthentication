@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace JwtAuthentication.Identity
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
 {
     public class JwtAuthIdentityDbContext<TUser> : IdentityDbContext<TUser> where TUser : IdentityUser
     {

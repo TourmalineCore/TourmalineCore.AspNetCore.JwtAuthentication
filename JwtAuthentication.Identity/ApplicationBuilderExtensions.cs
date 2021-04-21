@@ -2,9 +2,8 @@ using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares;
 
-namespace JwtAuthentication.Identity
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
 {
     public static class ApplicationBuilderExtensions
     {

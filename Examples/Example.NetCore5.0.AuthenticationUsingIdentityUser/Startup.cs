@@ -1,12 +1,12 @@
 using Example.NetCore5._0.AuthenticationUsingIdentityUser.Data;
 using Example.NetCore5._0.AuthenticationUsingIdentityUser.Models;
-using JwtAuthentication.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 
 namespace Example.NetCore5._0.AuthenticationUsingIdentityUser
 {

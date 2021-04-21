@@ -8,7 +8,7 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 
-namespace JwtAuthentication.Identity.Services
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 {
     internal class IdentityLoginService<TUser> : ILoginService where TUser : IdentityUser
     {
