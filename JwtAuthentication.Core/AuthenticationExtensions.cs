@@ -84,7 +84,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
             return services.AddTransient(typeof(IUserClaimsProvider), typeof(TUserClaimsProvider));
         }
 
-        private static void AddJwtBearer(
+        internal static void AddJwtBearer(
             this IServiceCollection services,
             AuthenticationOptions authenticationOptions)
         {
