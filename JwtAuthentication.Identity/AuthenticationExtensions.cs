@@ -35,7 +35,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             services.AddJwtBearer(options);
 
             services
-                //ToDo: add possibility to provide custom options
+                //ToDo: #13: add possibility to provide custom options
                 .AddIdentityCore<TUser>(options =>
                 {
                     options.Password.RequiredLength = 6;
