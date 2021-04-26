@@ -10,6 +10,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling
         InvalidPasswordFormat,
         UserNotFound,
         ReCaptchaTokenIncorrect,
-        RefreshTokenOrFingreprintNotFound,
+        RefreshTokenOrFingerprintNotFound,
     }
 }

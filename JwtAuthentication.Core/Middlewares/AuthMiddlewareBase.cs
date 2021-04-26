@@ -62,14 +62,14 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
             await _next(context);
         }
 
-        private async Task Response(HttpContext context, TResponseModel result)
+        protected async Task Response(HttpContext context, TResponseModel result)
         {
             context.Response.ContentType = "application/json; charset=UTF-8";
             await context.Response.WriteAsync(JsonConvert.SerializeObject(result, _jsonSerializerSettings));
             await context.Response.Body.FlushAsync();
         }
 
-        private async Task<T> DeserializeModel<T>(HttpRequest request)
+        protected async Task<T> DeserializeModel<T>(HttpRequest request)
         {
             using (var reader = new StreamReader(request.Body))
             {

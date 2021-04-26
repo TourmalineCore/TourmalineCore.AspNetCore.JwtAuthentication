@@ -2,6 +2,7 @@ using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
 {
@@ -42,6 +43,19 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             return applicationBuilder
                 .UseAuthentication()
                 .UseAuthorization();
+        }
+
+        /// <summary>
+        /// Adds middleware to handle incoming login and token refresh requests.
+        /// </summary>
+        /// <param name="applicationBuilder"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseJwtAuthenticationWithRefreshToken<TUser>(this IApplicationBuilder applicationBuilder) where TUser : IdentityUser
+        {
+            return applicationBuilder
+                .UseAuthentication()
+                .UseAuthorization()
+                .UseMiddleware<RefreshLoginMiddleware<TUser>>();
         }
     }
 }
