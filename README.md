@@ -35,7 +35,7 @@ public async void Configure(IApplicationBuilder app, IHostingEnvironment env)
 
 ## Cookie
 
-This package also allows you to store the received token in a cookie. To do that you need to use Cookie login middleware instead of default login. After successful login the token will be added to a cookie, that user will recieve in a responce. Then they can use this cookie for the authentication instead of writing the token to the Authentication header of every request. 
+This package also allows you to store the received token in a cookie. To do that you need to use Cookie login middleware instead of default login. After successful login the token will be added to a cookie, that user will receive in a response. Then they can use this cookie for the authentication instead of writing the token to the Authentication header of every request. 
 
 ```csharp
 public void ConfigureServices(IServiceCollection services) 
@@ -206,7 +206,7 @@ The claims in the token will look like this:
 }
 ```
 
-3. To enable checking of pemissions, you must add the `RequiredPermission` attribute before the controller or method and pass as a parameter all permissions that are needed , for example:
+3. To enable checking of permissions, you must add the `RequiredPermission` attribute before the controller or method and pass as a parameter all permissions that are needed , for example:
 ```csharp
 [Authorize]
 [RequiredPermission(UserClaimsProvider.FirstExampleClaimName)]
