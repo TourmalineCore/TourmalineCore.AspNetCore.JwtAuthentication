@@ -24,7 +24,9 @@ namespace Example.NetCore3._0.BaseAuthentication
 
             app.UseRouting();
 
-            app.UseJwtAuthentication();
+            app
+                .UseDefaultLoginMiddleware()
+                .UseJwtAuthentication();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

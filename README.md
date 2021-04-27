@@ -9,25 +9,46 @@ The library provides the ability to use a debug token to avoid the need to enter
 
 # Authentication
 
+## Basic
+
 To start using JWT-based authentication, need to use one method in the Startup.cs file.
 In this case, the default options will be used.
 
-```
-SigningKey = "jwtKeyjwtKeyjwtKeyjwtKeyjwtKey",
-Issuer = null,
-AccessTokenExpireInMinutes = 10080,
-IsDebugTokenEnabled = false,
-```
+Then, the token will be required in the request header of every authorized endpoint, like this: `Authorization: Bearer {token}`.
 
 ```csharp
-public void ConfigureServices(IServiceCollection services) {
+public void ConfigureServices(IServiceCollection services) 
+{
     ...
     services.AddJwtAuthentication();
     ...
 }
 
-public async void Configure(IApplicationBuilder app, IHostingEnvironment env) {
+public async void Configure(IApplicationBuilder app, IHostingEnvironment env) 
+{
     ...
+    app.UseDefaultLoginMiddleware()
+    app.UseJwtAuthentication();
+    ...
+}
+```
+
+## Cookie
+
+This package also allows you to store the received token in a cookie. To do that you need to use Cookie login middleware instead of default login. After successful login the token will be added to a cookie, that user will receive in a response. Then they can use this cookie for the authentication instead of writing the token to the Authentication header of every request. 
+
+```csharp
+public void ConfigureServices(IServiceCollection services) 
+{
+    ...
+    services.AddJwtAuthentication();
+    ...
+}
+
+public async void Configure(IApplicationBuilder app, IHostingEnvironment env) 
+{
+    ...
+    app.UseCookieLoginMiddleware(new CookieAuthOptions{ Key = "ExampleCookieName" });
     app.UseJwtAuthentication();
     ...
 }
@@ -46,7 +67,8 @@ IsDebugTokenEnabled = false,
 ```
 
 ```csharp
-public void ConfigureServices(IServiceCollection services) {
+public void ConfigureServices(IServiceCollection services) 
+{
     ...
     services.Configure<AuthenticationOptions>(Configuration.GetSection(nameof(AuthenticationOptions)));
     var authenticationOptions = services.BuildServiceProvider().GetService<IOptions<AuthenticationOptions>>().Value; 
@@ -55,13 +77,14 @@ public void ConfigureServices(IServiceCollection services) {
 }
 ```
 
-##Routing
+## Routing
 
 The default route to the login endpoint is `/auth/login`.
 You can change it by calling `OverrideLoginRoute`.
 
 ```csharp
-public void ConfigureServices(IServiceCollection services) {
+public void ConfigureServices(IServiceCollection services) 
+{
     ...
     services
         .AddJwtAuthentication()
@@ -111,8 +134,6 @@ public class Startup
 ```
 
 ## Token usage
-
-The token must be passed in the header like this: `Authorization: Bearer {token}`.
 
 To enable token validation, you must add the `[Authorize]` attribute before the controller or method, for example:
 
@@ -165,7 +186,8 @@ public class UserClaimsProvider : IUserClaimsProvider
 2. Connect this provider in the Startup.cs.
    You can pass the name of the claim type you want to use as a parameter. `Default claim type = "Permission"`.
 ```csharp
-public void ConfigureServices(IServiceCollection services) {
+public void ConfigureServices(IServiceCollection services) 
+{
     ...
     services.AddJwtAuthentication()
             .WithUserClaimsProvider<UserClaimsProvider>(UserClaimsProvider.ExampleClaimType);
@@ -184,7 +206,7 @@ The claims in the token will look like this:
 }
 ```
 
-3. To enable checking of pemissions, you must add the `RequiredPermission` attribute before the controller or method and pass as a parameter all permissions that are needed , for example:
+3. To enable checking of permissions, you must add the `RequiredPermission` attribute before the controller or method and pass as a parameter all permissions that are needed , for example:
 ```csharp
 [Authorize]
 [RequiredPermission(UserClaimsProvider.FirstExampleClaimName)]

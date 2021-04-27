@@ -34,7 +34,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.TokenHandlers
         }
 
         /// <summary>
-        /// Searches the 'Authorization' header for a 'DebugToken' token. If the 'DebugToken' token is found, it is decoded from base64.
+        /// Searches the 'Authorization' header for a 'DebugToken' token. If the 'DebugToken' token is found, it is decoded from
+        /// base64.
         /// </summary>
         /// <returns></returns>
         protected override Task<AuthenticateResult> HandleAuthenticateAsync()

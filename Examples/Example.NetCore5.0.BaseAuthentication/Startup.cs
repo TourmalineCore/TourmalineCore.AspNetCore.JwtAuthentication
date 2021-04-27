@@ -24,7 +24,9 @@ namespace Example.NetCore5._0
 
             app.UseRouting();
 
-            app.UseJwtAuthentication();
+            app
+                .UseDefaultLoginMiddleware()
+                .UseJwtAuthentication();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
