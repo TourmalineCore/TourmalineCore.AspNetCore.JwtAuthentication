@@ -32,7 +32,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
             }
             catch (AuthenticationException)
             {
-                context.Response.StatusCode = 401;
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             }
 
             return result;
