@@ -25,7 +25,9 @@ namespace Example.NetCore.AuthenticationWithOwnCredentialsValidation
 
             app.UseRouting();
 
-            app.UseJwtAuthentication();
+            app
+                .UseDefaultLoginMiddleware()
+                .UseJwtAuthentication();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
 {
     public static class ApplicationBuilderExtension
     {
         /// <summary>
-        /// Adds middleware to handle incoming login requests.
+        /// Adds Authentication and Authorization to the app.
         /// </summary>
         /// <param name="applicationBuilder"></param>
         /// <returns></returns>
@@ -14,8 +15,31 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         {
             return applicationBuilder
                 .UseAuthentication()
-                .UseAuthorization()
+                .UseAuthorization();
+        }
+
+        /// <summary>
+        /// Adds middleware to handle incoming login requests.
+        /// </summary>
+        /// <param name="applicationBuilder"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseDefaultLoginMiddleware(this IApplicationBuilder applicationBuilder)
+        {
+            return applicationBuilder
                 .UseMiddleware<LoginMiddleware>();
+        }
+
+        /// <summary>
+        /// Adds middleware to handle incoming login requests using cookies to store auth token.
+        /// </summary>
+        /// <param name="applicationBuilder"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseCookieLoginMiddleware(this IApplicationBuilder applicationBuilder, CookieAuthOptions options)
+        {
+            return applicationBuilder
+                .UseMiddleware<LoginWithCookieMiddleware>(options)
+                .UseMiddleware<TokenExtractionFromCookieMiddleware>(options);
         }
     }
 }

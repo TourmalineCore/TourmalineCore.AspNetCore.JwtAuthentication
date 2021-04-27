@@ -3,15 +3,15 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 
-namespace Example.NetCore.PermissionBasedAuthorization
+namespace Example.NetCore5._0.CookiesBasedAuthentication
 {
     public class Startup
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddJwtAuthentication()
-                .WithUserClaimsProvider<UserClaimsProvider>(UserClaimsProvider.ExampleClaimType);
+            services.AddJwtAuthentication();
 
             services.AddControllers();
         }
@@ -25,9 +25,8 @@ namespace Example.NetCore.PermissionBasedAuthorization
 
             app.UseRouting();
 
-            app
-                .UseDefaultLoginMiddleware()
-                .UseJwtAuthentication();
+            app.UseCookieLoginMiddleware(new CookieAuthOptions{ Key = "ExampleCookieName" });
+            app.UseJwtAuthentication();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

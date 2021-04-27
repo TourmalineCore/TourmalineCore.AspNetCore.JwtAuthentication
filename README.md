@@ -28,6 +28,7 @@ public void ConfigureServices(IServiceCollection services) {
 
 public async void Configure(IApplicationBuilder app, IHostingEnvironment env) {
     ...
+    app.UseDefaultLoginMiddleware()
     app.UseJwtAuthentication();
     ...
 }
@@ -134,6 +135,25 @@ For controllers:
 public class ExampleController : ControllerBase
 {
     //Some methods
+}
+```
+
+## Cookie
+
+This package also allows you to store the received token in a cookie. To do that you need to use Cookie login middleware instead of default login. After successful login the token will be added to a cookie, that user will recieve in a responce. Then he can use this cookie for the authentication instead of writing the token to the Authentication header for every request. 
+
+```csharp
+public void ConfigureServices(IServiceCollection services) {
+    ...
+    services.AddJwtAuthentication();
+    ...
+}
+
+public async void Configure(IApplicationBuilder app, IHostingEnvironment env) {
+    ...
+    app.UseCookieLoginMiddleware(new CookieAuthOptions{ Key = "ExampleCookieName" });
+    app.UseJwtAuthentication();
+    ...
 }
 ```
 
