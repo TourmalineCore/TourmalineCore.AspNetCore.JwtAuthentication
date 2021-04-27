@@ -1,10 +1,10 @@
-{
+﻿{
 	"iisSettings": {
 		"windowsAuthentication": false,
 		"anonymousAuthentication": true,
 		"iisExpress": {
-			"applicationUrl": "http://localhost:51478",
-			"sslPort": 44316
+			"applicationUrl": "http://localhost:52246",
+			"sslPort": 44327
 		}
 	},
 	"profiles": {
@@ -15,12 +15,13 @@
 				"ASPNETCORE_ENVIRONMENT": "Development"
 			}
 		},
-		"Example.NetCore3._1.BaseAuthentication": {
+		"Example.NetCore5._0.CookiesBasedAuthentication": {
 			"commandName": "Project",
 			"launchBrowser": true,
 			"environmentVariables": {
 				"ASPNETCORE_ENVIRONMENT": "Development"
 			},
+			"dotnetRunMessages": "true",
 			"applicationUrl": "http://localhost:5000"
 		}
 	}
