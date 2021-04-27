@@ -11,7 +11,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Utils
             return claimsPrincipal
                 .Claims
                 .Any(x => x.Type == permissionType
-                          && x.Value.Equals(permissionName, StringComparison.InvariantCultureIgnoreCase));
+                          && x.Value.Equals(permissionName, StringComparison.InvariantCultureIgnoreCase)
+                    );
         }
     }
 }

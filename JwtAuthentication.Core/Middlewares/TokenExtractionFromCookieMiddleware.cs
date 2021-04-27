@@ -1,6 +1,5 @@
-using System;
-using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
@@ -19,6 +18,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
         public async Task InvokeAsync(HttpContext context)
         {
             var token = context.Request.Cookies[_options.Key];
+
             if (!string.IsNullOrEmpty(token))
             {
                 context.Request.Headers.Add("Authorization", $"Bearer {token}");
