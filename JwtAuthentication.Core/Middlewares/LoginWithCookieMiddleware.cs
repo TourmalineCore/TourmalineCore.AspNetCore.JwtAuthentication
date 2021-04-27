@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
@@ -9,12 +8,12 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
 {
-    internal class CookieLoginMiddleware : AuthMiddlewareBase<ILoginService, LoginRequestModel, AuthResponseModel>
+    internal class LoginWithCookieMiddleware : AuthMiddlewareBase<ILoginService, LoginRequestModel, AuthResponseModel>
     {
 
         private readonly CookieAuthOptions _options;
 
-        public CookieLoginMiddleware(RequestDelegate next, CookieAuthOptions options)
+        public LoginWithCookieMiddleware(RequestDelegate next, CookieAuthOptions options)
             : base(next)
         {
             _options = options;
@@ -33,8 +32,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
             try
             {
                 var result = await service.LoginAsync(model);
-
-                Console.WriteLine($"Login: {_options.Key}");
 
                 if (result.AccessToken != null)
                 {

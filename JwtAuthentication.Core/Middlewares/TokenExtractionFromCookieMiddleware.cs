@@ -5,12 +5,12 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
 {
-    public class CookieTokenMiddleware
+    public class TokenExtractionFromCookieMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly CookieAuthOptions _options;
 
-        public CookieTokenMiddleware(RequestDelegate next, CookieAuthOptions options)
+        public TokenExtractionFromCookieMiddleware(RequestDelegate next, CookieAuthOptions options)
         {
             _next = next;
             _options = options;
@@ -18,7 +18,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-            Console.WriteLine($"Token: {_options.Key}");
             var token = context.Request.Cookies[_options.Key];
             if (!string.IsNullOrEmpty(token))
             {

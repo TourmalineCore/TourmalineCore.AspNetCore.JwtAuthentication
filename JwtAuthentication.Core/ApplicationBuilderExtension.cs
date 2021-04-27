@@ -38,8 +38,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         public static IApplicationBuilder UseCookieLoginMiddleware(this IApplicationBuilder applicationBuilder, CookieAuthOptions options)
         {
             return applicationBuilder
-                .UseMiddleware<CookieLoginMiddleware>(options)
-                .UseMiddleware<CookieTokenMiddleware>(options);
+                .UseMiddleware<LoginWithCookieMiddleware>(options)
+                .UseMiddleware<TokenExtractionFromCookieMiddleware>(options);
         }
     }
 }
