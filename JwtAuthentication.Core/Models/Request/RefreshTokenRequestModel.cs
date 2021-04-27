@@ -1,6 +1,6 @@
 using System;
 
-namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Models
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request
 {
     public class RefreshTokenRequestModel
     {

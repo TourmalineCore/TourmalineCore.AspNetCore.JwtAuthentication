@@ -1,13 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Localization;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Models;
-using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Validators;
 
-namespace Bex.Authentication.Core.Validators.Impl
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Validators
 {
     public class RefreshTokenValidator : IValidator<RefreshTokenRequestModel>
     {

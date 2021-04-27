@@ -1,21 +1,21 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares;
-using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Models;
-using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware
 {
-    internal class RefreshLoginMiddleware<TUser> : AuthMiddlewareBase<IdentityRefreshLoginService<TUser>, RefreshLoginRequestModel, RefreshAuthResponseModel> where TUser : IdentityUser
+    internal class RefreshMiddleware: AuthMiddlewareBase<ILoginService, LoginRequestModel, AuthResponseModel>
     {
-        public RefreshLoginMiddleware(RequestDelegate next)
+        public RefreshMiddleware(RequestDelegate next)
             : base(next)
         {
         }
 
-        public async Task InvokeAsync(HttpContext context, IdentityRefreshLoginService<TUser> loginService)
+        public async Task InvokeAsync(HttpContext context, ILoginService loginService)
         {
             if (context.Request.Method == HttpMethods.Post)
             {
@@ -27,11 +27,11 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware
                     {
                         var requestModel = await DeserializeModel<RefreshTokenRequestModel>(context.Request);
 
-                        var result = new RefreshAuthResponseModel();
+                        var result = new AuthResponseModel();
 
                         try
                         {
-                            result = await loginService.RefreshTokenAsync(requestModel);
+                            result = await loginService.RefreshAsync(requestModel);
                         }
                         catch (AuthenticationException)
                         {
@@ -54,12 +54,12 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware
             await InvokeAsyncBase(context, loginService);
         }
 
-        protected override async Task<RefreshAuthResponseModel> ExecuteServiceMethod(
-            RefreshLoginRequestModel model,
-            IdentityRefreshLoginService<TUser> service,
+        protected override async Task<AuthResponseModel> ExecuteServiceMethod(
+            LoginRequestModel model,
+            ILoginService service,
             HttpContext context)
         {
-            var result = new RefreshAuthResponseModel();
+            var result = new AuthResponseModel();
 
             try
             {

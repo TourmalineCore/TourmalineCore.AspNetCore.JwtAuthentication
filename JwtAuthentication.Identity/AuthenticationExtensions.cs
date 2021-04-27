@@ -1,10 +1,10 @@
 using System;
-using Bex.Authentication.Core.Validators.Impl;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract.Implementation;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementation;
@@ -29,32 +29,16 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             this IServiceCollection services,
             AuthenticationOptions authenticationOptions = null
             ) 
-            where TContext : JwtAuthIdentityDbContext<TUser> where TUser : IdentityUser
+            where TContext : JwtAuthIdentityDbContext<TUser> 
+            where TUser : IdentityUser
         {
-            var options = authenticationOptions ?? new AuthenticationOptions();
-
             services.AddTransient<ITokenManager, TokenManager>();
             services.AddTransient<ILoginService, IdentityLoginService<TUser>>();
             services.AddTransient<IUserClaimsProvider, DefaultUserClaimsProvider>();
-            services.AddJwtBearer(options);
+            services.AddTransient<JwtAuthIdentityDbContext<TUser>, TContext>();
 
-            services
-                //ToDo: #13: add possibility to provide custom options
-                .AddIdentityCore<TUser>(options =>
-                {
-                    options.Password.RequiredLength = 6;
-                    options.Password.RequireLowercase = true;
-                    options.Password.RequireUppercase = true;
-                    options.Password.RequireDigit = true;
-                    options.Password.RequireNonAlphanumeric = true;
-
-                    options.Lockout.MaxFailedAccessAttempts = 10;
-                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromDays(360);
-
-                })
-                .AddEntityFrameworkStores<TContext>()
-                .AddSignInManager<SignInManager<TUser>>();
-
+            services.AddJwt(authenticationOptions);
+            services.AddIdentity<TContext, TUser, SignInManager<TUser>>();
 
             return services;
         }
@@ -69,19 +53,38 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         /// <returns></returns>
         public static IServiceCollection AddJwtAuthenticationWithRefreshToken<TContext, TUser>(
                 this IServiceCollection services,
-                AuthenticationWithRefreshOptions authenticationOptions = null
+                RefreshAuthenticationOptions authenticationOptions = null
             )
             where TContext : JwtAuthIdentityRefreshTokenDbContext<TUser> where TUser : IdentityUser
         {
-            var options = authenticationOptions ?? new AuthenticationWithRefreshOptions();
-
-            services.AddTransient<RefreshTokenManager<TUser>>();
-            services.AddTransient<IdentityRefreshLoginService<TUser>>();
+            services.AddTransient<ITokenManager, RefreshTokenManager<TUser>>();
+            services.AddTransient<ILoginService, IdentityRefreshLoginService<TUser>>();
             services.AddTransient<IUserClaimsProvider, DefaultUserClaimsProvider>();
             services.AddTransient<JwtAuthIdentityRefreshTokenDbContext<TUser>, TContext>();
+
             services.AddTransient<IValidator<RefreshTokenRequestModel>, RefreshTokenValidator>();
+
+            services.AddJwt(authenticationOptions);
+            services.AddIdentity<TContext, TUser, RefreshSignInManager<TUser>>();
+
+            return services;
+        }
+
+        private static IServiceCollection AddJwt(
+            this IServiceCollection services,
+            AuthenticationOptions authenticationOptions = null)
+        {
+            var options = authenticationOptions ?? new RefreshAuthenticationOptions();
             services.AddJwtBearer(options);
 
+            return services;
+        }
+
+        private static IServiceCollection AddIdentity<TContext, TUser, TSignInManager>(this IServiceCollection services)
+            where TContext : JwtAuthIdentityDbContext<TUser> 
+            where TUser : IdentityUser
+            where TSignInManager : SignInManager<TUser> 
+        {
             services
                 //ToDo: #13: add possibility to provide custom options
                 .AddIdentityCore<TUser>(options =>
@@ -97,8 +100,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
 
                 })
                 .AddEntityFrameworkStores<TContext>()
-                .AddDefaultTokenProviders()
-                .AddSignInManager<RefreshSignInManager<TUser>>();
+                .AddSignInManager<TSignInManager>();
 
             return services;
         }

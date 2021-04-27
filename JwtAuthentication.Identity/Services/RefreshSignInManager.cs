@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 
@@ -17,9 +19,9 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 {
     internal class RefreshSignInManager<TUser> : SignInManager<TUser> where TUser : IdentityUser
     {
-        private readonly RefreshTokenManager<TUser> _tokenManager;
+        private readonly ITokenManager _tokenManager;
         private readonly JwtAuthIdentityRefreshTokenDbContext<TUser> _dbContext;
-        private readonly AuthenticationWithRefreshOptions _options;
+        private readonly RefreshAuthenticationOptions _options;
 
         public RefreshSignInManager(
             UserManager<TUser> userManager,
@@ -29,8 +31,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             ILogger<SignInManager<TUser>> logger, 
             IAuthenticationSchemeProvider schemes, 
             IUserConfirmation<TUser> confirmation,
-            RefreshTokenManager<TUser> tokenManager,
-            IOptions<AuthenticationWithRefreshOptions> options,
+            ITokenManager tokenManager,
+            IOptions<RefreshAuthenticationOptions> options,
             JwtAuthIdentityRefreshTokenDbContext<TUser> dbContext)
             : base(userManager,
                     contextAccessor,
@@ -55,23 +57,12 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
                 );
         }
 
-        public async Task<RefreshAuthResponseModel> GenerateAuthTokens(TUser appUser, string fingerPrint)
+        public async Task<AuthResponseModel> GenerateAuthTokens(TUser appUser, string fingerPrint)
         {
-            var accessToken = await GetBearerToken(appUser, _options.SigningKey, _options.AccessTokenExpireInMinutes);
-            var refreshToken = _tokenManager.GetRefreshToken(appUser, fingerPrint);
-
-            _dbContext.Attach(refreshToken.User);
-            await _dbContext.RefreshTokens.AddAsync(refreshToken);
-            await _dbContext.SaveChangesAsync();
-
-            return new RefreshAuthResponseModel
+            return new AuthResponseModel
             {
-                AccessToken = accessToken,
-                RefreshToken = new TokenModel
-                {
-                    Value = refreshToken.Value.ToString(), 
-                    ExpiresInUtc = refreshToken.ExpiresIn.ToUniversalTime(),
-                },
+                AccessToken = await GetBearerToken(appUser, _options.SigningKey, _options.AccessTokenExpireInMinutes),
+                RefreshToken = await _tokenManager.GetRefreshToken(appUser, fingerPrint),
             };
         }
 

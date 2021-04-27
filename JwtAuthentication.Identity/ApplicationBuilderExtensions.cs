@@ -50,12 +50,12 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         /// </summary>
         /// <param name="applicationBuilder"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseJwtAuthenticationWithRefreshToken<TUser>(this IApplicationBuilder applicationBuilder) where TUser : IdentityUser
+        public static IApplicationBuilder UseJwtAuthenticationWithRefreshToken(this IApplicationBuilder applicationBuilder)
         {
             return applicationBuilder
                 .UseAuthentication()
                 .UseAuthorization()
-                .UseMiddleware<RefreshLoginMiddleware<TUser>>();
+                .UseMiddleware<RefreshMiddleware>();
         }
     }
 }

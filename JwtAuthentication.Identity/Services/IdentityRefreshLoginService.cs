@@ -5,7 +5,6 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
-using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Validators;
 
@@ -13,24 +12,21 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 {
     internal class IdentityRefreshLoginService<TUser> : ILoginService where TUser : IdentityUser
     {
-        private static string _route = "/auth/login";
-        private static string _refreshTokenRoute = "/auth/refresh";
-
-        private readonly AuthenticationWithRefreshOptions _options;
+        private readonly RefreshAuthenticationOptions _options;
         private readonly RefreshSignInManager<TUser> _signInManager;
         private readonly IValidator<RefreshTokenRequestModel> _refreshTokenValidator;
 
         public IdentityRefreshLoginService(
             RefreshSignInManager<TUser> signInManager,
             IValidator<RefreshTokenRequestModel> refreshTokenValidator,
-            IOptions<AuthenticationWithRefreshOptions> options = null)
+            IOptions<RefreshAuthenticationOptions> options = null)
         {
             _signInManager = signInManager;
             _refreshTokenValidator = refreshTokenValidator;
             _options = options?.Value;
         }
 
-        public async Task<RefreshAuthResponseModel> LoginAsync(RefreshLoginRequestModel model)
+        public async Task<AuthResponseModel> LoginAsync(LoginRequestModel model)
         {
             var user = await _signInManager.UserManager.FindByNameAsync(model.Login);
 
@@ -45,7 +41,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             return await _signInManager.GenerateAuthTokens(user, model.ClientFingerPrint);
         }
 
-        public async Task<RefreshAuthResponseModel> RefreshTokenAsync(RefreshTokenRequestModel model)
+        public async Task<AuthResponseModel> RefreshAsync(RefreshTokenRequestModel model)
         {
             await _refreshTokenValidator.ValidateAsync(model);
 
@@ -61,27 +57,12 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 
         public string GetRoute()
         {
-            return _route;
+            return _options.LoginEndpointRoute;
         }
 
         public string GetRefreshTokenRoute()
         {
-            return _refreshTokenRoute;
-        }
-
-        public static void OverrideRoute(string newRoute)
-        {
-            _route = newRoute;
-        }
-
-        public static void OverrideRefreshTokenRoute(string newRoute)
-        {
-            _refreshTokenRoute = newRoute;
-        }
-
-        public Task<AuthResponseModel> LoginAsync(LoginRequestModel model)
-        {
-            throw new System.NotImplementedException();
+            return _options.RefreshEndpointRoute;
         }
     }
 }

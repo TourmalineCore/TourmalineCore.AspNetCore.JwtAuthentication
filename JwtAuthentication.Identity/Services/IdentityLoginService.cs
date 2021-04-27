@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -12,17 +13,15 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 {
     internal class IdentityLoginService<TUser> : ILoginService where TUser : IdentityUser
     {
-        private static string _route = "/auth/login";
-
         private readonly ITokenManager _tokenManager;
 
-        private readonly AuthenticationWithRefreshOptions _options;
+        private readonly RefreshAuthenticationOptions _options;
         private readonly SignInManager<TUser> _signInManager;
 
         public IdentityLoginService(
             ITokenManager tokenManager,
             SignInManager<TUser> signInManager,
-            IOptions<AuthenticationWithRefreshOptions> options = null)
+            IOptions<RefreshAuthenticationOptions> options = null)
         {
             _tokenManager = tokenManager;
             _signInManager = signInManager;
@@ -63,12 +62,19 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 
         public string GetRoute()
         {
-            return _route;
+            return _options.LoginEndpointRoute;
         }
 
-        public static void OverrideRoute(string newRoute)
+        [Obsolete("Use Refresh login service to use refresh tokens", true)]
+        public Task<AuthResponseModel> RefreshAsync(RefreshTokenRequestModel model)
         {
-            _route = newRoute;
+            throw new NotImplementedException();
+        }
+
+        [Obsolete("Use Refresh login service to use refresh tokens", true)]
+        public string GetRefreshTokenRoute()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -9,5 +9,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services
     internal interface ILoginService : IAuthService
     {
         public Task<AuthResponseModel> LoginAsync(LoginRequestModel model);
+        public Task<AuthResponseModel> RefreshAsync(RefreshTokenRequestModel model);
     }
 }
