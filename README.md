@@ -64,6 +64,7 @@ SigningKey = "jwtKeyjwtKeyjwtKeyjwtKeyjwtKey",
 Issuer = null,
 AccessTokenExpireInMinutes = 10080,
 IsDebugTokenEnabled = false,
+LoginEndpointRoute = "/auth/login"
 ```
 
 ```csharp
@@ -73,22 +74,6 @@ public void ConfigureServices(IServiceCollection services)
     services.Configure<AuthenticationOptions>(Configuration.GetSection(nameof(AuthenticationOptions)));
     var authenticationOptions = services.BuildServiceProvider().GetService<IOptions<AuthenticationOptions>>().Value; 
     services.AddJwtAuthentication(authenticationOptions);
-    ...
-}
-```
-
-## Routing
-
-The default route to the login endpoint is `/auth/login`.
-You can change it by calling `OverrideLoginRoute`.
-
-```csharp
-public void ConfigureServices(IServiceCollection services) 
-{
-    ...
-    services
-        .AddJwtAuthentication()
-        .OverrideLoginRoute("/test/login");
     ...
 }
 ```
@@ -234,6 +219,8 @@ Thus, only those users who have the desired permission will have access to the c
 # Identity
 If you are using EF Core, you can use JwtAuthentication.Identity package. It will allow you to use advantages of JWT and store necessary users data in a database.
 
+## Basic usage
+
 1. You will need to inherit your context from JwtAuthIdentityDbContext, provided by this package.
 ```csharp
 public class AppDbContext : JwtAuthIdentityDbContext<CustomUser>
@@ -260,6 +247,7 @@ public class Startup
     {
         ...
         app.UseJwtAuthentication();
+        app.UseJwtAuthentication();
         ...
     }
 }
@@ -277,3 +265,88 @@ public class Startup
     }
 }
 ```
+
+## Refresh token
+
+If you want to add another layer of security to your application, you can use the refresh token. By using it you can reduce the lifetime of the access token, but  provide the ability to update it without re-login with an additional long-live token stored in your database.
+
+1. You will need to inherit your context from JwtAuthIdentityRefreshTokenDbContext, provided by this package.
+```csharp
+public class AppDbContext : JwtAuthIdentityRefreshTokenDbContext<CustomUser>
+{
+    public AppDbContext(DbContextOptions<AppDbContext> options)
+        : base(options)
+    {
+    }
+}
+```
+
+2. Then you need to update startup like this:
+```csharp
+public class Startup
+{
+    public void ConfigureServices(IServiceCollection services) 
+	{
+        ...
+        services.AddJwtAuthenticationWithRefreshToken<AppDbContext, CustomUser>();
+        ...
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        ...
+        app.UseJwtAuthentication();
+        app.UseRefreshTokenMiddleware();
+        ...
+    }
+}
+```
+
+### Options of Refresh Token
+
+If you want to use your own values for options, then you need to pass RefreshAuthenticationOptions to the AddJwtAuthenticationWithRefreshToken(). This is inherit from basic AuthenticationOptions and share all the default parameters.
+
+Default values:
+```
+SigningKey = "jwtKeyjwtKeyjwtKeyjwtKeyjwtKey",
+Issuer = null,
+AccessTokenExpireInMinutes = 10080,
+RefreshTokenExpireInMinutes = 10080,
+IsDebugTokenEnabled = false,
+LoginEndpointRoute = "/auth/login",
+RefreshEndpointRoute = "/auth/refresh"
+```
+
+```csharp
+public void ConfigureServices(IServiceCollection services) 
+{
+    ...
+    services.Configure<RefreshAuthenticationOptions>(Configuration.GetSection(nameof(RefreshAuthenticationOptions)));
+    var authenticationOptions = services.BuildServiceProvider().GetService<IOptions<RefreshAuthenticationOptions>>().Value; 
+    services.AddJwtAuthenticationWithRefreshToken(authenticationOptions);
+    ...
+}
+```
+
+### Login request with a Refresh Token
+
+Requesting login endpoint will be much the same, but you can optionally add a **clientFingerPrint** parameter, that will be saved in the database with a genereted access token. If token has fingerprint, it can only be accessed by providing the same fingerprint value.
+
+In addition to a access token login request will also return a **refresh token** in the response.
+`
+{
+  "login": "Admin",
+  "password": "Admin",
+  "clientFingerPrint": "fingerprint"
+}
+`
+
+### Refresh token request
+
+To call the Refresh Token Endpoind, you need to use the POST method, add to the header `Content-Type: application/json` and pass the token value (and optionally fingerprint) in the JSON format in the request body. Like this:
+`
+{
+  "refreshTokenValue": "token", 
+  "clientFingerPrint": "fingerprint"
+}
+`
