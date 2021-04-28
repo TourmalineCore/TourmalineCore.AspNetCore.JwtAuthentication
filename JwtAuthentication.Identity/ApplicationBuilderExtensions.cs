@@ -2,7 +2,9 @@ using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
 {
@@ -54,6 +56,28 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         {
             return applicationBuilder
                 .UseMiddleware<RefreshMiddleware>();
+        }
+
+        /// <summary>
+        /// Adds middleware to handle incoming user registration requests. It requires a function to map model received from client to user entity.
+        /// </summary>
+        /// <typeparam name="TUser"></typeparam>
+        /// <typeparam name="TRegistrationRequestModel"></typeparam>
+        /// <param name="applicationBuilder"></param>
+        /// <param name="mapping"></param>
+        /// <param name="registrationOptions"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseRegistration<TUser, TRegistrationRequestModel>(
+            this IApplicationBuilder applicationBuilder, 
+            Func<TRegistrationRequestModel, TUser> mapping,
+            RegistrationOptions registrationOptions = null)
+            where TUser : IdentityUser
+            where TRegistrationRequestModel : RegistrationRequestModel
+        {
+            var options = registrationOptions ?? new RegistrationOptions();
+
+            return applicationBuilder
+                .UseMiddleware<RegistrationMiddleware<TUser, TRegistrationRequestModel>>(mapping, options);
         }
     }
 }

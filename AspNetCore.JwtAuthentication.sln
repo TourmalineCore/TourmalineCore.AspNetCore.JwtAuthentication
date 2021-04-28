@@ -22,13 +22,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore3.0.BaseAuth
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore3.1.BaseAuthentication", "Examples\Example.NetCore3.1.BaseAuthentication\Example.NetCore3.1.BaseAuthentication.csproj", "{43D3813D-CD36-46A7-86EF-CD6CF0A9A9BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore5.0.CookiesBasedAuthentication", "Example.NetCore5.0.CookiesBasedAuthentication\Example.NetCore5.0.CookiesBasedAuthentication.csproj", "{32E74378-AAF5-4CA6-8633-30997453E58A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore5.0.CookiesBasedAuthentication", "Example.NetCore5.0.CookiesBasedAuthentication\Example.NetCore5.0.CookiesBasedAuthentication.csproj", "{32E74378-AAF5-4CA6-8633-30997453E58A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JwtAuthentication.Identity", "JwtAuthentication.Identity\JwtAuthentication.Identity.csproj", "{60A8C4FC-D6DC-4C5B-9FA9-6F81F55F3667}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore5.0.AuthenticationUsingIdentityUser", "Examples\Example.NetCore5.0.AuthenticationUsingIdentityUser\Example.NetCore5.0.AuthenticationUsingIdentityUser.csproj", "{1DF1D001-0194-4CD8-82DD-40AF57FC1432}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore5.0.AuthenticationWithRefreshToken", "Examples\Example.NetCore5.0.AuthenticationWithRefreshToken\Example.NetCore5.0.AuthenticationWithRefreshToken.csproj", "{12915347-991A-4EA0-983D-03121E1C527B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore5.0.AuthenticationWithRefreshToken", "Examples\Example.NetCore5.0.AuthenticationWithRefreshToken\Example.NetCore5.0.AuthenticationWithRefreshToken.csproj", "{12915347-991A-4EA0-983D-03121E1C527B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore5.0.RefreshTokenAuthAndRegistrationUsingIdentity", "Examples\Example.NetCore5.0.RefreshTokenAuthAndRegistrationUsingIdentity\Example.NetCore5.0.RefreshTokenAuthAndRegistrationUsingIdentity.csproj", "{8BF217FB-7AB4-4056-8186-2BDE9F3C99EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,6 +78,10 @@ Global
 		{12915347-991A-4EA0-983D-03121E1C527B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12915347-991A-4EA0-983D-03121E1C527B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12915347-991A-4EA0-983D-03121E1C527B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BF217FB-7AB4-4056-8186-2BDE9F3C99EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BF217FB-7AB4-4056-8186-2BDE9F3C99EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BF217FB-7AB4-4056-8186-2BDE9F3C99EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BF217FB-7AB4-4056-8186-2BDE9F3C99EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +95,7 @@ Global
 		{32E74378-AAF5-4CA6-8633-30997453E58A} = {ADBF0A06-FF69-40A6-8F32-2F188AE1B6A4}
 		{1DF1D001-0194-4CD8-82DD-40AF57FC1432} = {ADBF0A06-FF69-40A6-8F32-2F188AE1B6A4}
 		{12915347-991A-4EA0-983D-03121E1C527B} = {ADBF0A06-FF69-40A6-8F32-2F188AE1B6A4}
+		{8BF217FB-7AB4-4056-8186-2BDE9F3C99EC} = {ADBF0A06-FF69-40A6-8F32-2F188AE1B6A4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C2026BF9-DACC-4EA4-AF04-B8A590EA38BF}
