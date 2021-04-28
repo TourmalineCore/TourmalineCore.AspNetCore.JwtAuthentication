@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <PackageId>TourmalineCore.AspNetCore.JwtAuthentication.Identity</PackageId>
+    <Version>0.0.1</Version>
+    <Authors>Nikita Medvedev</Authors>
+    <Company>Tourmaline Core</Company>
+    <Product>JwtAuthentication</Product>
+    <Description>
+      This library can work with version .NET Core 3.0 and higher. In order to ensure compatibility of the library with .NET Core 3.0, we use Microsoft.AspNetCore.Authentication.JwtBearer version 3.0.3 and Microsoft.AspNetCore.Identity.EntityFrameworkCore version 5.0.5.
+      This library contains middleware and authentication extensions.
+      With this library, you can very easily connect the JWT-based authentication to your project with usage of EF Core and Identity to store users data.
+      Also, this library allows to override the logic of username and password validation and allows to override the login endpoint.
+    </Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl></PackageProjectUrl>
+    <RepositoryUrl>https://github.com/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication/</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <PackageTags>.NET Core, Authentication, JWT</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AssemblyName>TourmalineCore.AspNetCore.JwtAuthentication.Identity</AssemblyName>
+    <RootNamespace>TourmalineCore.AspNetCore.JwtAuthentication.Identity</RootNamespace>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\JwtAuthentication.Core\JwtAuthentication.Core.csproj" />
+  </ItemGroup>
+
+</Project>
