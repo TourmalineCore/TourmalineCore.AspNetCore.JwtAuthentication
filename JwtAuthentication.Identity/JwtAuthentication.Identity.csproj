@@ -11,7 +11,7 @@
       This library can work with version .NET Core 3.0 and higher. In order to ensure compatibility of the library with .NET Core 3.0, we use Microsoft.AspNetCore.Authentication.JwtBearer version 3.0.3 and Microsoft.AspNetCore.Identity.EntityFrameworkCore version 5.0.5.
       This library contains middleware and authentication extensions.
       With this library, you can very easily connect the JWT-based authentication to your project with usage of EF Core and Identity to store users data.
-      Also, this library allows to override the logic of username and password validation and allows to override route to login endpoint.
+      Also, this library allows to override the logic of username and password validation and allows to override the login endpoint.
     </Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl></PackageProjectUrl>
