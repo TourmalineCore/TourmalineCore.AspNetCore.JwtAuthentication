@@ -221,7 +221,7 @@ If you are using EF Core, you can use JwtAuthentication.Identity package. It wil
 
 ## Basic usage
 
-1. You will need to inherit your context from JwtAuthIdentityDbContext, provided by this package.
+1. You will need to inherit your context from JwtAuthIdentityDbContext, provided by this package. It uses a generic parameter of user entity. This entity must inherit from **IdentityUser** class of Microsoft.Identity package.
 ```csharp
 public class AppDbContext : JwtAuthIdentityDbContext<CustomUser>
 {
@@ -263,6 +263,57 @@ public class Startup
         app.UseDefaultDbUser<AppDbContext, CustomUser>("Admin", "Admin");
         ...
     }
+}
+```
+
+## Registration
+
+Using Identity allows you to easily implement regestration flow. To do that add the `AddRegistration` extension to **ConfigureServices**, and `UseRegistration` method to **Configure**. Both methods requires two generic parameters: 
+- **User**: Entity representing the user of your app. It is must be inhereted from IdentityUser.
+- **RegistrationRequestModel**: Model that will be passed to registration endpoint. It must inherit from the **RegistrationRequestModel** class, provided by this package.
+
+In `UseRegistration` you will also need to pass a mapping function, which will be used to convert **RegistrationRequestModel** to **User** entity.
+
+```csharp
+public class Startup
+{
+    public void ConfigureServices(IServiceCollection services) 
+	{
+        ...
+        services.AddRegistration<CustomUser, CustomRegistrationRequest>();
+        ...
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        ...
+        app.UseRegistration<CustomUser, CustomRegistrationRequest>(requestModel => new CustomUser()
+            {
+                UserName = requestModel.Login,
+                NormalizedUserName = requestModel.Login,
+            });
+        ...
+    }
+}
+```
+
+### Registration Options
+You can change route of the registration endpoint by passing RegistrationOptions entity to the UseRegistration method. Like this:
+
+```csharp
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+{
+    ...
+    app.UseRegistration<CustomUser, CustomRegistrationRequest>(requestModel => new CustomUser()
+        {
+            UserName = requestModel.Login,
+            NormalizedUserName = requestModel.Login,
+        },
+        new RegistrationOptions()
+        { 
+            RegistrationEndpointRoute = "/new-user" 
+        });
+    ...
 }
 ```
 
