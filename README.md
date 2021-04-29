@@ -376,8 +376,8 @@ public class Startup
     {
         ...
         app
-            .UseJwtAuthentication();
-            .UseDefaultLoginMiddleware();
+            .UseJwtAuthentication()
+            .UseDefaultLoginMiddleware()
             .UseRefreshTokenMiddleware();
         ...
     }
@@ -450,3 +450,29 @@ To call the Refresh Token Endpoind, you need to use the POST method, add to the 
   "clientFingerPrint": "fingerprint"
 }
 `
+
+### Logout
+
+If you are using the refresh token, you will probably want to have a possibility to remove token's data from the database, when user requests it. This can be achieved by implementing the Logout mechanism. You can simply enable it like this:
+
+```csharp
+public class Startup
+{
+    public void ConfigureServices(IServiceCollection services) 
+	{
+        ...
+        services.AddLogout<CustomUser>();
+        ...
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        ...
+        app
+            .UseJwtAuthentication()
+        ...
+            .UseRefreshTokenLogoutMiddleware();
+        ...
+    }
+}
+```
