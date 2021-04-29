@@ -87,6 +87,21 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             return services;
         }
 
+        /// <summary>
+        /// Adds the ability to handle incoming user logout requests
+        /// </summary>
+        /// <typeparam name="TUser"></typeparam>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddLogout<TUser>(
+                this IServiceCollection services
+            )
+            where TUser : IdentityUser
+        {
+            services.AddTransient<ILogoutService, IdentityLogoutService<TUser>>();
+            return services;
+        }
+
         private static IServiceCollection AddJwt(
             this IServiceCollection services,
             AuthenticationOptions authenticationOptions = null)

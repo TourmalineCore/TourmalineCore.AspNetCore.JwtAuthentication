@@ -19,7 +19,8 @@ namespace Example.NetCore5._0.AuthenticationWithRefreshToken
                 options.UseInMemoryDatabase("Database"));
 
             services
-                .AddJwtAuthenticationWithRefreshToken<AppDbContext, CustomUser>();
+                .AddJwtAuthenticationWithRefreshToken<AppDbContext, CustomUser>()
+                .AddLogout<CustomUser>();
 
             services.AddControllers();
         }
@@ -37,6 +38,7 @@ namespace Example.NetCore5._0.AuthenticationWithRefreshToken
 
             app.UseDefaultLoginMiddleware();
             app.UseRefreshTokenMiddleware();
+            app.UseRefreshTokenLogoutMiddleware();
             app.UseJwtAuthentication();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

@@ -20,6 +20,7 @@ namespace Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity
 
             services
                 .AddJwtAuthenticationWithRefreshToken<AppDbContext, CustomUser>()
+                .AddLogout<CustomUser>()
                 .AddRegistration<CustomUser, CustomRegistrationRequest>();
 
             services.AddControllers();
@@ -39,6 +40,7 @@ namespace Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity
             app.UseJwtAuthentication();
             app.UseDefaultLoginMiddleware();
             app.UseRefreshTokenMiddleware();
+            app.UseRefreshTokenLogoutMiddleware();
             app.UseRegistration<CustomUser, CustomRegistrationRequest>(x => new CustomUser()
             {
                 UserName = x.Login,

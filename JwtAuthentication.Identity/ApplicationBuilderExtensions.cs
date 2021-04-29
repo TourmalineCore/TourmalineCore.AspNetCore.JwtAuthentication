@@ -79,5 +79,17 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             return applicationBuilder
                 .UseMiddleware<RegistrationMiddleware<TUser, TRegistrationRequestModel>>(mapping, options);
         }
+
+        /// <summary>
+        /// Adds middleware to handle incoming logout requests.
+        /// </summary>
+        /// <param name="applicationBuilder"></param>
+        /// <param name="endpointOptions"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseRefreshTokenLogoutMiddleware(this IApplicationBuilder applicationBuilder, LogoutEndpointOptions endpointOptions = null)
+        {
+            return applicationBuilder
+                .UseMiddleware<LogoutMiddleware>(endpointOptions ?? new LogoutEndpointOptions());
+        }
     }
 }
