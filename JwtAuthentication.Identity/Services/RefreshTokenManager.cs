@@ -2,29 +2,27 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementation;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 {
-    internal class RefreshTokenManager<TUser> : TokenManager where TUser : IdentityUser
+    internal class RefreshTokenManager<TUser> : IRefreshTokenManager where TUser : IdentityUser
     {
         private readonly JwtAuthIdentityRefreshTokenDbContext<TUser> _dbContext;
         private readonly RefreshAuthenticationOptions _options;
 
         public RefreshTokenManager(
             JwtAuthIdentityRefreshTokenDbContext<TUser> dbContext,
-            IOptions<RefreshAuthenticationOptions> options,
-            IUserClaimsProvider userClaimsProvider) : base(options, userClaimsProvider)
+            IOptions<RefreshAuthenticationOptions> options)
         {
             _dbContext = dbContext;
             _options = options.Value;
         }
 
-        public override async Task<TokenModel> GetRefreshToken(object user, string clientFingerPrint)
+        public async Task<TokenModel> GetRefreshToken(object user, string clientFingerPrint)
         {
             var refreshToken = CreateRefreshToken(user, clientFingerPrint);
 

@@ -3,8 +3,8 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services
 {
-    internal interface ITokenManager
+    internal interface IRefreshTokenManager
     {
-        Task<TokenModel> GetAccessToken(string login, string signingKey, int tokenLiveTime);
+        Task<TokenModel> GetRefreshToken(object user, string clientFingerPrint);
     }
 }

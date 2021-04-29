@@ -19,7 +19,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 {
     internal class RefreshSignInManager<TUser> : SignInManager<TUser> where TUser : IdentityUser
     {
-        private readonly ITokenManager _tokenManager;
+        private readonly IRefreshTokenManager _refreshTokenManager;
+        private readonly ITokenManager _accessTokenManager;
         private readonly JwtAuthIdentityRefreshTokenDbContext<TUser> _dbContext;
         private readonly RefreshAuthenticationOptions _options;
 
@@ -31,7 +32,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             ILogger<SignInManager<TUser>> logger, 
             IAuthenticationSchemeProvider schemes, 
             IUserConfirmation<TUser> confirmation,
-            ITokenManager tokenManager,
+            IRefreshTokenManager refreshTokenManager,
+            ITokenManager accessTokenManager,
             IOptions<RefreshAuthenticationOptions> options,
             JwtAuthIdentityRefreshTokenDbContext<TUser> dbContext)
             : base(userManager,
@@ -43,7 +45,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
                     confirmation
                 )
         {
-            _tokenManager = tokenManager;
+            _refreshTokenManager = refreshTokenManager;
+            _accessTokenManager = accessTokenManager;
             _dbContext = dbContext;
             _options = options.Value;
         }
@@ -62,13 +65,13 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             return new AuthResponseModel
             {
                 AccessToken = await GetBearerToken(appUser, _options.SigningKey, _options.AccessTokenExpireInMinutes),
-                RefreshToken = await _tokenManager.GetRefreshToken(appUser, fingerPrint),
+                RefreshToken = await _refreshTokenManager.GetRefreshToken(appUser, fingerPrint),
             };
         }
 
         public async Task<TokenModel> GetBearerToken(TUser appUser, string signingKey, int tokenLiveTime)
         {
-            return await _tokenManager.GetAccessToken(appUser.NormalizedUserName, signingKey, tokenLiveTime);
+            return await _accessTokenManager.GetAccessToken(appUser.NormalizedUserName, signingKey, tokenLiveTime);
         }
 
         public async Task<TUser> InvalidateRefreshTokenForUser(Guid refreshTokenValue, string fingerPrint = null)

@@ -9,7 +9,7 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware
 {
-    internal class RefreshMiddleware : RequestMiddlewareBase<ILoginService, RefreshTokenRequestModel, AuthResponseModel>
+    internal class RefreshMiddleware : RequestMiddlewareBase<IRefreshService, RefreshTokenRequestModel, AuthResponseModel>
     {
         private readonly RefreshEndpointOptions _endpointOptions;
         public RefreshMiddleware(RequestDelegate next, RefreshEndpointOptions endpointOptions)
@@ -18,14 +18,14 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware
             _endpointOptions = endpointOptions;
         }
 
-        public async Task InvokeAsync(HttpContext context, ILoginService loginService)
+        public async Task InvokeAsync(HttpContext context, IRefreshService refreshService)
         {
-            await InvokeAsyncBase(context, loginService, _endpointOptions.RefreshEndpointRoute);
+            await InvokeAsyncBase(context, refreshService, _endpointOptions.RefreshEndpointRoute);
         }
 
         protected override async Task<AuthResponseModel> ExecuteServiceMethod(
             RefreshTokenRequestModel model,
-            ILoginService service,
+            IRefreshService service,
             HttpContext context)
         {
             var result = new AuthResponseModel();

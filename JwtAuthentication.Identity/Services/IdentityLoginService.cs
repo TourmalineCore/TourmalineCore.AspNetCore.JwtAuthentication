@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -58,18 +57,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
                     ExpiresInUtc = token.ExpiresInUtc,
                 },
             };
-        }
-
-        [Obsolete("Use Refresh login service to use refresh tokens", true)]
-        public Task<AuthResponseModel> RefreshAsync(RefreshTokenRequestModel model)
-        {
-            throw new NotImplementedException();
-        }
-
-        [Obsolete("Use Refresh login service to use refresh tokens", true)]
-        public string GetRefreshTokenRoute()
-        {
-            throw new NotImplementedException();
         }
     }
 }

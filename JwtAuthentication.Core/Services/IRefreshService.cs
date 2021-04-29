@@ -6,8 +6,8 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
 [assembly: InternalsVisibleTo("TourmalineCore.AspNetCore.JwtAuthentication.Identity")]
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services
 {
-    internal interface ILoginService
+    internal interface IRefreshService
     {
-        public Task<AuthResponseModel> LoginAsync(LoginRequestModel model);
+        public Task<AuthResponseModel> RefreshAsync(RefreshTokenRequestModel model);
     }
 }
