@@ -1,12 +1,9 @@
 using System;
-using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
@@ -14,79 +11,42 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware
 {
-    internal class RegistrationMiddleware<TUser, TRegistrationRequestModel> 
+    internal class RegistrationMiddleware<TUser, TRegistrationRequestModel> : RequestMiddlewareBase<IRegistrationService<TUser, TRegistrationRequestModel>, TRegistrationRequestModel, AuthResponseModel>
         where TUser : IdentityUser 
         where TRegistrationRequestModel : RegistrationRequestModel
     {
-        private readonly JsonSerializerSettings _jsonSerializerSettings;
-        private readonly RegistrationOptions _options;
+        private readonly RegistrationEndpointOptions _endpointOptions;
         private readonly Func<TRegistrationRequestModel, TUser> _mapping;
-        private readonly RequestDelegate _next;
 
         public RegistrationMiddleware(
             RequestDelegate next,
             Func<TRegistrationRequestModel, TUser> mapping,
-            RegistrationOptions options = null
-            )
+            RegistrationEndpointOptions endpointOptions = null
+            ) : base(next)
         {
             _mapping = mapping;
-            _options = options;
-            _next = next;
-            _jsonSerializerSettings = new JsonSerializerSettings
-            {
-                Formatting = Formatting.Indented,
-                NullValueHandling = NullValueHandling.Ignore,
-                Converters =
-                {
-                    new IsoDateTimeConverter(),
-                    new StringEnumConverter(),
-                },
-                ContractResolver = new CamelCasePropertyNamesContractResolver(),
-            };
+            _endpointOptions = endpointOptions;
         }
 
         public async Task InvokeAsync(HttpContext context, IRegistrationService<TUser, TRegistrationRequestModel> registrationService)
         {
-            if (context.Request.Method == HttpMethods.Post)
-            {
-                var endpoint = context.Request.Path.Value;
-
-                if (endpoint.EndsWith(_options.RegistrationEndpointRoute))
-                {
-                    try
-                    {
-                        var requestModel = await DeserializeModel<TRegistrationRequestModel>(context.Request);
-                        var result = await registrationService.RegisterAsync(requestModel, _mapping);
-
-                        if (result != null)
-                        {
-                            await Response(context, result);
-                        }
-
-                    }
-                    catch (RegistrationException)
-                    {
-                        context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                    }
-                }
-            }
-
-            await _next(context);
+            await InvokeAsyncBase(context, registrationService, _endpointOptions.RegistrationEndpointRoute);
         }
 
-        private async Task Response(HttpContext context, AuthResponseModel result)
+        protected override async Task<AuthResponseModel> ExecuteServiceMethod(TRegistrationRequestModel model, IRegistrationService<TUser, TRegistrationRequestModel> service, HttpContext context)
         {
-            context.Response.ContentType = "application/json; charset=UTF-8";
-            await context.Response.WriteAsync(JsonConvert.SerializeObject(result, _jsonSerializerSettings));
-            await context.Response.Body.FlushAsync();
-        }
+            var result = new AuthResponseModel();
 
-        private async Task<T> DeserializeModel<T>(HttpRequest request)
-        {
-            using (var reader = new StreamReader(request.Body))
+            try
             {
-                return JsonConvert.DeserializeObject<T>(await reader.ReadToEndAsync(), _jsonSerializerSettings);
+                result = await service.RegisterAsync(model, _mapping);
             }
+            catch (RegistrationException)
+            {
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            }
+
+            return result;
         }
     }
 }

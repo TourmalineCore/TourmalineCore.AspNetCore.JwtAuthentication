@@ -1,7 +1,7 @@
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options
 {
-    public class RegistrationOptions
+    public class RegistrationEndpointOptions
     {
         private string _registrationEndpointRoute;
 

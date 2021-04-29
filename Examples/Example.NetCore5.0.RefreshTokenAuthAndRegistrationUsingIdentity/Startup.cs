@@ -37,6 +37,7 @@ namespace Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity
             app.UseRouting();
 
             app.UseJwtAuthentication();
+            app.UseDefaultLoginMiddleware();
             app.UseRefreshTokenMiddleware();
             app.UseRegistration<CustomUser, CustomRegistrationRequest>(x => new CustomUser()
             {

@@ -324,8 +324,10 @@ public class Startup
 }
 ```
 
-### Registration Options
-You can change route of the registration endpoint by passing RegistrationOptions entity to the UseRegistration method. Like this:
+### Registration Routing
+
+The default route to the Registration endpoint is `/auth/register`.
+You can change it by passing in a **RegistrationEndpointOptions** object to the **UseRegistration** extension. Like this:
 
 ```csharp
 public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -336,7 +338,7 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
             UserName = requestModel.Login,
             NormalizedUserName = requestModel.Login,
         },
-        new RegistrationOptions()
+        new RegistrationEndpointOptions()
         { 
             RegistrationEndpointRoute = "/new-user" 
         });

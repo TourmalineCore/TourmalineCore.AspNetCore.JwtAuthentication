@@ -65,16 +65,16 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         /// <typeparam name="TRegistrationRequestModel"></typeparam>
         /// <param name="applicationBuilder"></param>
         /// <param name="mapping"></param>
-        /// <param name="registrationOptions"></param>
+        /// <param name="registrationEndpointOptions"></param>
         /// <returns></returns>
         public static IApplicationBuilder UseRegistration<TUser, TRegistrationRequestModel>(
             this IApplicationBuilder applicationBuilder, 
             Func<TRegistrationRequestModel, TUser> mapping,
-            RegistrationOptions registrationOptions = null)
+            RegistrationEndpointOptions registrationEndpointOptions = null)
             where TUser : IdentityUser
             where TRegistrationRequestModel : RegistrationRequestModel
         {
-            var options = registrationOptions ?? new RegistrationOptions();
+            var options = registrationEndpointOptions ?? new RegistrationEndpointOptions();
 
             return applicationBuilder
                 .UseMiddleware<RegistrationMiddleware<TUser, TRegistrationRequestModel>>(mapping, options);
