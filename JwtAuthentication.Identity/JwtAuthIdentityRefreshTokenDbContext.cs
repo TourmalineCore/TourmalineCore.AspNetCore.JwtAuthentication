@@ -19,6 +19,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
 
             modelBuilder.Entity<RefreshToken<TUser>>().HasKey(x => x.Id);
             modelBuilder.Entity<RefreshToken<TUser>>().HasIndex(x => x.Value);
+
             modelBuilder.Entity<RefreshToken<TUser>>()
                 .HasOne(x => x.User)
                 .WithOne()

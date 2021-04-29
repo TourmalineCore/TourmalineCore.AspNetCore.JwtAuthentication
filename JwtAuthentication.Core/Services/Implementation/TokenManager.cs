@@ -10,6 +10,7 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 
 [assembly: InternalsVisibleTo("TourmalineCore.AspNetCore.JwtAuthentication.Identity")]
+
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementation
 {
     internal class TokenManager : ITokenManager

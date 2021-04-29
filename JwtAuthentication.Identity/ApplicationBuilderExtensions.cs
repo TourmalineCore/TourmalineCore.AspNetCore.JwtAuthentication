@@ -20,10 +20,9 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         /// <param name="password"></param>
         /// <returns></returns>
         public static IApplicationBuilder UseDefaultDbUser<TContext, TUser>(
-            this IApplicationBuilder applicationBuilder, 
-            string username, 
-            string password
-            ) 
+            this IApplicationBuilder applicationBuilder,
+            string username,
+            string password)
             where TContext : JwtAuthIdentityDbContext<TUser> where TUser : IdentityUser
         {
             using var serviceScope = applicationBuilder.ApplicationServices.CreateScope();
