@@ -77,9 +77,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         /// <typeparam name="TUser"></typeparam>
         /// <param name="services"></param>
         /// <returns></returns>
-        public static IServiceCollection AddLogout<TUser>(
-                this IServiceCollection services
-            )
+        public static IServiceCollection AddLogout<TUser>(this IServiceCollection services)
             where TUser : IdentityUser
         {
             services.AddTransient<ILogoutService, IdentityLogoutService<TUser>>();
