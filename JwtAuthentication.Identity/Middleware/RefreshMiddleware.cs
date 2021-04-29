@@ -12,6 +12,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware
     internal class RefreshMiddleware : RequestMiddlewareBase<IRefreshService, RefreshTokenRequestModel, AuthResponseModel>
     {
         private readonly RefreshEndpointOptions _endpointOptions;
+
         public RefreshMiddleware(RequestDelegate next, RefreshEndpointOptions endpointOptions)
             : base(next)
         {

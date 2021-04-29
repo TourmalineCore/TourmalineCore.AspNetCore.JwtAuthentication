@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
@@ -9,7 +8,7 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 {
-    internal class IdentityRegistrationService<TUser, TRegistrationRequestModel> : IRegistrationService<TUser, TRegistrationRequestModel> 
+    internal class IdentityRegistrationService<TUser, TRegistrationRequestModel> : IRegistrationService<TUser, TRegistrationRequestModel>
         where TUser : IdentityUser
         where TRegistrationRequestModel : RegistrationRequestModel
     {
@@ -36,10 +35,11 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             }
 
             return await _loginService.LoginAsync(new LoginRequestModel
-            {
-                Login = model.Login,
-                Password = model.Password,
-            });
+                    {
+                        Login = model.Login,
+                        Password = model.Password,
+                    }
+                );
         }
     }
 }

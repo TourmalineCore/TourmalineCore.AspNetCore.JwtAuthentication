@@ -10,13 +10,12 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
 {
     internal class LoginWithCookieMiddleware : RequestMiddlewareBase<ILoginService, LoginRequestModel, AuthResponseModel>
     {
-
         private readonly CookieAuthOptions _cookieOptions;
         private readonly LoginEndpointOptions _loginEndpointOptions;
 
         public LoginWithCookieMiddleware(
-            RequestDelegate next, 
-            CookieAuthOptions cookieOptions, 
+            RequestDelegate next,
+            CookieAuthOptions cookieOptions,
             LoginEndpointOptions loginEndpointOptions)
             : base(next)
         {
@@ -41,14 +40,15 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
                 if (result.AccessToken != null)
                 {
                     context.Response.Cookies.Append(
-                        _cookieOptions.Key,
-                        result.AccessToken.Value,
-                        new CookieOptions
-                        {
-                            Expires = result.AccessToken.ExpiresInUtc,
-                            HttpOnly = true,
-                            SameSite = SameSiteMode.Lax,
-                        });
+                            _cookieOptions.Key,
+                            result.AccessToken.Value,
+                            new CookieOptions
+                            {
+                                Expires = result.AccessToken.ExpiresInUtc,
+                                HttpOnly = true,
+                                SameSite = SameSiteMode.Lax,
+                            }
+                        );
                 }
             }
             catch (AuthenticationException)

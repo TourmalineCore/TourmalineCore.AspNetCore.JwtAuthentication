@@ -27,7 +27,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 
             var signInResult = await _signInManager.PasswordSignInAsync(user, model.Password);
 
-            
             if (signInResult.Succeeded == false)
             {
                 throw new AuthenticationException(ErrorTypes.IncorrectLoginOrPassword);

@@ -15,7 +15,8 @@ namespace Example.NetCore5._0.AuthenticationUsingIdentityUser
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(options =>
-                options.UseInMemoryDatabase("Database"));
+                    options.UseInMemoryDatabase("Database")
+                );
 
             services
                 .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>();

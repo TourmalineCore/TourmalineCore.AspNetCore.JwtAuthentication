@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("TourmalineCore.AspNetCore.JwtAuthentication.Identity")]
+
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request
 {
     internal class LoginRequestModel
