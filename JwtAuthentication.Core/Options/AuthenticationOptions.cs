@@ -20,14 +20,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Options
             set => _accessTokenExpireInMinutes = value;
         }
 
-        private string _loginEndpointRoute;
-
-        public string LoginEndpointRoute
-        {
-            get => _loginEndpointRoute ?? "/auth/login";
-            set => _loginEndpointRoute = value;
-        }
-
         public bool IsDebugTokenEnabled { get; set; }
     }
 }

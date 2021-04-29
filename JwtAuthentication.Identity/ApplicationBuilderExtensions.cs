@@ -52,10 +52,10 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         /// </summary>
         /// <param name="applicationBuilder"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseRefreshTokenMiddleware(this IApplicationBuilder applicationBuilder)
+        public static IApplicationBuilder UseRefreshTokenMiddleware(this IApplicationBuilder applicationBuilder, RefreshEndpointOptions endpointOptions = null)
         {
             return applicationBuilder
-                .UseMiddleware<RefreshMiddleware>();
+                .UseMiddleware<RefreshMiddleware>(endpointOptions ?? new RefreshEndpointOptions());
         }
 
         /// <summary>
