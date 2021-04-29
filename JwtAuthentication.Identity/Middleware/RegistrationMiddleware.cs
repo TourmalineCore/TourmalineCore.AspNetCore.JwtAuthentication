@@ -11,8 +11,9 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware
 {
-    internal class RegistrationMiddleware<TUser, TRegistrationRequestModel> : RequestMiddlewareBase<IRegistrationService<TUser, TRegistrationRequestModel>, TRegistrationRequestModel, AuthResponseModel>
-        where TUser : IdentityUser 
+    internal class RegistrationMiddleware<TUser, TRegistrationRequestModel> : RequestMiddlewareBase<IRegistrationService<TUser, TRegistrationRequestModel>, TRegistrationRequestModel, AuthResponseModel
+    >
+        where TUser : IdentityUser
         where TRegistrationRequestModel : RegistrationRequestModel
     {
         private readonly RegistrationEndpointOptions _endpointOptions;
@@ -21,8 +22,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware
         public RegistrationMiddleware(
             RequestDelegate next,
             Func<TRegistrationRequestModel, TUser> mapping,
-            RegistrationEndpointOptions endpointOptions = null
-            ) : base(next)
+            RegistrationEndpointOptions endpointOptions = null)
+            : base(next)
         {
             _mapping = mapping;
             _endpointOptions = endpointOptions;

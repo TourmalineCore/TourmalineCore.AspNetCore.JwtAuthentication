@@ -58,7 +58,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         }
 
         /// <summary>
-        /// Adds middleware to handle incoming user registration requests. It requires a function to map model received from client to user entity.
+        /// Adds middleware to handle incoming user registration requests. It requires a function to map model received from client
+        /// to user entity.
         /// </summary>
         /// <typeparam name="TUser"></typeparam>
         /// <typeparam name="TRegistrationRequestModel"></typeparam>
@@ -67,7 +68,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         /// <param name="registrationEndpointOptions"></param>
         /// <returns></returns>
         public static IApplicationBuilder UseRegistration<TUser, TRegistrationRequestModel>(
-            this IApplicationBuilder applicationBuilder, 
+            this IApplicationBuilder applicationBuilder,
             Func<TRegistrationRequestModel, TUser> mapping,
             RegistrationEndpointOptions registrationEndpointOptions = null)
             where TUser : IdentityUser

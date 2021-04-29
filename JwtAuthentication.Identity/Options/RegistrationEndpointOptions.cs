@@ -1,4 +1,3 @@
-
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options
 {
     public class RegistrationEndpointOptions
