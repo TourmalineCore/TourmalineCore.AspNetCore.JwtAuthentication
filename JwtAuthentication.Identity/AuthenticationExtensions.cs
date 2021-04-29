@@ -43,6 +43,24 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         }
 
         /// <summary>
+        /// Adds the ability to handle incoming user registration requests
+        /// </summary>
+        /// <typeparam name="TUser"></typeparam>
+        /// <typeparam name="TRegistrationRequestModel"></typeparam>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddRegistration<TUser, TRegistrationRequestModel>(
+                this IServiceCollection services
+            )
+            where TUser : IdentityUser
+            where TRegistrationRequestModel : RegistrationRequestModel
+        {
+            services.AddTransient<IRegistrationService<TUser, TRegistrationRequestModel>, IdentityRegistrationService<TUser, TRegistrationRequestModel>>();
+
+            return services;
+        }
+
+        /// <summary>
         /// Adds the ability to use the functionality of JWT authentication using Microsoft Identity to store and validate users
         /// data and refresh tokens
         /// </summary>
