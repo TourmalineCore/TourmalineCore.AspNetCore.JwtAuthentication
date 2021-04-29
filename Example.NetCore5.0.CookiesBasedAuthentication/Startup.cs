@@ -25,7 +25,11 @@ namespace Example.NetCore5._0.CookiesBasedAuthentication
 
             app.UseRouting();
 
-            app.UseCookieLoginMiddleware(new CookieAuthOptions { Key = "ExampleCookieName" });
+            app.UseCookieLoginMiddleware(new CookieAuthOptions
+                    {
+                        Key = "ExampleCookieName",
+                    }
+                );
             app.UseJwtAuthentication();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

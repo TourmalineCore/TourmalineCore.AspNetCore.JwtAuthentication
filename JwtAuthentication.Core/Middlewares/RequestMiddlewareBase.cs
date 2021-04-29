@@ -47,7 +47,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
                         await Response(context, result);
                         return;
                     }
-
                 }
             }
 

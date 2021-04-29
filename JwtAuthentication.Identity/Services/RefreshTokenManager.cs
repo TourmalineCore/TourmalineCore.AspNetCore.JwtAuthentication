@@ -40,6 +40,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
         private RefreshToken<TUser> CreateRefreshToken(object user, string clientFingerPrint)
         {
             var expiresDate = DateTime.UtcNow.AddMinutes(_options.RefreshTokenExpireInMinutes);
+
             var newToken = new RefreshToken<TUser>
             {
                 Value = Guid.NewGuid(),

@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
