@@ -53,11 +53,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementati
             };
         }
 
-        public string GetRoute()
-        {
-            return _options.LoginEndpointRoute;
-        }
-
         [Obsolete("Use Refresh login service from Identity version of this package to use refresh tokens", true)]
         public Task<AuthResponseModel> RefreshAsync(RefreshTokenRequestModel model)
         {

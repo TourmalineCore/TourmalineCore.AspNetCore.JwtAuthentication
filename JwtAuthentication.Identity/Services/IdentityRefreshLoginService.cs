@@ -12,18 +12,15 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 {
     internal class IdentityRefreshLoginService<TUser> : ILoginService where TUser : IdentityUser
     {
-        private readonly RefreshAuthenticationOptions _options;
         private readonly RefreshSignInManager<TUser> _signInManager;
         private readonly IValidator<RefreshTokenRequestModel> _refreshTokenValidator;
 
         public IdentityRefreshLoginService(
             RefreshSignInManager<TUser> signInManager,
-            IValidator<RefreshTokenRequestModel> refreshTokenValidator,
-            IOptions<RefreshAuthenticationOptions> options = null)
+            IValidator<RefreshTokenRequestModel> refreshTokenValidator)
         {
             _signInManager = signInManager;
             _refreshTokenValidator = refreshTokenValidator;
-            _options = options?.Value;
         }
 
         public async Task<AuthResponseModel> LoginAsync(LoginRequestModel model)
@@ -53,16 +50,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             }
 
             return await _signInManager.GenerateAuthTokens(user, model.ClientFingerPrint);
-        }
-
-        public string GetRoute()
-        {
-            return _options.LoginEndpointRoute;
-        }
-
-        public string GetRefreshTokenRoute()
-        {
-            return _options.RefreshEndpointRoute;
         }
     }
 }

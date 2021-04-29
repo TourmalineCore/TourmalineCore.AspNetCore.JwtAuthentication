@@ -4,18 +4,16 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
 {
-    internal abstract class AuthMiddlewareBase<TService, TRequestModel, TResponseModel> where TService : IAuthService
+    internal abstract class RequestMiddlewareBase<TService, TRequestModel, TResponseModel>
     {
         private readonly RequestDelegate _next;
 
         private readonly JsonSerializerSettings _jsonSerializerSettings;
 
-        public AuthMiddlewareBase(RequestDelegate next)
+        public RequestMiddlewareBase(RequestDelegate next)
         {
             _next = next;
 
@@ -32,30 +30,24 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
             };
         }
 
-        public async Task InvokeAsyncBase(HttpContext context, TService service)
+        public async Task InvokeAsyncBase(HttpContext context, TService service, string endpointRoute)
         {
             if (context.Request.Method == HttpMethods.Post)
             {
                 var endpoint = context.Request.Path.Value;
 
-                if (endpoint.EndsWith(service.GetRoute()))
+                if (endpoint.EndsWith(endpointRoute))
                 {
-                    try
-                    {
-                        var requestModel = await DeserializeModel<TRequestModel>(context.Request);
+                    var requestModel = await DeserializeModel<TRequestModel>(context.Request);
 
-                        var result = await ExecuteServiceMethod(requestModel, service, context);
+                    var result = await ExecuteServiceMethod(requestModel, service, context);
 
-                        if (result != null)
-                        {
-                            await Response(context, result);
-                            return;
-                        }
-                    }
-                    catch (AuthenticationException e)
+                    if (result != null)
                     {
-                        throw new AuthenticationException(e.ExceptionInfo);
+                        await Response(context, result);
+                        return;
                     }
+
                 }
             }
 

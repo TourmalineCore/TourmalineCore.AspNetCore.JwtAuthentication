@@ -7,6 +7,7 @@ using Example.NetCore5._0.AuthenticationWithRefreshToken.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 using Microsoft.EntityFrameworkCore;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 
 namespace Example.NetCore5._0.AuthenticationWithRefreshToken
 {
@@ -34,8 +35,9 @@ namespace Example.NetCore5._0.AuthenticationWithRefreshToken
 
             app.UseRouting();
 
-            app.UseJwtAuthentication();
+            app.UseDefaultLoginMiddleware();
             app.UseRefreshTokenMiddleware();
+            app.UseJwtAuthentication();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

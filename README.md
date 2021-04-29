@@ -64,7 +64,6 @@ SigningKey = "jwtKeyjwtKeyjwtKeyjwtKeyjwtKey",
 Issuer = null,
 AccessTokenExpireInMinutes = 10080,
 IsDebugTokenEnabled = false,
-LoginEndpointRoute = "/auth/login"
 ```
 
 ```csharp
@@ -74,6 +73,35 @@ public void ConfigureServices(IServiceCollection services)
     services.Configure<AuthenticationOptions>(Configuration.GetSection(nameof(AuthenticationOptions)));
     var authenticationOptions = services.BuildServiceProvider().GetService<IOptions<AuthenticationOptions>>().Value; 
     services.AddJwtAuthentication(authenticationOptions);
+    ...
+}
+```
+
+
+## Routing
+
+The default route to the login endpoint is `/auth/login`.
+You can change it by passing in a LoginEndpointOptions object to the UseDefaultLoginMiddleware extension. Like this:
+
+```csharp
+public async void Configure(IApplicationBuilder app, IHostingEnvironment env) 
+{
+    ...
+    app.UseDefaultLoginMiddleware(new LoginEndpointOptions{ LoginEndpointRoute = "/test/login" });
+    app.UseJwtAuthentication();
+    ...
+}
+```
+**OR** like this if you are using cookie middleware:
+
+```csharp
+public async void Configure(IApplicationBuilder app, IHostingEnvironment env) 
+{
+    ...
+    app.UseCookieLoginMiddleware(
+        new CookieAuthOptions{ Key = "ExampleCookieName" }, 
+        new LoginEndpointOptions{ LoginEndpointRoute = "/test/login" });
+    app.UseJwtAuthentication();
     ...
 }
 ```
@@ -247,7 +275,6 @@ public class Startup
     {
         ...
         app.UseJwtAuthentication();
-        app.UseJwtAuthentication();
         ...
     }
 }
@@ -295,8 +322,10 @@ public class Startup
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         ...
-        app.UseJwtAuthentication();
-        app.UseRefreshTokenMiddleware();
+        app
+            .UseJwtAuthentication();
+            .UseDefaultLoginMiddleware();
+            .UseRefreshTokenMiddleware();
         ...
     }
 }
@@ -312,9 +341,7 @@ SigningKey = "jwtKeyjwtKeyjwtKeyjwtKeyjwtKey",
 Issuer = null,
 AccessTokenExpireInMinutes = 10080,
 RefreshTokenExpireInMinutes = 10080,
-IsDebugTokenEnabled = false,
-LoginEndpointRoute = "/auth/login",
-RefreshEndpointRoute = "/auth/refresh"
+IsDebugTokenEnabled = false
 ```
 
 ```csharp
@@ -324,6 +351,26 @@ public void ConfigureServices(IServiceCollection services)
     services.Configure<RefreshAuthenticationOptions>(Configuration.GetSection(nameof(RefreshAuthenticationOptions)));
     var authenticationOptions = services.BuildServiceProvider().GetService<IOptions<RefreshAuthenticationOptions>>().Value; 
     services.AddJwtAuthenticationWithRefreshToken(authenticationOptions);
+    ...
+}
+```
+
+### Refresh Routing
+
+The default route to the refresh endpoint is `/auth/refresh`.
+You can change it by passing in a **RefreshEndpointOptions** object to the **UseRefreshTokenMiddleware** extension. Like this:
+
+```csharp
+public async void Configure(IApplicationBuilder app, IHostingEnvironment env) 
+{
+    ...
+    app
+        .UseJwtAuthentication()
+        .UseDefaultLoginMiddleware();
+        .UseRefreshTokenMiddleware(new RefreshEndpointOptions
+        { 
+            RefreshEndpointRoute = "/test/refresh",
+        });
     ...
 }
 ```

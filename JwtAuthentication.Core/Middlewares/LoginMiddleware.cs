@@ -3,20 +3,24 @@ using Microsoft.AspNetCore.Http;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
 {
-    internal class LoginMiddleware : AuthMiddlewareBase<ILoginService, LoginRequestModel, AuthResponseModel>
+    internal class LoginMiddleware : RequestMiddlewareBase<ILoginService, LoginRequestModel, AuthResponseModel>
     {
-        public LoginMiddleware(RequestDelegate next)
+        private readonly LoginEndpointOptions _loginEndpointOptions;
+
+        public LoginMiddleware(RequestDelegate next, LoginEndpointOptions loginEndpointOptions)
             : base(next)
         {
+            _loginEndpointOptions = loginEndpointOptions;
         }
 
         public async Task InvokeAsync(HttpContext context, ILoginService loginService)
         {
-            await InvokeAsyncBase(context, loginService);
+            await InvokeAsyncBase(context, loginService, _loginEndpointOptions.LoginEndpointRoute);
         }
 
         protected override async Task<AuthResponseModel> ExecuteServiceMethod(

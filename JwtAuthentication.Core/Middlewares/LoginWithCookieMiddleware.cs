@@ -8,20 +8,25 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
 {
-    internal class LoginWithCookieMiddleware : AuthMiddlewareBase<ILoginService, LoginRequestModel, AuthResponseModel>
+    internal class LoginWithCookieMiddleware : RequestMiddlewareBase<ILoginService, LoginRequestModel, AuthResponseModel>
     {
 
-        private readonly CookieAuthOptions _options;
+        private readonly CookieAuthOptions _cookieOptions;
+        private readonly LoginEndpointOptions _loginEndpointOptions;
 
-        public LoginWithCookieMiddleware(RequestDelegate next, CookieAuthOptions options)
+        public LoginWithCookieMiddleware(
+            RequestDelegate next, 
+            CookieAuthOptions cookieOptions, 
+            LoginEndpointOptions loginEndpointOptions)
             : base(next)
         {
-            _options = options;
+            _cookieOptions = cookieOptions;
+            _loginEndpointOptions = loginEndpointOptions;
         }
 
         public async Task InvokeAsync(HttpContext context, ILoginService loginService)
         {
-            await InvokeAsyncBase(context, loginService);
+            await InvokeAsyncBase(context, loginService, _loginEndpointOptions.LoginEndpointRoute);
         }
 
         protected override async Task<AuthResponseModel> ExecuteServiceMethod(
@@ -36,7 +41,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
                 if (result.AccessToken != null)
                 {
                     context.Response.Cookies.Append(
-                        _options.Key,
+                        _cookieOptions.Key,
                         result.AccessToken.Value,
                         new CookieOptions
                         {
