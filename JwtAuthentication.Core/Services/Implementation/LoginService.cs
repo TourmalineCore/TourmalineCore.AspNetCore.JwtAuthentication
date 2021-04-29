@@ -52,17 +52,5 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementati
                 },
             };
         }
-
-        [Obsolete("Use Refresh login service from Identity version of this package to use refresh tokens", true)]
-        public Task<AuthResponseModel> RefreshAsync(RefreshTokenRequestModel model)
-        {
-            throw new NotImplementedException();
-        }
-
-        [Obsolete("Use Refresh login service from Identity version of this package to use refresh tokens", true)]
-        public string GetRefreshTokenRoute()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

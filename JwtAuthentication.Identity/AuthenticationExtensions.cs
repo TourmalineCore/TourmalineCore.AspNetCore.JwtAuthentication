@@ -56,8 +56,10 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             )
             where TContext : JwtAuthIdentityRefreshTokenDbContext<TUser> where TUser : IdentityUser
         {
-            services.AddTransient<ITokenManager, RefreshTokenManager<TUser>>();
+            services.AddTransient<ITokenManager, TokenManager>();
+            services.AddTransient<IRefreshTokenManager, RefreshTokenManager<TUser>>();
             services.AddTransient<ILoginService, IdentityRefreshLoginService<TUser>>();
+            services.AddTransient<IRefreshService, IdentityRefreshLoginService<TUser>>();
             services.AddTransient<IUserClaimsProvider, DefaultUserClaimsProvider>();
             services.AddTransient<JwtAuthIdentityRefreshTokenDbContext<TUser>, TContext>();
 
