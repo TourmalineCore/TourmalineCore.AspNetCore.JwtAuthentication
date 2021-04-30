@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -9,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
@@ -69,7 +68,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             };
         }
 
-        public async Task<TokenModel> GetBearerToken(TUser appUser, string signingKey, int tokenLiveTime)
+        private async Task<TokenModel> GetBearerToken(TUser appUser, string signingKey, int tokenLiveTime)
         {
             return await _accessTokenManager.GetAccessToken(appUser.NormalizedUserName, signingKey, tokenLiveTime);
         }
@@ -85,18 +84,15 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
                 .Where(x => fingerPrint == null || x.ClientFingerPrint == fingerPrint)
                 .FirstOrDefaultAsync(x => x.Value == refreshTokenValue);
 
-            if (token != null)
+            if (token == null)
             {
-                token.IsActive = false;
-                await _dbContext.SaveChangesAsync();
+                throw new AuthenticationException(ErrorTypes.RefreshTokenOrFingerprintNotFound);
             }
 
-            return token?.User;
-        }
+            token.IsActive = false;
+            await _dbContext.SaveChangesAsync();
 
-        public override Task SignInWithClaimsAsync(TUser user, AuthenticationProperties authenticationProperties, IEnumerable<Claim> additionalClaims)
-        {
-            return Task.CompletedTask;
+            return token?.User;
         }
     }
 }
