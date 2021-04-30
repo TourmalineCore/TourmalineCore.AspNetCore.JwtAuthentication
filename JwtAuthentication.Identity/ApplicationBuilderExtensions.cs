@@ -51,9 +51,9 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         /// Adds middleware to handle incoming login and token refresh requests.
         /// </summary>
         /// <param name="applicationBuilder"></param>
+        /// <param name="endpointOptions"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseRefreshTokenMiddleware<TContext, TUser>(this IApplicationBuilder applicationBuilder, RefreshEndpointOptions endpointOptions = null)
-            where TContext : TourmalineDbContext<TUser> where TUser : IdentityUser
+        public static IApplicationBuilder UseRefreshTokenMiddleware(this IApplicationBuilder applicationBuilder, RefreshEndpointOptions endpointOptions = null)
         {
             return applicationBuilder
                 .UseMiddleware<RefreshMiddleware>(endpointOptions ?? new RefreshEndpointOptions());

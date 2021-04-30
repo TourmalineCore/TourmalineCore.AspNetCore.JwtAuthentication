@@ -37,7 +37,7 @@ namespace Example.NetCore5._0.AuthenticationWithRefreshToken
 
             app.UseJwtAuthentication();
             app.UseDefaultLoginMiddleware();
-            app.UseRefreshTokenMiddleware<AppDbContext, CustomUser>();
+            app.UseRefreshTokenMiddleware();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
