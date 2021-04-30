@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -93,6 +95,11 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             await _dbContext.SaveChangesAsync();
 
             return token?.User;
+        }
+
+        public override Task SignInWithClaimsAsync(TUser user, AuthenticationProperties authenticationProperties, IEnumerable<Claim> additionalClaims)
+        {
+            return Task.CompletedTask;
         }
     }
 }
