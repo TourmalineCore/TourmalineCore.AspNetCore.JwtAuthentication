@@ -14,7 +14,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Options
 
         public string Issuer { get; set; }
 
-        public int AccessTokenExpireInMinutes
+        public virtual int AccessTokenExpireInMinutes
         {
             get => _accessTokenExpireInMinutes == default ? 10080 : _accessTokenExpireInMinutes;
             set => _accessTokenExpireInMinutes = value;

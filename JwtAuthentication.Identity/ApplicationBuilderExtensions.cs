@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
@@ -23,7 +24,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             this IApplicationBuilder applicationBuilder,
             string username,
             string password)
-            where TContext : JwtAuthIdentityDbContext<TUser> where TUser : IdentityUser
+            where TContext : TourmalineDbContext<TUser> where TUser : IdentityUser
         {
             using var serviceScope = applicationBuilder.ApplicationServices.CreateScope();
             var context = serviceScope.ServiceProvider.GetRequiredService<TContext>();
@@ -51,7 +52,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         /// </summary>
         /// <param name="applicationBuilder"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseRefreshTokenMiddleware(this IApplicationBuilder applicationBuilder, RefreshEndpointOptions endpointOptions = null)
+        public static IApplicationBuilder UseRefreshTokenMiddleware<TContext, TUser>(this IApplicationBuilder applicationBuilder, RefreshEndpointOptions endpointOptions = null)
+            where TContext : TourmalineDbContext<TUser> where TUser : IdentityUser
         {
             return applicationBuilder
                 .UseMiddleware<RefreshMiddleware>(endpointOptions ?? new RefreshEndpointOptions());
