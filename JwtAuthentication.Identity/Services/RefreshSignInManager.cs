@@ -22,7 +22,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
     {
         private readonly IRefreshTokenManager _refreshTokenManager;
         private readonly ITokenManager _accessTokenManager;
-        private readonly JwtAuthIdentityRefreshTokenDbContext<TUser> _dbContext;
+        private readonly TourmalineDbContext<TUser> _dbContext;
         private readonly RefreshAuthenticationOptions _options;
 
         public RefreshSignInManager(
@@ -36,7 +36,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             IRefreshTokenManager refreshTokenManager,
             ITokenManager accessTokenManager,
             IOptions<RefreshAuthenticationOptions> options,
-            JwtAuthIdentityRefreshTokenDbContext<TUser> dbContext)
+            TourmalineDbContext<TUser> dbContext)
             : base(userManager,
                     contextAccessor,
                     claimsFactory,
