@@ -339,7 +339,7 @@ Default values:
 ```
 SigningKey = "jwtKeyjwtKeyjwtKeyjwtKeyjwtKey",
 Issuer = null,
-AccessTokenExpireInMinutes = 10080,
+AccessTokenExpireInMinutes = 15,
 RefreshTokenExpireInMinutes = 10080,
 IsDebugTokenEnabled = false
 ```
