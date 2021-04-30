@@ -11,11 +11,11 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 {
     internal class RefreshTokenManager<TUser> : IRefreshTokenManager where TUser : IdentityUser
     {
-        private readonly JwtAuthIdentityRefreshTokenDbContext<TUser> _dbContext;
+        private readonly TourmalineDbContext<TUser> _dbContext;
         private readonly RefreshAuthenticationOptions _options;
 
         public RefreshTokenManager(
-            JwtAuthIdentityRefreshTokenDbContext<TUser> dbContext,
+            TourmalineDbContext<TUser> dbContext,
             IOptions<RefreshAuthenticationOptions> options)
         {
             _dbContext = dbContext;
@@ -27,7 +27,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             var refreshToken = CreateRefreshToken(user, clientFingerPrint);
 
             _dbContext.Attach(refreshToken.User);
-            await _dbContext.RefreshTokens.AddAsync(refreshToken);
+            await _dbContext.Set<RefreshToken<TUser>>().AddAsync(refreshToken);
             await _dbContext.SaveChangesAsync();
 
             return new TokenModel

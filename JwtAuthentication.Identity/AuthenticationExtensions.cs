@@ -27,14 +27,15 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         /// <returns></returns>
         public static IServiceCollection AddJwtAuthenticationWithIdentity<TContext, TUser>(
             this IServiceCollection services,
-            AuthenticationOptions authenticationOptions = null)
-            where TContext : JwtAuthIdentityDbContext<TUser>
+            AuthenticationOptions authenticationOptions = null
+            ) 
+            where TContext : TourmalineDbContext<TUser> 
             where TUser : IdentityUser
         {
             services.AddTransient<ITokenManager, TokenManager>();
             services.AddTransient<ILoginService, IdentityLoginService<TUser>>();
             services.AddTransient<IUserClaimsProvider, DefaultUserClaimsProvider>();
-            services.AddTransient<JwtAuthIdentityDbContext<TUser>, TContext>();
+            services.AddTransient<TourmalineDbContext<TUser>, TContext>();
 
             services.AddJwt(authenticationOptions);
             services.AddIdentity<TContext, TUser, SignInManager<TUser>>();
@@ -70,16 +71,18 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         /// <param name="authenticationOptions"></param>
         /// <returns></returns>
         public static IServiceCollection AddJwtAuthenticationWithRefreshToken<TContext, TUser>(
-            this IServiceCollection services,
-            RefreshAuthenticationOptions authenticationOptions = null)
-            where TContext : JwtAuthIdentityRefreshTokenDbContext<TUser> where TUser : IdentityUser
+                this IServiceCollection services,
+                RefreshAuthenticationOptions authenticationOptions = null
+            )
+            where TContext : TourmalineDbContext<TUser> where TUser : IdentityUser
         {
             services.AddTransient<ITokenManager, TokenManager>();
             services.AddTransient<IRefreshTokenManager, RefreshTokenManager<TUser>>();
             services.AddTransient<ILoginService, IdentityRefreshLoginService<TUser>>();
             services.AddTransient<IRefreshService, IdentityRefreshLoginService<TUser>>();
             services.AddTransient<IUserClaimsProvider, DefaultUserClaimsProvider>();
-            services.AddTransient<JwtAuthIdentityRefreshTokenDbContext<TUser>, TContext>();
+            TourmalineContextConfiguration.UseRefresh = true;
+            services.AddTransient<TourmalineDbContext<TUser>, TContext>();
 
             services.AddTransient<IValidator<RefreshTokenRequestModel>, RefreshTokenValidator>();
 
@@ -113,7 +116,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         }
 
         private static IServiceCollection AddIdentity<TContext, TUser, TSignInManager>(this IServiceCollection services)
-            where TContext : JwtAuthIdentityDbContext<TUser>
+            where TContext : TourmalineDbContext<TUser> 
             where TUser : IdentityUser
             where TSignInManager : SignInManager<TUser>
         {
