@@ -267,7 +267,9 @@ public class Startup
     public void ConfigureServices(IServiceCollection services) 
 	{
         ...
-        services.AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>();
+        services
+                .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
+                .AddBaseLogin();
         ...
     }
 
@@ -307,7 +309,10 @@ public class Startup
     public void ConfigureServices(IServiceCollection services) 
 	{
         ...
-        services.AddRegistration<CustomUser, CustomRegistrationRequest>();
+        services
+            .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
+            .AddBaseLogin()
+            .AddRegistration<CustomUser, CustomRegistrationRequest>();
         ...
     }
 
@@ -368,7 +373,9 @@ public class Startup
     public void ConfigureServices(IServiceCollection services) 
 	{
         ...
-        services.AddJwtAuthenticationWithRefreshToken<AppDbContext, CustomUser>();
+        services
+            .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
+            .AddLoginWithRefresh();
         ...
     }
 
@@ -461,7 +468,10 @@ public class Startup
     public void ConfigureServices(IServiceCollection services) 
 	{
         ...
-        services.AddLogout<CustomUser>();
+        services
+            .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
+            .AddLoginWithRefresh()
+            .AddLogout();
         ...
     }
 

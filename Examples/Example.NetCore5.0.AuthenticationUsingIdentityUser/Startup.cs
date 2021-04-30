@@ -19,7 +19,8 @@ namespace Example.NetCore5._0.AuthenticationUsingIdentityUser
                 );
 
             services
-                .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>();
+                .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
+                .AddBaseLogin();
 
             services.AddControllers();
         }

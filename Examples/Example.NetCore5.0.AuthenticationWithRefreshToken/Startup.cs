@@ -19,8 +19,9 @@ namespace Example.NetCore5._0.AuthenticationWithRefreshToken
                 );
 
             services
-                .AddJwtAuthenticationWithRefreshToken<AppDbContext, CustomUser>()
-                .AddLogout<CustomUser>();
+                .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
+                .AddLoginWithRefresh()
+                .AddLogout();
 
             services.AddControllers();
         }
