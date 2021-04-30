@@ -1,5 +1,5 @@
-using Example.NetCore5._0.AuthenticationWithRefreshToken.Data;
 using Example.NetCore5._0.AuthenticationWithRefreshToken.Models;
+using Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity.Data;
 using Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
