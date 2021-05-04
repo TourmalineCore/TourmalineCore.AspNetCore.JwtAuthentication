@@ -1,6 +1,5 @@
 using Example.NetCore5._0.AuthenticationWithRefreshToken.Models;
 using Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity.Data;
-using Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +22,7 @@ namespace Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity
                 .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
                 .AddLoginWithRefresh()
                 .AddLogout()
-                .AddRegistration<CustomRegistrationRequest>();
+                .AddRegistration();
 
             services.AddControllers();
         }
@@ -44,7 +43,7 @@ namespace Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity
             app.UseRefreshTokenMiddleware();
             app.UseRefreshTokenLogoutMiddleware();
 
-            app.UseRegistration<CustomUser, CustomRegistrationRequest>(x => new CustomUser
+            app.UseRegistration<CustomUser>(x => new CustomUser
                     {
                         UserName = x.Login,
                         NormalizedUserName = x.Login,

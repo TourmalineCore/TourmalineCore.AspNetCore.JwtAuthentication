@@ -69,7 +69,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         }
 
         /// <summary>
-        /// Adds the ability to handle incoming user registration requests
+        /// Adds the ability to handle incoming user registration requests with custom request model
         /// </summary>
         /// <typeparam name="TRegistrationRequestModel"></typeparam>
         /// <returns></returns>
@@ -77,6 +77,16 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             where TRegistrationRequestModel : RegistrationRequestModel
         {
             Services.AddTransient<IRegistrationService<TUser, TRegistrationRequestModel>, IdentityRegistrationService<TUser, TRegistrationRequestModel>>();
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the ability to handle incoming user registration requests
+        /// </summary>
+        /// <returns></returns>
+        public TourmalineAuthenticationBuilder<TContext, TUser> AddRegistration()
+        {
+            Services.AddTransient<IRegistrationService<TUser, RegistrationRequestModel>, IdentityRegistrationService<TUser, RegistrationRequestModel>>();
             return this;
         }
 
