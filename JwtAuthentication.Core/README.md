@@ -124,13 +124,24 @@ public async void Configure(IApplicationBuilder app, IHostingEnvironment env)
 ## Login request
 
 You can call the login endpoint, you need to use the POST method, add to the header `Content-Type: application/json` and pass the login/password in the JSON format in the request body. Like this:
-`
+```json
 {
   "login": "Admin",
   "password": "Admin"
 }
-`
+```
  
+As a successful result it will return **Access Token Model** json:
+
+```json
+{
+    "accessToken": {
+        "value": "{{ACCESS_TOKEN_VALUE}}",
+        "expiresInUtc": "2021-01-01T00:00:00.0000000Z"
+    }
+}
+```
+
 ## Login validation
 
 By default, login will be valid only for `Login="Admin"` and `Password="Admin"`.
