@@ -249,9 +249,9 @@ If you are using EF Core, you can use JwtAuthentication.Identity package. It wil
 
 ## Basic usage
 
-1. You will need to inherit your context from JwtAuthIdentityDbContext, provided by this package. It uses a generic parameter of user entity. This entity must inherit from **IdentityUser** class of Microsoft.Identity package.
+1. You will need to inherit your context from TourmalineDbContext, provided by this package. It uses a generic parameter of user entity. This entity must inherit from **IdentityUser** class of Microsoft.Identity package.
 ```csharp
-public class AppDbContext : JwtAuthIdentityDbContext<CustomUser>
+public class AppDbContext : TourmalineDbContext<CustomUser>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
@@ -355,9 +355,9 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 
 If you want to add another layer of security to your application, you can use the refresh token. By using it you can reduce the lifetime of the access token, but  provide the ability to update it without re-login with an additional long-live token stored in your database.
 
-1. You will need to inherit your context from JwtAuthIdentityRefreshTokenDbContext, provided by this package.
+1. You will need to inherit your context from TourmalineDbContext, provided by this package.
 ```csharp
-public class AppDbContext : JwtAuthIdentityRefreshTokenDbContext<CustomUser>
+public class AppDbContext : TourmalineDbContext<CustomUser>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
