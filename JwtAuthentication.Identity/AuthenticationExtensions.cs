@@ -17,7 +17,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
     public static class AuthenticationExtensions
     {
         /// <summary>
-        /// Adds the ability to use the basic functionality of JWT authentication using Microsoft Identity to store and validate users data
+        /// Adds the ability to use the basic functionality of JWT authentication using Microsoft Identity to store and validate
+        /// users data
         /// </summary>
         /// <typeparam name="TContext"></typeparam>
         /// <typeparam name="TUser"></typeparam>
@@ -43,7 +44,26 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         }
 
         /// <summary>
-        /// Adds the ability to use the functionality of JWT authentication using Microsoft Identity to store and validate users data and refresh tokens
+        /// Adds the ability to handle incoming user registration requests
+        /// </summary>
+        /// <typeparam name="TUser"></typeparam>
+        /// <typeparam name="TRegistrationRequestModel"></typeparam>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddRegistration<TUser, TRegistrationRequestModel>(
+                this IServiceCollection services
+            )
+            where TUser : IdentityUser
+            where TRegistrationRequestModel : RegistrationRequestModel
+        {
+            services.AddTransient<IRegistrationService<TUser, TRegistrationRequestModel>, IdentityRegistrationService<TUser, TRegistrationRequestModel>>();
+
+            return services;
+        }
+
+        /// <summary>
+        /// Adds the ability to use the functionality of JWT authentication using Microsoft Identity to store and validate users
+        /// data and refresh tokens
         /// </summary>
         /// <typeparam name="TContext"></typeparam>
         /// <typeparam name="TUser"></typeparam>
@@ -85,22 +105,23 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         private static IServiceCollection AddIdentity<TContext, TUser, TSignInManager>(this IServiceCollection services)
             where TContext : TourmalineDbContext<TUser> 
             where TUser : IdentityUser
-            where TSignInManager : SignInManager<TUser> 
+            where TSignInManager : SignInManager<TUser>
         {
             services
+
                 //ToDo: #13: add possibility to provide custom options
                 .AddIdentityCore<TUser>(options =>
-                {
-                    options.Password.RequiredLength = 6;
-                    options.Password.RequireLowercase = true;
-                    options.Password.RequireUppercase = true;
-                    options.Password.RequireDigit = true;
-                    options.Password.RequireNonAlphanumeric = true;
+                        {
+                            options.Password.RequiredLength = 6;
+                            options.Password.RequireLowercase = true;
+                            options.Password.RequireUppercase = true;
+                            options.Password.RequireDigit = true;
+                            options.Password.RequireNonAlphanumeric = true;
 
-                    options.Lockout.MaxFailedAccessAttempts = 10;
-                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromDays(360);
-
-                })
+                            options.Lockout.MaxFailedAccessAttempts = 10;
+                            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromDays(360);
+                        }
+                    )
                 .AddEntityFrameworkStores<TContext>()
                 .AddSignInManager<TSignInManager>();
 

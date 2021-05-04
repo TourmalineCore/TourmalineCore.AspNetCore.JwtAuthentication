@@ -5,8 +5,8 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
-using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 {
@@ -14,13 +14,13 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
     {
         private readonly ITokenManager _tokenManager;
 
-        private readonly RefreshAuthenticationOptions _options;
+        private readonly AuthenticationOptions _options;
         private readonly SignInManager<TUser> _signInManager;
 
         public IdentityLoginService(
             ITokenManager tokenManager,
             SignInManager<TUser> signInManager,
-            IOptions<RefreshAuthenticationOptions> options = null)
+            IOptions<AuthenticationOptions> options = null)
         {
             _tokenManager = tokenManager;
             _signInManager = signInManager;
