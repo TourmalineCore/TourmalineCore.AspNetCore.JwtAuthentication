@@ -249,9 +249,9 @@ If you are using EF Core, you can use JwtAuthentication.Identity package. It wil
 
 ## Basic usage
 
-1. You will need to inherit your context from JwtAuthIdentityDbContext, provided by this package. It uses a generic parameter of user entity. This entity must inherit from **IdentityUser** class of Microsoft.Identity package.
+1. You will need to inherit your context from TourmalineDbContext, provided by this package. It uses a generic parameter of user entity. This entity must inherit from **IdentityUser** class of Microsoft.Identity package.
 ```csharp
-public class AppDbContext : JwtAuthIdentityDbContext<CustomUser>
+public class AppDbContext : TourmalineDbContext<CustomUser>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
@@ -267,7 +267,9 @@ public class Startup
     public void ConfigureServices(IServiceCollection services) 
 	{
         ...
-        services.AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>();
+        services
+                .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
+                .AddBaseLogin();
         ...
     }
 
@@ -307,7 +309,10 @@ public class Startup
     public void ConfigureServices(IServiceCollection services) 
 	{
         ...
-        services.AddRegistration<CustomUser, CustomRegistrationRequest>();
+        services
+            .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
+            .AddBaseLogin()
+            .AddRegistration<CustomUser, CustomRegistrationRequest>();
         ...
     }
 
@@ -350,9 +355,9 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 
 If you want to add another layer of security to your application, you can use the refresh token. By using it you can reduce the lifetime of the access token, but  provide the ability to update it without re-login with an additional long-live token stored in your database.
 
-1. You will need to inherit your context from JwtAuthIdentityRefreshTokenDbContext, provided by this package.
+1. You will need to inherit your context from TourmalineDbContext, provided by this package.
 ```csharp
-public class AppDbContext : JwtAuthIdentityRefreshTokenDbContext<CustomUser>
+public class AppDbContext : TourmalineDbContext<CustomUser>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
@@ -368,7 +373,9 @@ public class Startup
     public void ConfigureServices(IServiceCollection services) 
 	{
         ...
-        services.AddJwtAuthenticationWithRefreshToken<AppDbContext, CustomUser>();
+        services
+            .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
+            .AddLoginWithRefresh();
         ...
     }
 
@@ -376,8 +383,8 @@ public class Startup
     {
         ...
         app
-            .UseJwtAuthentication();
-            .UseDefaultLoginMiddleware();
+            .UseJwtAuthentication()
+            .UseDefaultLoginMiddleware()
             .UseRefreshTokenMiddleware();
         ...
     }
@@ -450,3 +457,32 @@ To call the Refresh Token Endpoind, you need to use the POST method, add to the 
   "clientFingerPrint": "fingerprint"
 }
 `
+
+### Logout
+
+If you are using the refresh token, you will probably want to have a possibility to remove token's data from the database, when user requests it. This can be achieved by implementing the Logout mechanism. You can simply enable it like this:
+
+```csharp
+public class Startup
+{
+    public void ConfigureServices(IServiceCollection services) 
+	{
+        ...
+        services
+            .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
+            .AddLoginWithRefresh()
+            .AddLogout();
+        ...
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        ...
+        app
+            .UseJwtAuthentication()
+        ...
+            .UseRefreshTokenLogoutMiddleware();
+        ...
+    }
+}
+```

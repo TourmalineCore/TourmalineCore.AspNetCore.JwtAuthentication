@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware;
-using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
@@ -60,7 +59,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         }
 
         /// <summary>
-        /// Adds middleware to handle incoming user registration requests. It requires a function to map model received from client
+        /// Adds middleware to handle incoming user registration requests with custom registration request model. It requires a function to map model received from client.
         /// to user entity.
         /// </summary>
         /// <typeparam name="TUser"></typeparam>
@@ -80,6 +79,40 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
 
             return applicationBuilder
                 .UseMiddleware<RegistrationMiddleware<TUser, TRegistrationRequestModel>>(mapping, options);
+        }
+
+        /// <summary>
+        /// Adds middleware to handle incoming user registration requests. It requires a function to map model received from client
+        /// to user entity.
+        /// </summary>
+        /// <typeparam name="TUser"></typeparam>
+        /// <typeparam name="TRegistrationRequestModel"></typeparam>
+        /// <param name="applicationBuilder"></param>
+        /// <param name="mapping"></param>
+        /// <param name="registrationEndpointOptions"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseRegistration<TUser>(
+            this IApplicationBuilder applicationBuilder,
+            Func<RegistrationRequestModel, TUser> mapping,
+            RegistrationEndpointOptions registrationEndpointOptions = null)
+            where TUser : IdentityUser
+        {
+            var options = registrationEndpointOptions ?? new RegistrationEndpointOptions();
+
+            return applicationBuilder
+                .UseMiddleware<RegistrationMiddleware<TUser, RegistrationRequestModel>>(mapping, options);
+        }
+
+        /// <summary>
+        /// Adds middleware to handle incoming logout requests.
+        /// </summary>
+        /// <param name="applicationBuilder"></param>
+        /// <param name="endpointOptions"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseRefreshTokenLogoutMiddleware(this IApplicationBuilder applicationBuilder, LogoutEndpointOptions endpointOptions = null)
+        {
+            return applicationBuilder
+                .UseMiddleware<LogoutMiddleware>(endpointOptions ?? new LogoutEndpointOptions());
         }
     }
 }

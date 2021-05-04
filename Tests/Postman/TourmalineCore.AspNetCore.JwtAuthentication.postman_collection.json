@@ -118,6 +118,326 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Example.NetCore5.0.RefreshTokenAuthAndRegistrationUsingIdentity",
+			"item": [
+				{
+					"name": "Call authorized endpoint without token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.cookies.clear();"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/example",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"example"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Access token is present\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.accessToken.value).to.be.not.null;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"login\": \"{{LOGIN}}\", \"password\": \"{{PASSWORD}}\" }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/auth/register",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Access and refresh tokens are present\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    const accessToken = jsonData.accessToken.value;\r",
+									"    const refreshToken = jsonData.refreshToken.value;\r",
+									"\r",
+									"    pm.expect(accessToken).to.be.not.null;\r",
+									"    pm.expect(refreshToken).to.be.not.null;\r",
+									"\r",
+									"    pm.variables.set(\"ACCESS_TOKEN\", accessToken);\r",
+									"    pm.variables.set(\"REFRESH_TOKEN\", refreshToken);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"login\": \"{{LOGIN}}\", \"password\": \"{{PASSWORD}}\", \"ClientFingerPrint\": \"{{FINGERPRINT}}\" }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/auth/login",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Access and refresh tokens are present\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    const accessToken = jsonData.accessToken.value;\r",
+									"    const refreshToken = jsonData.refreshToken.value;\r",
+									"\r",
+									"    pm.expect(accessToken).to.be.not.null;\r",
+									"    pm.expect(refreshToken).to.be.not.null;\r",
+									"\r",
+									"    pm.variables.set(\"ACCESS_TOKEN\", accessToken);\r",
+									"    pm.variables.set(\"REFRESH_TOKEN\", refreshToken);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"RefreshTokenValue\": \"{{REFRESH_TOKEN}}\", \"ClientFingerPrint\": \"{{FINGERPRINT}}\" }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/auth/refresh",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Call authorized endpoint with token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/example",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"example"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Logout returned true\", function () {\r",
+									"    pm.response.to.have.body(\"true\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"RefreshTokenValue\": \"{{REFRESH_TOKEN}}\", \"ClientFingerPrint\": \"{{FINGERPRINT}}\" }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/auth/logout",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Call authorized endpoint without token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.cookies.clear();"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/example",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"example"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "ACCESS_TOKEN",
+			"value": ""
+		},
+		{
+			"key": "REFRESH_TOKEN",
+			"value": ""
 		}
 	]
 }
