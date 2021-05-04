@@ -1,5 +1,5 @@
-using Example.NetCore5._0.AuthenticationUsingIdentityUser.Data;
-using Example.NetCore5._0.AuthenticationUsingIdentityUser.Models;
+using Example.NetCore5._0.AuthenticationWithRefreshToken.Data;
+using Example.NetCore5._0.AuthenticationWithRefreshToken.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +8,7 @@ using Microsoft.Extensions.Hosting;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 
-namespace Example.NetCore5._0.AuthenticationUsingIdentityUser
+namespace Example.NetCore5._0.AuthenticationWithRefreshToken
 {
     public class Startup
     {
@@ -19,7 +19,7 @@ namespace Example.NetCore5._0.AuthenticationUsingIdentityUser
                 );
 
             services
-                .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>();
+                .AddJwtAuthenticationWithRefreshToken<AppDbContext, CustomUser>();
 
             services.AddControllers();
         }
@@ -35,9 +35,9 @@ namespace Example.NetCore5._0.AuthenticationUsingIdentityUser
 
             app.UseRouting();
 
-            app
-                .UseDefaultLoginMiddleware()
-                .UseJwtAuthentication();
+            app.UseJwtAuthentication();
+            app.UseDefaultLoginMiddleware();
+            app.UseRefreshTokenMiddleware();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

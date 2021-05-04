@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Example.NetCore5._0.Controllers
+namespace Example.NetCore5._0.AuthenticationWithRefreshToken.Controllers
 {
     [ApiController]
     [Route("[controller]")]

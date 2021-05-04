@@ -5,24 +5,22 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 {
     internal class IdentityLoginService<TUser> : ILoginService where TUser : IdentityUser
     {
-        private static string _route = "/auth/login";
-
         private readonly ITokenManager _tokenManager;
 
-        private readonly AuthenticationOptions _options;
+        private readonly RefreshAuthenticationOptions _options;
         private readonly SignInManager<TUser> _signInManager;
 
         public IdentityLoginService(
             ITokenManager tokenManager,
             SignInManager<TUser> signInManager,
-            IOptions<AuthenticationOptions> options = null)
+            IOptions<RefreshAuthenticationOptions> options = null)
         {
             _tokenManager = tokenManager;
             _signInManager = signInManager;
@@ -59,16 +57,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
                     ExpiresInUtc = token.ExpiresInUtc,
                 },
             };
-        }
-
-        public string GetRoute()
-        {
-            return _route;
-        }
-
-        public static void OverrideRoute(string newRoute)
-        {
-            _route = newRoute;
         }
     }
 }

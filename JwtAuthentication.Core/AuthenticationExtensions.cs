@@ -53,21 +53,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         }
 
         /// <summary>
-        /// Allows to change the default route for calling the login
-        /// </summary>
-        /// <param name="services"></param>
-        /// <param name="newRoute"></param>
-        /// <returns></returns>
-        public static IServiceCollection OverrideLoginRoute(
-            this IServiceCollection services,
-            string newRoute)
-        {
-            LoginService.OverrideRoute(newRoute);
-
-            return services;
-        }
-
-        /// <summary>
         /// Adds the ability to implement functionality for retrieving user claims
         /// </summary>
         /// <typeparam name="TUserClaimsProvider"></typeparam>

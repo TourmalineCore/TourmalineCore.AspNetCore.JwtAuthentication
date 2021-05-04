@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace Example.NetCore5._0.AuthenticationUsingIdentityUser
+namespace Example.NetCore5._0.AuthenticationWithRefreshToken
 {
     public class Program
     {

@@ -2,6 +2,9 @@ using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Models;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
 {
@@ -17,11 +20,10 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         /// <param name="password"></param>
         /// <returns></returns>
         public static IApplicationBuilder UseDefaultDbUser<TContext, TUser>(
-            this IApplicationBuilder applicationBuilder, 
-            string username, 
-            string password
-            ) 
-            where TContext : JwtAuthIdentityDbContext<TUser> where TUser : IdentityUser
+            this IApplicationBuilder applicationBuilder,
+            string username,
+            string password)
+            where TContext : TourmalineDbContext<TUser> where TUser : IdentityUser
         {
             using var serviceScope = applicationBuilder.ApplicationServices.CreateScope();
             var context = serviceScope.ServiceProvider.GetRequiredService<TContext>();
@@ -42,6 +44,18 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             return applicationBuilder
                 .UseAuthentication()
                 .UseAuthorization();
+        }
+
+        /// <summary>
+        /// Adds middleware to handle incoming login and token refresh requests.
+        /// </summary>
+        /// <param name="applicationBuilder"></param>
+        /// <param name="endpointOptions"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseRefreshTokenMiddleware(this IApplicationBuilder applicationBuilder, RefreshEndpointOptions endpointOptions = null)
+        {
+            return applicationBuilder
+                .UseMiddleware<RefreshMiddleware>(endpointOptions ?? new RefreshEndpointOptions());
         }
     }
 }

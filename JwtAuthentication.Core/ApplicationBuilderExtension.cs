@@ -22,11 +22,12 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         /// Adds middleware to handle incoming login requests.
         /// </summary>
         /// <param name="applicationBuilder"></param>
+        /// <param name="loginEndpointOptions"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseDefaultLoginMiddleware(this IApplicationBuilder applicationBuilder)
+        public static IApplicationBuilder UseDefaultLoginMiddleware(this IApplicationBuilder applicationBuilder, LoginEndpointOptions loginEndpointOptions = null)
         {
             return applicationBuilder
-                .UseMiddleware<LoginMiddleware>();
+                .UseMiddleware<LoginMiddleware>(loginEndpointOptions ?? new LoginEndpointOptions());
         }
 
         /// <summary>
@@ -35,10 +36,10 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         /// <param name="applicationBuilder"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseCookieLoginMiddleware(this IApplicationBuilder applicationBuilder, CookieAuthOptions options)
+        public static IApplicationBuilder UseCookieLoginMiddleware(this IApplicationBuilder applicationBuilder, CookieAuthOptions options, LoginEndpointOptions loginEndpointOptions = null)
         {
             return applicationBuilder
-                .UseMiddleware<LoginWithCookieMiddleware>(options)
+                .UseMiddleware<LoginWithCookieMiddleware>(options, loginEndpointOptions ?? new LoginEndpointOptions())
                 .UseMiddleware<TokenExtractionFromCookieMiddleware>(options);
         }
     }

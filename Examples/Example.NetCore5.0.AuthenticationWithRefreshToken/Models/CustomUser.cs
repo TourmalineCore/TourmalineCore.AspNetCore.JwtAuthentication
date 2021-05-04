@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Example.NetCore5._0.AuthenticationUsingIdentityUser.Models
+namespace Example.NetCore5._0.AuthenticationWithRefreshToken.Models
 {
     public class CustomUser : IdentityUser
     {
