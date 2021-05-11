@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\JwtAuthentication.Core\JwtAuthentication.Core.csproj" />
+    <ProjectReference Include="..\..\JwtAuthentication.Core\JwtAuthentication.Core.csproj" />
   </ItemGroup>
 
 </Project>
