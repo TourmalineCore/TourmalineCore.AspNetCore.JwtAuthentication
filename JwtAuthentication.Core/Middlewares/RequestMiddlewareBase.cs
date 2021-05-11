@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-#elif NET5_0
+#else
 using System.Text.Json;
 using System.Text.Json.Serialization;
 #endif
@@ -17,7 +17,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
         private readonly RequestDelegate _next;
 #if NETCOREAPP3_0 || NETCOREAPP3_1
         private readonly JsonSerializerSettings _jsonSerializerSettings;
-#elif NET5_0
+#else
         private readonly JsonSerializerOptions _jsonSerializerSettings;
 #endif
 
@@ -37,7 +37,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
                 },
                 ContractResolver = new CamelCasePropertyNamesContractResolver(),
             };
-#elif NET5_0
+#else
             _jsonSerializerSettings = new JsonSerializerOptions
             {
                 IgnoreNullValues = true,
@@ -81,7 +81,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
             context.Response.ContentType = "application/json; charset=UTF-8";
 #if NETCOREAPP3_0 || NETCOREAPP3_1
             await context.Response.WriteAsync(JsonConvert.SerializeObject(result, _jsonSerializerSettings));
-#elif NET5_0
+#else
             await context.Response.WriteAsync(JsonSerializer.Serialize(result, _jsonSerializerSettings));
 #endif
             await context.Response.Body.FlushAsync();
@@ -93,7 +93,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
             {
 #if NETCOREAPP3_0 || NETCOREAPP3_1
                 return JsonConvert.DeserializeObject<T>(await reader.ReadToEndAsync(), _jsonSerializerSettings);
-#elif NET5_0
+#else
                 return JsonSerializer.Deserialize<T>(await reader.ReadToEndAsync(), _jsonSerializerSettings);
 #endif
             }
