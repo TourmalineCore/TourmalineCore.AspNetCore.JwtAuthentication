@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -21,15 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Example.NetCore5.0.CookiesBasedAuthentication\Example.NetCore5.0.CookiesBasedAuthentication.csproj" />
     <ProjectReference Include="..\Example.NetCore3.0.BaseAuthentication\Example.NetCore3.0.BaseAuthentication.csproj" />
-    <ProjectReference Include="..\Example.NetCore3.1.BaseAuthentication\Example.NetCore3.1.BaseAuthentication.csproj" />
-    <ProjectReference Include="..\Example.NetCore5.0.AuthenticationUsingIdentityUser\Example.NetCore5.0.AuthenticationUsingIdentityUser.csproj" />
-    <ProjectReference Include="..\Example.NetCore5.0.AuthenticationWithRefreshToken\Example.NetCore5.0.AuthenticationWithRefreshToken.csproj" />
-    <ProjectReference Include="..\Example.NetCore5.0.BaseAuthentication\Example.NetCore5.0.BaseAuthentication.csproj" />
-    <ProjectReference Include="..\Example.NetCore5.0.PermissionBasedAuthorization\Example.NetCore5.0.PermissionBasedAuthorization.csproj" />
+    <ProjectReference Include="..\Example.NetCore5.0.CookiesBasedAuthentication\Example.NetCore5.0.CookiesBasedAuthentication.csproj" />
     <ProjectReference Include="..\Example.NetCore5.0.RefreshTokenAuthAndRegistrationUsingIdentity\Example.NetCore5.0.RefreshTokenAuthAndRegistrationUsingIdentity.csproj" />
-    <ProjectReference Include="..\Example.NetCore5.0.WithCredentialsValidator\Example.NetCore5.0.WithCredentialsValidator.csproj" />
     <ProjectReference Include="..\..\JwtAuthentication.Core\JwtAuthentication.Core.csproj" />
     <ProjectReference Include="..\..\JwtAuthentication.Identity\JwtAuthentication.Identity.csproj" />
   </ItemGroup>
