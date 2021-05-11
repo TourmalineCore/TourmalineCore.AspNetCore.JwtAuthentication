@@ -17,8 +17,8 @@ namespace Tests
         protected readonly WebApplicationFactory<TProject> _factory;
         protected readonly JsonSerializerOptions _jsonSerializerSettings;
 
-        private const string LoginUrl = "/auth/login";
-        private const string AuthorizedEndpointUrl = "/example";
+        protected const string LoginUrl = "/auth/login";
+        protected const string AuthorizedEndpointUrl = "/example";
 
         public AuthTestsBase(WebApplicationFactory<TProject> factory)
         {
