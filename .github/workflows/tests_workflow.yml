@@ -1,0 +1,15 @@
+name: .NET
+
+on:
+  push:
+  
+jobs:
+  tests:
+    name: Run tests 
+    runs-on: 'ubuntu-latest'
+    steps:
+    - uses: actions/checkout@master
+    
+    - run: | 
+        dotnet restore ./Examples/Tests/Tests.csproj
+        dotnet test ./Examples/Tests/Tests.csproj  --verbosity normal
