@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
@@ -12,26 +13,28 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
     {
         private readonly RefreshSignInManager<TUser> _signInManager;
         private readonly IValidator<RefreshTokenRequestModel> _refreshTokenValidator;
+        private readonly IUserCredentialsValidator _userCredentialsValidator;
 
         public IdentityRefreshLoginService(
             RefreshSignInManager<TUser> signInManager,
-            IValidator<RefreshTokenRequestModel> refreshTokenValidator)
+            IValidator<RefreshTokenRequestModel> refreshTokenValidator,
+            IUserCredentialsValidator userCredentialsValidator)
         {
             _signInManager = signInManager;
             _refreshTokenValidator = refreshTokenValidator;
+            _userCredentialsValidator = userCredentialsValidator;
         }
 
         public async Task<AuthResponseModel> LoginAsync(LoginRequestModel model)
         {
-            var user = await _signInManager.UserManager.FindByNameAsync(model.Login);
+            var signInResult = await _userCredentialsValidator.ValidateUserCredentials(model.Login, model.Password);
 
-            var signInResult = await _signInManager.PasswordSignInAsync(user, model.Password);
-
-            if (signInResult.Succeeded == false)
+            if (signInResult == false)
             {
                 throw new AuthenticationException(ErrorTypes.IncorrectLoginOrPassword);
             }
 
+            var user = await _signInManager.UserManager.FindByNameAsync(model.Login);
             return await _signInManager.GenerateAuthTokens(user, model.ClientFingerPrint);
         }
 
