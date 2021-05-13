@@ -64,6 +64,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             Services.AddTransient<ITokenManager, TokenManager>();
             Services.AddTransient<ILoginService, IdentityLoginService<TUser>>();
             Services.AddTransient<IUserClaimsProvider, DefaultUserClaimsProvider>();
+            Services.AddTransient<IUserCredentialsValidator, IdentityUserCredentialsValidator<TUser>>();
 
             return this;
         }
@@ -108,7 +109,20 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             Services.AddTransient<IRefreshService, IdentityRefreshLoginService<TUser>>();
             Services.AddTransient<IUserClaimsProvider, DefaultUserClaimsProvider>();
             Services.AddTransient<IValidator<RefreshTokenRequestModel>, RefreshTokenValidator>();
+            Services.AddTransient<IUserCredentialsValidator, IdentityUserCredentialsValidator<TUser>>();
 
+            return this;
+        }
+
+        /// <summary>
+        /// Allows to implement custom logic for checking the username and password
+        /// </summary>
+        /// <typeparam name="TUserCredentialsValidator"></typeparam>
+        /// <returns></returns>
+        public TourmalineAuthenticationBuilder<TContext, TUser> AddUserCredentialsValidator<TUserCredentialsValidator>()
+            where TUserCredentialsValidator : IUserCredentialsValidator
+        {
+            Services.AddTransient(typeof(IUserCredentialsValidator), typeof(TUserCredentialsValidator));
             return this;
         }
 

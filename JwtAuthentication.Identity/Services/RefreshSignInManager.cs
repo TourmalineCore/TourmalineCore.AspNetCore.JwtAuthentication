@@ -52,15 +52,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             _options = options.Value;
         }
 
-        public async Task<SignInResult> PasswordSignInAsync(TUser appUser, string password)
-        {
-            return await PasswordSignInAsync(appUser,
-                    password,
-                    false,
-                    true
-                );
-        }
-
         public async Task<AuthResponseModel> GenerateAuthTokens(TUser appUser, string fingerPrint)
         {
             return new AuthResponseModel
