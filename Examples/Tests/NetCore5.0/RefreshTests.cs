@@ -23,7 +23,7 @@ namespace Tests.NetCore5._0
         private const string Password = "Admin";
 
         public RefreshTests(WebApplicationFactory<Startup> factory)
-            :base(factory)
+            : base(factory)
         {
         }
 

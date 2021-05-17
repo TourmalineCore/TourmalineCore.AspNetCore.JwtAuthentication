@@ -43,7 +43,7 @@ namespace Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity
             app.UseRefreshTokenMiddleware();
             app.UseRefreshTokenLogoutMiddleware();
 
-            app.UseRegistration<CustomUser>(x => new CustomUser
+            app.UseRegistration(x => new CustomUser
                     {
                         UserName = x.Login,
                         NormalizedUserName = x.Login,

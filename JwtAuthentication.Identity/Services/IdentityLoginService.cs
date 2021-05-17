@@ -45,7 +45,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 
             var token = await _tokenManager.GetAccessToken(
                     model.Login,
-                    _options.SigningKey,
+                    _options.PrivateSigningKey,
                     _options.AccessTokenExpireInMinutes
                 );
 
