@@ -21,7 +21,7 @@ namespace Tests.NetCore5._0
         private const string Password = "Test1234.";
 
         public RegistrationTests(WebApplicationFactory<Startup> factory)
-            :base(factory)
+            : base(factory)
         {
         }
 
@@ -56,7 +56,7 @@ namespace Tests.NetCore5._0
         {
             var client = _factory.CreateClient();
 
-            var body = JsonContent.Create(new RegistrationRequestModel()
+            var body = JsonContent.Create(new RegistrationRequestModel
                     {
                         Login = login,
                         Password = password,

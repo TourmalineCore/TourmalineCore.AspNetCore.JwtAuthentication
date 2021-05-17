@@ -59,7 +59,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         }
 
         /// <summary>
-        /// Adds middleware to handle incoming user registration requests with custom registration request model. It requires a function to map model received from client.
+        /// Adds middleware to handle incoming user registration requests with custom registration request model. It requires a
+        /// function to map model received from client.
         /// to user entity.
         /// </summary>
         /// <typeparam name="TUser"></typeparam>
