@@ -10,8 +10,8 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract.Implementation;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Filters;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementation;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Signing;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.TokenHandlers;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Utils;
 using AuthenticationOptions = TourmalineCore.AspNetCore.JwtAuthentication.Core.Options.AuthenticationOptions;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
@@ -105,7 +105,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
                                 ValidateIssuer = false,
                                 ValidateAudience = false,
                                 ValidateIssuerSigningKey = true,
-                                IssuerSigningKey = new SymmetricSecurityKey(authenticationOptions.SigningKey.ToEncodedByteArray()),
+                                IssuerSigningKey = SigningHelper.GetPublicKey(authenticationOptions.PublicSigningKey),
                                 ClockSkew = TimeSpan.Zero,
                             };
 

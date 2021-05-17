@@ -1,13 +1,13 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Signing;
 
 [assembly: InternalsVisibleTo("TourmalineCore.AspNetCore.JwtAuthentication.Identity")]
 
@@ -29,9 +29,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementati
         public async Task<TokenModel> GetAccessToken(string login, string signingKey, int tokenLiveTime)
         {
             var claims = await _userClaimsProvider.GetUserClaimsAsync(login);
-
-            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(signingKey));
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var privateKey = SigningHelper.GetPrivateKey(signingKey);
+            var credentials = new SigningCredentials(privateKey, SecurityAlgorithms.RsaSha256);
             var expires = DateTime.UtcNow.AddMinutes(tokenLiveTime);
 
             var token = new JwtSecurityToken(_options.Issuer,
