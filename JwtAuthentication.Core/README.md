@@ -2,6 +2,7 @@
 
 The library can be used for all projects based on .NET Core 3.0 - .NET Core 5.0.
 
+We are using Microsoft.AspNetCore.Authentication.JwtBearer with RSA for signing the keys.
 This library contains middleware and authentication extensions.
 With this library, you can very easily connect the JWT-based authentication to your project.
 Also, this library allows to override the logic of username and password validation.
