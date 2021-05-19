@@ -231,8 +231,11 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 public void ConfigureServices(IServiceCollection services) 
 {
     ...
-    var authenticationOptions = _configuration.GetSection(nameof(RefreshAuthenticationOptions)).Get<RefreshAuthenticationOptions>()
-    services.AddJwtAuthenticationWithRefreshToken(authenticationOptions);
+    var authenticationOptions = _configuration.GetSection(nameof(RefreshAuthenticationOptions)).Get<RefreshAuthenticationOptions>();
+
+    services
+        .AddJwtAuthenticationWithIdentity<AppDbContext, User>()
+        .AddLoginWithRefresh(authenticationOptions);
     ...
 }
 ```
