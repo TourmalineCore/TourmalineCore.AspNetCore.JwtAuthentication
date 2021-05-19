@@ -49,5 +49,16 @@ namespace Tests.NetCore5._0
             var (response, _) = await LoginAsync(Login, "123");
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         }
+
+        [Fact]
+        public async Task TwoSuccessfulLoginsInARow_ReturnsTokens()
+        {
+            var (_, firstAuthModel) = await LoginAsync(Login, Password);
+            var (_, secondAuthModel) = await LoginAsync(Login, Password);
+
+            Assert.False(string.IsNullOrWhiteSpace(firstAuthModel.AccessToken.Value));
+            Assert.False(string.IsNullOrWhiteSpace(secondAuthModel.AccessToken.Value));
+            Assert.NotEqual(firstAuthModel.RefreshToken.Value, secondAuthModel.RefreshToken.Value);
+        }
     }
 }
