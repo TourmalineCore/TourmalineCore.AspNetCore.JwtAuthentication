@@ -69,15 +69,17 @@ public class Startup
 
 ## Options
 
-If you want to use your own values for options, then you need to pass AuthenticationOptions to the AddJwtAuthentication().
+To use package you need to pass AuthenticationOptions to the AddJwtAuthentication().
 
-Default values:
-```
-SigningKey = "jwtKeyjwtKeyjwtKeyjwtKeyjwtKey",
-Issuer = null,
-AccessTokenExpireInMinutes = 10080,
-IsDebugTokenEnabled = false,
-```
+| Name | Type | Default | Required | Description |
+|-|-|-|-|-|
+| PrivateSigningKey | string | null | yes | The base64-encoded RSA Private Key |
+| PublicSigningKey | string | null | yes | The Matching base64-encoded RSA Public Key |
+| Issuer | string | null | no | The Registered Issuer Value |
+| Audience | string | null | no | The Registered Audience Value |
+| AccessTokenExpireInMinutes | int | 10080 | no | Lifetime of the Access Token |
+| IsDebugTokenEnabled | bool | false | no | If true, user credentials will not be checked during authentication |
+
 
 ```csharp
 ...
@@ -87,8 +89,7 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 public void ConfigureServices(IServiceCollection services) 
 {
     ...
-    services.Configure<AuthenticationOptions>(Configuration.GetSection(nameof(AuthenticationOptions)));
-    var authenticationOptions = services.BuildServiceProvider().GetService<IOptions<AuthenticationOptions>>().Value; 
+    var authenticationOptions = _configuration.GetSection(nameof(AuthenticationOptions)).Get<AuthenticationOptions>()
     services.AddJwtAuthentication(authenticationOptions);
     ...
 }
