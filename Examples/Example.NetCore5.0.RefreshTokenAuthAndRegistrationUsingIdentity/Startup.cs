@@ -3,15 +3,24 @@ using Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 
 namespace Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
+
+        public Startup(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(options =>
@@ -20,7 +29,7 @@ namespace Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity
 
             services
                 .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
-                .AddLoginWithRefresh()
+                .AddLoginWithRefresh(_configuration.GetSection("AuthenticationOptions").Get<RefreshAuthenticationOptions>())
                 .AddLogout()
                 .AddRegistration();
 

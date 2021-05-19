@@ -19,10 +19,10 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementati
         private readonly IUserClaimsProvider _userClaimsProvider;
 
         public TokenManager(
-            IOptions<AuthenticationOptions> options,
+            AuthenticationOptions options,
             IUserClaimsProvider userClaimsProvider)
         {
-            _options = options.Value;
+            _options = options;
             _userClaimsProvider = userClaimsProvider;
         }
 
@@ -34,7 +34,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementati
             var expires = DateTime.UtcNow.AddMinutes(tokenLiveTime);
 
             var token = new JwtSecurityToken(_options.Issuer,
-                    _options.Issuer,
+                    _options.Audience,
                     claims,
                     expires: expires,
                     signingCredentials: credentials
