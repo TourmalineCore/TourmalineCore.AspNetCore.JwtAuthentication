@@ -2,7 +2,6 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
@@ -19,22 +18,22 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementati
         private readonly IUserClaimsProvider _userClaimsProvider;
 
         public TokenManager(
-            IOptions<AuthenticationOptions> options,
+            AuthenticationOptions options,
             IUserClaimsProvider userClaimsProvider)
         {
-            _options = options.Value;
+            _options = options;
             _userClaimsProvider = userClaimsProvider;
         }
 
-        public async Task<TokenModel> GetAccessToken(string login, string signingKey, int tokenLiveTime)
+        public async Task<TokenModel> GetAccessToken(string login)
         {
             var claims = await _userClaimsProvider.GetUserClaimsAsync(login);
-            var privateKey = SigningHelper.GetPrivateKey(signingKey);
+            var privateKey = SigningHelper.GetPrivateKey(_options.PrivateSigningKey);
             var credentials = new SigningCredentials(privateKey, SecurityAlgorithms.RsaSha256);
-            var expires = DateTime.UtcNow.AddMinutes(tokenLiveTime);
+            var expires = DateTime.UtcNow.AddMinutes(_options.AccessTokenExpireInMinutes);
 
             var token = new JwtSecurityToken(_options.Issuer,
-                    _options.Issuer,
+                    _options.Audience,
                     claims,
                     expires: expires,
                     signingCredentials: credentials

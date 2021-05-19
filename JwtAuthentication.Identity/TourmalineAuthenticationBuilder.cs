@@ -99,6 +99,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         /// <returns></returns>
         public TourmalineAuthenticationBuilder<TContext, TUser> AddLoginWithRefresh(RefreshAuthenticationOptions authenticationOptions = null)
         {
+            Services.AddSingleton(authenticationOptions);
+
             TourmalineContextConfiguration.UseRefresh = true;
             AddJwt(Services, authenticationOptions);
             IdentityBuilder.AddSignInManager<RefreshSignInManager<TUser>>();

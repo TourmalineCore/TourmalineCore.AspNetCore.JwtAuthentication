@@ -73,6 +73,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
             this IServiceCollection services,
             AuthenticationOptions authenticationOptions)
         {
+            services.AddSingleton(authenticationOptions);
+
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
             Func<HttpContext, string> schemeSelector = context => null;

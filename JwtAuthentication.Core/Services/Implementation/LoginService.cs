@@ -1,11 +1,9 @@
 using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementation
 {
@@ -15,16 +13,13 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementati
 
         private readonly IUserCredentialsValidator _userCredentialsValidator;
 
-        private readonly AuthenticationOptions _options;
 
         public LoginService(
             ITokenManager tokenManager,
-            IUserCredentialsValidator userCredentialsValidator = null,
-            IOptions<AuthenticationOptions> options = null)
+            IUserCredentialsValidator userCredentialsValidator = null)
         {
             _tokenManager = tokenManager;
             _userCredentialsValidator = userCredentialsValidator;
-            _options = options?.Value;
         }
 
         public async Task<AuthResponseModel> LoginAsync(LoginRequestModel model)
@@ -36,11 +31,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementati
                 throw new AuthenticationException(ErrorTypes.IncorrectLoginOrPassword);
             }
 
-            var token = await _tokenManager.GetAccessToken(
-                    model.Login,
-                    _options.PrivateSigningKey,
-                    _options.AccessTokenExpireInMinutes
-                );
+            var token = await _tokenManager.GetAccessToken(model.Login);
 
             return new AuthResponseModel
             {

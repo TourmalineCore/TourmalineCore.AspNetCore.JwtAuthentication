@@ -10,7 +10,7 @@ Also, this library allows to easily implement registration and logout functional
 **NOTE**: This package is an extension of TourmalineCore.AspNetCore.JwtAuthentication.Core package, that contains basic functionality of JWT-based authentication. You can find more info about this package [here](https://github.com/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication/tree/master/JwtAuthentication.Core)
 
 
-## Basic usage
+# Basic usage
 
 1. You will need to inherit your context from TourmalineDbContext, provided by this package. It uses a generic parameter of user entity. This entity must inherit from **IdentityUser** class of Microsoft.Identity package.
 ```csharp
@@ -65,7 +65,7 @@ public class Startup
 }
 ```
 
-## Registration
+# Registration
 
 Using Identity allows you to easily implement regestration flow. To do that add the `AddRegistration` extension to **ConfigureServices**, and `UseRegistration` method to **Configure**. Both methods requires two generic parameters: 
 - **User**: Entity representing the user of your app. It is must be inhereted from IdentityUser.
@@ -113,7 +113,7 @@ You can call the registration endpoint, you need to use the POST method, add to 
 
 As a successful result it will return **Access Token Model**, so user will be automaically logged in.
 
-### Registration Routing
+## Registration Routing
 
 The default route to the Registration endpoint is `/auth/register`.
 You can change it by passing in a **RegistrationEndpointOptions** object to the **UseRegistration** extension. Like this:
@@ -135,7 +135,7 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 }
 ```
 
-## Refresh token
+# Refresh token
 
 If you want to add another layer of security to your application, you can use the refresh token. By using it you can reduce the lifetime of the access token, but  provide the ability to update it without re-login with an additional long-live token stored in your database.
 
@@ -166,7 +166,7 @@ public class Startup
     }
 }
 ```
-### Login request with a Refresh Token
+## Login request with a Refresh Token
 
 Requesting login endpoint will be much the same, but you can optionally add a **clientFingerPrint** parameter, that will be saved in the database with a genereted access token. If token has fingerprint, it can only be accessed by providing the same fingerprint value.
 
@@ -194,7 +194,7 @@ When you use a refresh token, its value will be added to every successful login 
 }
 ```
 
-### Refresh token request
+## Refresh Token Request
 
 To call the Refresh Token Endpoind, you need to use the POST method, add to the header `Content-Type: application/json` and pass the token value (and optionally fingerprint) in the JSON format in the request body. Like this:
 ```json
@@ -206,31 +206,41 @@ To call the Refresh Token Endpoind, you need to use the POST method, add to the 
 
 As a successful result it will return **Access Token Model**.
 
-### Options of Refresh Token
+## Refresh Token Options
 
 If you want to use your own values for options, then you need to pass RefreshAuthenticationOptions to the AddJwtAuthenticationWithRefreshToken(). This is inherit from basic AuthenticationOptions and share all the default parameters.
 
-Default values:
-```
-SigningKey = "jwtKeyjwtKeyjwtKeyjwtKeyjwtKey",
-Issuer = null,
-AccessTokenExpireInMinutes = 15,
-RefreshTokenExpireInMinutes = 10080,
-IsDebugTokenEnabled = false
-```
+To use package you need to pass AuthenticationOptions to the AddJwtAuthentication().
+
+| Name | Type | Default | Required | Description |
+|-|-|-|-|-|
+| PrivateSigningKey | string | null | yes | The base64-encoded RSA Private Key |
+| PublicSigningKey | string | null | yes | The Matching base64-encoded RSA Public Key |
+| Issuer | string | null | no | The Registered Issuer Value |
+| Audience | string | null | no | The Registered Audience Value |
+| AccessTokenExpireInMinutes | int | 15 | no | Lifetime of the Access Token |
+| RefreshTokenExpireInMinutes | int | 10080 | no | Lifetime of the Refresh Token |
+| IsDebugTokenEnabled | bool | false | no | If true, user credentials will not be checked during authentication |
+
 
 ```csharp
+...
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
+...
+
 public void ConfigureServices(IServiceCollection services) 
 {
     ...
-    services.Configure<RefreshAuthenticationOptions>(Configuration.GetSection(nameof(RefreshAuthenticationOptions)));
-    var authenticationOptions = services.BuildServiceProvider().GetService<IOptions<RefreshAuthenticationOptions>>().Value; 
-    services.AddJwtAuthenticationWithRefreshToken(authenticationOptions);
+    var authenticationOptions = _configuration.GetSection(nameof(RefreshAuthenticationOptions)).Get<RefreshAuthenticationOptions>();
+
+    services
+        .AddJwtAuthenticationWithIdentity<AppDbContext, User>()
+        .AddLoginWithRefresh(authenticationOptions);
     ...
 }
 ```
 
-### Refresh Routing
+## Refresh Routing
 
 The default route to the refresh endpoint is `/auth/refresh`.
 You can change it by passing in a **RefreshEndpointOptions** object to the **UseRefreshTokenMiddleware** extension. Like this:
@@ -254,7 +264,7 @@ public async void Configure(IApplicationBuilder app, IHostingEnvironment env)
 }
 ```
 
-### Logout
+# Logout
 
 If you are using the refresh token, you will probably want to have a possibility to remove token's data from the database, when user requests it. This can be achieved by implementing the Logout mechanism. You can simply enable it like this:
 
@@ -288,7 +298,7 @@ public class Startup
 }
 ```
 
-### Logout request
+## Logout request
 
 To call the Logout Endpoind, you need to use the POST method, add to the header `Content-Type: application/json` and pass the refresh token value (and optionally fingerprint) in the JSON format in the request body. Like this:
 ```json
