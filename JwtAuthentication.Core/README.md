@@ -23,10 +23,18 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core;
 
 public class Startup
 {
+    private readonly IConfiguration _configuration;
+
+    public Startup(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
     public void ConfigureServices(IServiceCollection services) 
     {
         ...
-        services.AddJwtAuthentication();
+        var authenticationOptions = (_configuration.GetSection(nameof(AuthenticationOptions)).Get<AuthenticationOptions>());
+        services.AddJwtAuthentication(authenticationOptions);
         ...
     }
 
@@ -50,10 +58,18 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core;
 
 public class Startup
 {
+    private readonly IConfiguration _configuration;
+
+    public Startup(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+    
     public void ConfigureServices(IServiceCollection services) 
     {
         ...
-        services.AddJwtAuthentication();
+        var authenticationOptions = (_configuration.GetSection(nameof(AuthenticationOptions)).Get<AuthenticationOptions>());
+        services.AddJwtAuthentication(authenticationOptions);
         ...
     }
 
@@ -171,7 +187,7 @@ public class Startup
 	{
         ...
         services
-          .AddJwtAuthentication()
+          .AddJwtAuthentication(authenticationOptions)
           .AddUserCredentialValidator<UserCredentialsValidator>();
         ...
     }
@@ -237,7 +253,7 @@ public class UserClaimsProvider : IUserClaimsProvider
 public void ConfigureServices(IServiceCollection services) 
 {
     ...
-    services.AddJwtAuthentication()
+    services.AddJwtAuthentication(authenticationOptions)
             .WithUserClaimsProvider<UserClaimsProvider>(UserClaimsProvider.ExampleClaimType);
     ...
 }
