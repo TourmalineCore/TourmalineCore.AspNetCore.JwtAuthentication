@@ -255,12 +255,22 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 public void ConfigureServices(IServiceCollection services) 
 {
     ...
-    var authenticationOptions = _configuration.GetSection(nameof(RefreshAuthenticationOptions)).Get<RefreshAuthenticationOptions>();
+    var authenticationOptions = _configuration.GetSection("AuthenticationOptions").Get<RefreshAuthenticationOptions>();
 
     services
         .AddJwtAuthenticationWithIdentity<AppDbContext, User>()
         .AddLoginWithRefresh(authenticationOptions);
     ...
+}
+```
+
+Minimum appsettings.json configuration:
+```json
+{
+	"AuthenticationOptions": {
+		"PublicSigningKey": "<PUT YOUR PUBLIC RSA KEY HERE>",
+		"PrivateSigningKey": "<PUT YOUR PRIVATE RSA KEY HERE>"
+	}
 }
 ```
 

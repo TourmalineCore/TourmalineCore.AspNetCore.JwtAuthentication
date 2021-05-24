@@ -111,6 +111,16 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 
+Minimum appsettings.json configuration:
+```json
+{
+	"AuthenticationOptions": {
+		"PublicSigningKey": "<PUT YOUR PUBLIC RSA KEY HERE>",
+		"PrivateSigningKey": "<PUT YOUR PRIVATE RSA KEY HERE>"
+	}
+}
+```
+
 ## Routing
 
 The default route to the login endpoint is `/auth/login`.
