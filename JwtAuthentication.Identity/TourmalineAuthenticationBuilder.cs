@@ -97,7 +97,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         /// </summary>
         /// <param name="authenticationOptions"></param>
         /// <returns></returns>
-        public TourmalineAuthenticationBuilder<TContext, TUser> AddLoginWithRefresh(RefreshAuthenticationOptions authenticationOptions = null)
+        public TourmalineAuthenticationBuilder<TContext, TUser> AddLoginWithRefresh(RefreshAuthenticationOptions authenticationOptions)
         {
             Services.AddSingleton(authenticationOptions);
 

@@ -34,12 +34,20 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 
 public class Startup
 {
+    private readonly IConfiguration _configuration;
+
+    public Startup(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
     public void ConfigureServices(IServiceCollection services) 
 	{
         ...
+        var authenticationOptions = (_configuration.GetSection(nameof(AuthenticationOptions)).Get<AuthenticationOptions>());
         services
                 .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
-                .AddBaseLogin();
+                .AddBaseLogin(authenticationOptions);
         ...
     }
 
@@ -78,12 +86,20 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 
 public class Startup
 {
+    private readonly IConfiguration _configuration;
+
+    public Startup(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
     public void ConfigureServices(IServiceCollection services) 
 	{
         ...
+        var authenticationOptions = (_configuration.GetSection(nameof(AuthenticationOptions)).Get<AuthenticationOptions>());
         services
             .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
-            .AddBaseLogin()
+            .AddBaseLogin(authenticationOptions)
             .AddRegistration();
         ...
     }
@@ -146,12 +162,20 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 
 public class Startup
 {
+    private readonly IConfiguration _configuration;
+
+    public Startup(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
     public void ConfigureServices(IServiceCollection services) 
 	{
         ...
+        var authenticationOptions = (_configuration.GetSection(nameof(AuthenticationOptions)).Get<RefreshAuthenticationOptions>());
         services
             .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
-            .AddLoginWithRefresh();
+            .AddLoginWithRefresh(authenticationOptions);
         ...
     }
 
@@ -280,7 +304,7 @@ public class Startup
         ...
         services
             .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
-            .AddLoginWithRefresh()
+            .AddLoginWithRefresh(authenticationOptions)
             .AddLogout();
         ...
     }

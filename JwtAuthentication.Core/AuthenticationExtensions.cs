@@ -26,16 +26,14 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         /// <returns></returns>
         public static IServiceCollection AddJwtAuthentication(
             this IServiceCollection services,
-            AuthenticationOptions authenticationOptions = null)
+            AuthenticationOptions authenticationOptions)
         {
-            var options = authenticationOptions ?? new AuthenticationOptions();
-
             services.AddTransient<ITokenManager, TokenManager>();
             services.AddTransient<ILoginService, LoginService>();
             services.AddTransient<IUserCredentialsValidator, FakeUserCredentialValidator>();
             services.AddTransient<IUserClaimsProvider, DefaultUserClaimsProvider>();
 
-            services.AddJwtBearer(options);
+            services.AddJwtBearer(authenticationOptions);
 
             return services;
         }
