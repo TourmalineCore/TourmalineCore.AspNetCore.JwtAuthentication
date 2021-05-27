@@ -17,6 +17,11 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Validators
         {
             var user = await _signInManager.UserManager.FindByNameAsync(login);
 
+            if (user == null)
+            {
+                return false;
+            }
+
             var signInResult = await _signInManager.PasswordSignInAsync(user,
                     password,
                     false,
