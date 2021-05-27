@@ -8,6 +8,18 @@ With this library, you can very easily connect the JWT-based authentication to y
 Also, this library allows to override the logic of username and password validation.
 The library provides the ability to use a debug token to avoid the need to enter a username and password when the lifetime of the JWT expires.
 
+# Table of Content
+
+- [Authentication](#authentication)
+- [Basic Usage](#basic)
+- [Cookie](#cookie)
+- [Options](#options)
+- [Routing](#routing)
+- [Login Request Example](#login-request)
+- [Login Validation](#login-validation)
+- [Token Usage](#token-usage)
+- [Authorization](#authorization)
+
 # Authentication
 
 ## Basic
@@ -108,6 +120,16 @@ public void ConfigureServices(IServiceCollection services)
     var authenticationOptions = _configuration.GetSection(nameof(AuthenticationOptions)).Get<AuthenticationOptions>()
     services.AddJwtAuthentication(authenticationOptions);
     ...
+}
+```
+
+Minimum appsettings.json configuration:
+```json
+{
+	"AuthenticationOptions": {
+		"PublicSigningKey": "<PUT YOUR PUBLIC RSA KEY HERE>",
+		"PrivateSigningKey": "<PUT YOUR PRIVATE RSA KEY HERE>"
+	}
 }
 ```
 

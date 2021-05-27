@@ -9,6 +9,20 @@ Also, this library allows to easily implement registration and logout functional
 
 **NOTE**: This package is an extension of TourmalineCore.AspNetCore.JwtAuthentication.Core package, that contains basic functionality of JWT-based authentication. You can find more info about this package [here](https://github.com/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication/tree/master/JwtAuthentication.Core)
 
+# Table of Content
+
+- [Basic Usage](#basic-usage)
+- [Registration](#registration)
+    - [Registration Request](#registration-request)
+    - [Registration Routing](#registration-routing)
+- [Refresh](#refresh-token)
+    - [Login request with a Refresh Token](#Login-request-with-a-Refresh-Token)
+    - [Refresh Token Request](#Refresh-Token-Request)
+    - [Refresh Token Options](#Refresh-Token-Options)
+    - [Refresh Routing](#Refresh-Token-Options)
+    - [Logout](#logout)
+        - [Logout Request](#logout-request)
+
 
 # Basic usage
 
@@ -255,12 +269,22 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 public void ConfigureServices(IServiceCollection services) 
 {
     ...
-    var authenticationOptions = _configuration.GetSection(nameof(RefreshAuthenticationOptions)).Get<RefreshAuthenticationOptions>();
+    var authenticationOptions = _configuration.GetSection("AuthenticationOptions").Get<RefreshAuthenticationOptions>();
 
     services
         .AddJwtAuthenticationWithIdentity<AppDbContext, User>()
         .AddLoginWithRefresh(authenticationOptions);
     ...
+}
+```
+
+Minimum appsettings.json configuration:
+```json
+{
+	"AuthenticationOptions": {
+		"PublicSigningKey": "<PUT YOUR PUBLIC RSA KEY HERE>",
+		"PrivateSigningKey": "<PUT YOUR PRIVATE RSA KEY HERE>"
+	}
 }
 ```
 
