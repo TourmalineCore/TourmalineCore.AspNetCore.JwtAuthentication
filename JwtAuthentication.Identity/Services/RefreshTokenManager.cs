@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Models;
@@ -16,10 +15,10 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 
         public RefreshTokenManager(
             TourmalineDbContext<TUser> dbContext,
-            IOptions<RefreshAuthenticationOptions> options)
+            RefreshAuthenticationOptions options)
         {
             _dbContext = dbContext;
-            _options = options.Value;
+            _options = options;
         }
 
         public async Task<TokenModel> GetRefreshToken(object user, string clientFingerPrint)
