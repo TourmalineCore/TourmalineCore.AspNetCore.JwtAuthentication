@@ -24,6 +24,21 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         /// <param name="services"></param>
         /// <param name="authenticationOptions"></param>
         /// <returns></returns>
+        public static IServiceCollection AddJwtValidation(
+            this IServiceCollection services,
+            AuthenticationOptions authenticationOptions)
+        {
+            services.AddJwtBearer(authenticationOptions);
+
+            return services;
+        }
+
+        /// <summary>
+        /// Adds the ability to use the basic functionality of JWT
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="authenticationOptions"></param>
+        /// <returns></returns>
         public static IServiceCollection AddJwtAuthentication(
             this IServiceCollection services,
             AuthenticationOptions authenticationOptions)
