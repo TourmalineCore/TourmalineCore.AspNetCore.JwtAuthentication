@@ -272,10 +272,24 @@ public class UserClaimsProvider : IUserClaimsProvider
 2. Connect this provider in the Startup.cs.
    You can pass the name of the claim type you want to use as a parameter. `Default claim type = "Permission"`.
 ```csharp
+// For base usage with Core package
+using TourmalineCore.AspNetCore.JwtAuthentication.Core;
+
 public void ConfigureServices(IServiceCollection services) 
 {
     ...
     services.AddJwtAuthentication(authenticationOptions)
+            .WithUserClaimsProvider<UserClaimsProvider>(UserClaimsProvider.ExampleClaimType);
+    ...
+}
+
+// For usage with Identity package
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
+
+public void ConfigureServices(IServiceCollection services) 
+{
+    ...
+    services.AddJwtAuthenticationWithIdentity<DbContext, User>()
             .WithUserClaimsProvider<UserClaimsProvider>(UserClaimsProvider.ExampleClaimType);
     ...
 }
@@ -292,12 +306,12 @@ The claims in the token will look like this:
 }
 ```
 
-3. To enable checking of permissions, you must add the `RequiredPermission` attribute before the controller or method and pass as a parameter all permissions that are needed , for example:
+3. To enable checking of permissions, you must add the `RequiresPermission` attribute before the controller or method and pass as a parameter all permissions that are needed , for example:
 ```csharp
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Filters;
 
 [Authorize]
-[RequiredPermission(UserClaimsProvider.FirstExampleClaimName)]
+[RequiresPermission(UserClaimsProvider.FirstExampleClaimName)]
 [HttpGet]
 public IEnumerable<object> Get()
 {
@@ -312,7 +326,7 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Filters;
 [ApiController]
 [Route("[controller]")]
 [Authorize]
-[RequiredPermission(UserClaimsProvider.FirstExampleClaimName, UserClaimsProvider.SecondExampleClaimName)]
+[RequiresPermission(UserClaimsProvider.FirstExampleClaimName, UserClaimsProvider.SecondExampleClaimName)]
 public class ExampleController : ControllerBase
 {
     //Some methods
