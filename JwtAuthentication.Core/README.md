@@ -272,24 +272,12 @@ public class UserClaimsProvider : IUserClaimsProvider
 2. Connect this provider in the Startup.cs.
    You can pass the name of the claim type you want to use as a parameter. `Default claim type = "Permission"`.
 ```csharp
-// For base usage with Core package
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
 
 public void ConfigureServices(IServiceCollection services) 
 {
     ...
     services.AddJwtAuthentication(authenticationOptions)
-            .WithUserClaimsProvider<UserClaimsProvider>(UserClaimsProvider.ExampleClaimType);
-    ...
-}
-
-// For usage with Identity package
-using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
-
-public void ConfigureServices(IServiceCollection services) 
-{
-    ...
-    services.AddJwtAuthenticationWithIdentity<DbContext, User>()
             .WithUserClaimsProvider<UserClaimsProvider>(UserClaimsProvider.ExampleClaimType);
     ...
 }
