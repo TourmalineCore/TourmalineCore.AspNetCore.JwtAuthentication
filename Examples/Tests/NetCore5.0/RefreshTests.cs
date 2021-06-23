@@ -42,7 +42,7 @@ namespace Tests.NetCore5._0
         public async Task RefreshWithInvalidToken_Returns401()
         {
             var (response, _) = await CallRefresh(Guid.NewGuid().ToString());
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
         }
 
         [Fact]
@@ -65,7 +65,7 @@ namespace Tests.NetCore5._0
             Assert.Equal(HttpStatusCode.OK, logoutResult.StatusCode);
 
             var secondRefreshResult = await CallRefresh(refreshResult.authModel.RefreshToken.Value);
-            Assert.Equal(HttpStatusCode.BadRequest, secondRefreshResult.response.StatusCode);
+            Assert.Equal(HttpStatusCode.InternalServerError, secondRefreshResult.response.StatusCode);
         }
 
         private async Task<(HttpResponseMessage response, AuthResponseModel authModel)> CallRefresh(string refresh, string fingerprint = null)

@@ -54,7 +54,7 @@ namespace Tests.NetCore5._0
 
             var logoutResult = await client.PostAsync(LogoutUrl, body);
 
-            Assert.Equal(HttpStatusCode.BadRequest, logoutResult.StatusCode);
+            Assert.Equal(HttpStatusCode.InternalServerError, logoutResult.StatusCode);
         }
     }
 }

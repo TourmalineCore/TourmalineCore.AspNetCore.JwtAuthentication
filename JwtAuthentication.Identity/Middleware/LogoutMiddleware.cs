@@ -33,7 +33,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware
             }
             catch
             {
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 return false;
             }
 
