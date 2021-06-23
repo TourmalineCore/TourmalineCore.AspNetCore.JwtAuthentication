@@ -37,7 +37,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware
             }
             catch (AuthenticationException)
             {
-                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             }
 
             return result;
