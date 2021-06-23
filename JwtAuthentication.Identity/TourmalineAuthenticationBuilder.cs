@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract.Implementation;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Filters;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
@@ -125,6 +126,17 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             where TUserCredentialsValidator : IUserCredentialsValidator
         {
             Services.AddTransient(typeof(IUserCredentialsValidator), typeof(TUserCredentialsValidator));
+            return this;
+        }
+
+        public TourmalineAuthenticationBuilder<TContext, TUser> WithUserClaimsProvider<TUserClaimsProvider>(
+            string permissionClaimTypeKey = "Permission")
+            where TUserClaimsProvider : IUserClaimsProvider
+        {
+            RequiresPermission.ClaimType = permissionClaimTypeKey;
+
+            Services.AddTransient(typeof(IUserClaimsProvider), typeof(TUserClaimsProvider));
+
             return this;
         }
 
