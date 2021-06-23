@@ -19,7 +19,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
     public static class AuthenticationExtensions
     {
         /// <summary>
-        /// Adds the ability to use the basic functionality of JWT
+        /// Adds the ability to validate JWT
         /// </summary>
         /// <param name="services"></param>
         /// <param name="authenticationOptions"></param>

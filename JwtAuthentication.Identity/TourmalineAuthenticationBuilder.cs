@@ -129,6 +129,12 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             return this;
         }
 
+        /// <summary>
+        /// Adds the ability to implement functionality for retrieving user claims 
+        /// </summary>
+        /// <typeparam name="TUserClaimsProvider"></typeparam>
+        /// <param name="permissionClaimTypeKey"></param>
+        /// <returns></returns>
         public TourmalineAuthenticationBuilder<TContext, TUser> WithUserClaimsProvider<TUserClaimsProvider>(
             string permissionClaimTypeKey = "Permission")
             where TUserClaimsProvider : IUserClaimsProvider
