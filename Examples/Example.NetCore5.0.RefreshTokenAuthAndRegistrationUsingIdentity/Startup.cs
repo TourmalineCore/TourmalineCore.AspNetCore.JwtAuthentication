@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 
@@ -23,6 +24,11 @@ namespace Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity
 
         public void ConfigureServices(IServiceCollection services)
         {
+
+            var opt = _configuration.GetSection(nameof(AuthenticationOptions)).Get<RefreshAuthenticationOptions>();
+
+            var a = opt.AccessTokenExpireInMinutes;
+
             services.AddDbContext<AppDbContext>(options =>
                     options.UseInMemoryDatabase("Database")
                 );
