@@ -1,6 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
 {
@@ -21,6 +22,12 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             where TContext : TourmalineDbContext<TUser>
             where TUser : IdentityUser
         {
+            services.AddLogging(config =>
+            {
+                config.AddDebug();
+                config.AddConsole();
+            });
+
             return new TourmalineAuthenticationBuilder<TContext, TUser>(services, setupAction);
         }
     }

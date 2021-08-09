@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
@@ -18,14 +19,15 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware
     {
         private readonly RegistrationEndpointOptions _endpointOptions;
         private readonly Func<TRegistrationRequestModel, TUser> _mapping;
+        private readonly ILogger<RegistrationMiddleware<TUser, TRegistrationRequestModel>> _logger;
 
         public RegistrationMiddleware(
             RequestDelegate next,
-            Func<TRegistrationRequestModel, TUser> mapping,
-            RegistrationEndpointOptions endpointOptions = null)
+            Func<TRegistrationRequestModel, TUser> mapping, ILogger<RegistrationMiddleware<TUser, TRegistrationRequestModel>> logger, RegistrationEndpointOptions endpointOptions = null)
             : base(next)
         {
             _mapping = mapping;
+            _logger = logger;
             _endpointOptions = endpointOptions;
         }
 
@@ -42,9 +44,10 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware
             {
                 result = await service.RegisterAsync(model, _mapping);
             }
-            catch (RegistrationException)
+            catch (RegistrationException ex)
             {
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                context.Response.StatusCode = StatusCodes.Status409Conflict;
+                _logger.LogError(ex.ToString());
             }
 
             return result;
