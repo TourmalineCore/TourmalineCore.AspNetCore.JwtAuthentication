@@ -355,3 +355,7 @@ app
 ## Logout
 
 To call callbacks during logout, you need to follow the same steps as for login. Only use methods `OnLogoutExecuted` and `OnLogoutExecuting`. And your function should take `LogoutModel` as a parameter
+
+## Refresh
+
+To call callbacks during refresh, you need to follow the same steps as for login. Only use methods `OnRefreshExecuted` and `OnRefreshExecuting`. And your function should take `RefreshModel` as a parameter

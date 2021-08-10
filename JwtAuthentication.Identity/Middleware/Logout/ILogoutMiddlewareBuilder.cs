@@ -12,6 +12,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Logout
 
         public ILogoutMiddlewareBuilder OnLogoutExecuted(Func<LogoutModel, Task> callback);
 
-        public IApplicationBuilder UseRefreshTokenLogoutMiddleware(LogoutEndpointOptions endpointOptions = null);
+        public IApplicationBuilder UseLogoutMiddleware(LogoutEndpointOptions endpointOptions = null);
     }
 }

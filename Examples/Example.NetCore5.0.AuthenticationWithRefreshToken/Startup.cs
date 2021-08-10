@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Example.NetCore5._0.AuthenticationWithRefreshToken.Data;
 using Example.NetCore5._0.AuthenticationWithRefreshToken.Models;
@@ -11,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Logout.Models;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Refresh.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 
 namespace Example.NetCore5._0.AuthenticationWithRefreshToken
@@ -50,11 +50,15 @@ namespace Example.NetCore5._0.AuthenticationWithRefreshToken
             app.UseRouting();
 
             app.UseDefaultLoginMiddleware();
-            app.UseRefreshTokenMiddleware();
 
-            app.OnLogoutExecuted(OnLogoutExecuted)
+            app
+                .OnLogoutExecuted(OnLogoutExecuted)
                 .OnLogoutExecuting(OnLogoutExecuting)
-                .UseRefreshTokenLogoutMiddleware();
+                .UseLogoutMiddleware();
+
+            app
+                .OnRefreshExecuting(OnRefreshExecuting)
+                .UseRefreshMiddleware();
 
             app.UseJwtAuthentication();
 
@@ -67,6 +71,11 @@ namespace Example.NetCore5._0.AuthenticationWithRefreshToken
         }
 
         private Task OnLogoutExecuted(LogoutModel data)
+        {
+            return Task.CompletedTask;
+        }
+
+        private Task OnRefreshExecuting(RefreshModel data)
         {
             return Task.CompletedTask;
         }

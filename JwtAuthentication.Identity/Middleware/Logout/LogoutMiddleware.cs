@@ -51,7 +51,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Logout
                     ClientFingerPrint = requestModel.ClientFingerPrint,
                 };
 
-                await _onLogoutExecuting.Invoke(contractLogoutModel);
+                await _onLogoutExecuting(contractLogoutModel);
                 await service.LogoutAsync(requestModel);
                 await _onLogoutExecuted(contractLogoutModel);
             }
