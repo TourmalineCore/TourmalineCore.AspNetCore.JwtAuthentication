@@ -29,7 +29,7 @@ namespace Tests.NetCore5._0
         public async Task RegisterWithInvalidCreds_Returns400()
         {
             var registerResult = await RegisterAsync(Login, "1");
-            Assert.Equal(HttpStatusCode.BadRequest, registerResult.response.StatusCode);
+            Assert.Equal(HttpStatusCode.Conflict, registerResult.response.StatusCode);
         }
 
         [Fact]
@@ -49,7 +49,7 @@ namespace Tests.NetCore5._0
         public async Task RegisterWithCredsOfExistingUser_Returns400()
         {
             var registerResult = await RegisterAsync("Admin", "Admin");
-            Assert.Equal(HttpStatusCode.BadRequest, registerResult.response.StatusCode);
+            Assert.Equal(HttpStatusCode.Conflict, registerResult.response.StatusCode);
         }
 
         private async Task<(HttpResponseMessage response, AuthResponseModel authModel)> RegisterAsync(string login, string password)

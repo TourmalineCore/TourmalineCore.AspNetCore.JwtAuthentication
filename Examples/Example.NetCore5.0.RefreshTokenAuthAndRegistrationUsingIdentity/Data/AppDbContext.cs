@@ -1,4 +1,4 @@
-using Example.NetCore5._0.AuthenticationWithRefreshToken.Models;
+using Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity.Models;
 using Microsoft.EntityFrameworkCore;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 

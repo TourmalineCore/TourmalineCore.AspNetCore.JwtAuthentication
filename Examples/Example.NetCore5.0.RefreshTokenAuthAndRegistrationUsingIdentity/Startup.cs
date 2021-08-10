@@ -1,5 +1,5 @@
-using Example.NetCore5._0.AuthenticationWithRefreshToken.Models;
 using Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity.Data;
+using Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +24,6 @@ namespace Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             var opt = _configuration.GetSection(nameof(AuthenticationOptions)).Get<RefreshAuthenticationOptions>();
 
             var a = opt.AccessTokenExpireInMinutes;
@@ -53,8 +52,9 @@ namespace Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity
 
             app.UseRouting();
 
-            app.UseJwtAuthentication();
-            app.UseDefaultLoginMiddleware();
+            app.UseDefaultLoginMiddleware()
+                .UseJwtAuthentication();
+
             app.UseRefreshTokenMiddleware();
             app.UseRefreshTokenLogoutMiddleware();
 

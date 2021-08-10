@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.0;netcoreapp3.1;net5.0</TargetFrameworks>
     <PackageId>TourmalineCore.AspNetCore.JwtAuthentication.Core</PackageId>
-    <Version>0.3.2-alpha.1</Version>
+    <Version>0.3.3-alpha.1</Version>
     <Authors>Koval Maxim, Nikita Medvedev, Aleksandr Shinkarev</Authors>
     <Company>Tourmaline Core</Company>
     <Product>JwtAuthentication</Product>
@@ -34,6 +34,10 @@
     <!-- Accepts any version 5.0.0 and above.
      Will resolve to the smallest acceptable stable version.-->
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Middlewares\Login\Models\" />
   </ItemGroup>
 
 </Project>
