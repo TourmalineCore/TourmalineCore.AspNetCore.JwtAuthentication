@@ -1,9 +1,14 @@
 using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Login;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Login.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Logout;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Logout.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
@@ -112,8 +117,38 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         /// <returns></returns>
         public static IApplicationBuilder UseRefreshTokenLogoutMiddleware(this IApplicationBuilder applicationBuilder, LogoutEndpointOptions endpointOptions = null)
         {
+            Func<LogoutModel, Task> defaultOnLogoutCallback = s => Task.CompletedTask;
+
             return applicationBuilder
-                .UseMiddleware<LogoutMiddleware>(endpointOptions ?? new LogoutEndpointOptions());
+                .UseMiddleware<LogoutMiddleware>(endpointOptions ?? new LogoutEndpointOptions(), defaultOnLogoutCallback, defaultOnLogoutCallback);
+        }
+
+        /// <summary>
+        /// Registering a callback function to perform actions when  when the logout starts.
+        /// </summary>
+        /// <param name="applicationBuilder"></param>
+        /// <param name="callback"></param>
+        /// <returns></returns>
+        public static ILogoutMiddlewareBuilder OnLogoutExecuting(this IApplicationBuilder applicationBuilder, Func<LogoutModel, Task> callback)
+        {
+            return LogoutMiddlewareBuilder
+                .GetInstance()
+                .SetAppBuilder(applicationBuilder)
+                .OnLogoutExecuting(callback);
+        }
+
+        /// <summary>
+        /// Registering a callback function to perform actions when the logout ends.
+        /// </summary>
+        /// <param name="applicationBuilder"></param>
+        /// <param name="callback"></param>
+        /// <returns></returns>
+        public static ILogoutMiddlewareBuilder OnLogoutExecuted(this IApplicationBuilder applicationBuilder, Func<LogoutModel, Task> callback)
+        {
+            return LogoutMiddlewareBuilder
+                .GetInstance()
+                .SetAppBuilder(applicationBuilder)
+                .OnLogoutExecuted(callback);
         }
     }
 }
