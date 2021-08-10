@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -6,23 +7,31 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Refresh.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 
-namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Refresh
 {
     internal class RefreshMiddleware : RequestMiddlewareBase<IRefreshService, RefreshTokenRequestModel, AuthResponseModel>
     {
         private readonly RefreshEndpointOptions _endpointOptions;
         private readonly ILogger<RefreshMiddleware> _logger;
 
+        private readonly Func<RefreshModel, Task> _onRefreshExecuting;
+        private readonly Func<RefreshModel, Task> _onRefreshExecuted;
+
         public RefreshMiddleware(
             RequestDelegate next,
             RefreshEndpointOptions endpointOptions,
-            ILogger<RefreshMiddleware> logger)
+            ILogger<RefreshMiddleware> logger,
+            Func<RefreshModel, Task> onRefreshExecuting,
+            Func<RefreshModel, Task> onRefreshExecuted)
             : base(next)
         {
             _endpointOptions = endpointOptions;
             _logger = logger;
+            _onRefreshExecuting = onRefreshExecuting;
+            _onRefreshExecuted = onRefreshExecuted;
         }
 
         public async Task InvokeAsync(HttpContext context, IRefreshService refreshService)
@@ -31,7 +40,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware
         }
 
         protected override async Task<AuthResponseModel> ExecuteServiceMethod(
-            RefreshTokenRequestModel model,
+            RefreshTokenRequestModel requestModel,
             IRefreshService service,
             HttpContext context)
         {
@@ -39,7 +48,15 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware
 
             try
             {
-                result = await service.RefreshAsync(model);
+                var contractRefreshModel = new RefreshModel
+                {
+                    RefreshTokenValue = requestModel.RefreshTokenValue,
+                    ClientFingerPrint = requestModel.ClientFingerPrint,
+                };
+
+                await _onRefreshExecuting(contractRefreshModel);
+                result = await service.RefreshAsync(requestModel);
+                await _onRefreshExecuted(contractRefreshModel);
             }
             catch (AuthenticationException ex)
             {
