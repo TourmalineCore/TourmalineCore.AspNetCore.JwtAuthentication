@@ -1,3 +1,4 @@
+using System;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -5,20 +6,31 @@ using Microsoft.Extensions.Logging;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Logout.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 
-namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Logout
 {
     internal class LogoutMiddleware : RequestMiddlewareBase<ILogoutService, LogoutRequestModel, bool>
     {
         private readonly LogoutEndpointOptions _endpointOptions;
         private readonly ILogger<LogoutMiddleware> _logger;
 
-        public LogoutMiddleware(RequestDelegate next, LogoutEndpointOptions endpointOptions, ILogger<LogoutMiddleware> logger)
+        private readonly Func<LogoutModel, Task> _onLogoutExecuting;
+        private readonly Func<LogoutModel, Task> _onLogoutExecuted;
+
+        public LogoutMiddleware(
+            RequestDelegate next,
+            LogoutEndpointOptions endpointOptions,
+            ILogger<LogoutMiddleware> logger,
+            Func<LogoutModel, Task> onLogoutExecuting, 
+            Func<LogoutModel, Task> onLogoutExecuted)
             : base(next)
         {
             _endpointOptions = endpointOptions;
             _logger = logger;
+            _onLogoutExecuting = onLogoutExecuting;
+            _onLogoutExecuted = onLogoutExecuted;
         }
 
         public async Task InvokeAsync(HttpContext context, ILogoutService logoutService)
@@ -27,15 +39,23 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware
         }
 
         protected override async Task<bool> ExecuteServiceMethod(
-            LogoutRequestModel model,
+            LogoutRequestModel requestModel,
             ILogoutService service,
             HttpContext context)
         {
             try
             {
-                await service.LogoutAsync(model);
+                var contractLogoutModel = new LogoutModel
+                {
+                    RefreshTokenValue = requestModel.RefreshTokenValue,
+                    ClientFingerPrint = requestModel.ClientFingerPrint,
+                };
+
+                await _onLogoutExecuting.Invoke(contractLogoutModel);
+                await service.LogoutAsync(requestModel);
+                await _onLogoutExecuted(contractLogoutModel);
             }
-            catch(AuthenticationException ex)
+            catch (AuthenticationException ex)
             {
                 context.Response.StatusCode = StatusCodes.Status409Conflict;
                 _logger.LogError(ex.ToString());

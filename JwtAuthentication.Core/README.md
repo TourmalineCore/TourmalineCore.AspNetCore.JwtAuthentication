@@ -324,11 +324,11 @@ public class ExampleController : ControllerBase
 
 Thus, only those users who have the desired permission will have access to the controller or controller method.
 
-#Callbacks
+# Callbacks
 
 The library provides the ability to transfer callbacks for a call at the beginning and end of the execution of the authentication, logout and refresh token functions. This feature can be used for logging, to calculate your system usage statistics, and so on.
 
-##Login
+## Login
 
 To use callbacks for authentication, follow these steps:
 
@@ -351,3 +351,7 @@ app
     .OnLoginExecuted(OnLoginExecuted)
     .UseDefaultLoginMiddleware();
 ```
+
+## Logout
+
+To call callbacks during logout, you need to follow the same steps as for login. Only use methods `OnLogoutExecuted` and `OnLogoutExecuting`. And your function should take `LogoutModel` as a parameter
