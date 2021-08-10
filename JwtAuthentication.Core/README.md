@@ -19,6 +19,7 @@ The library provides the ability to use a debug token to avoid the need to enter
 - [Login Validation](#login-validation)
 - [Token Usage](#token-usage)
 - [Authorization](#authorization)
+- [Callbacks](#callbacks)
 
 # Authentication
 
@@ -322,3 +323,31 @@ public class ExampleController : ControllerBase
 ```
 
 Thus, only those users who have the desired permission will have access to the controller or controller method.
+
+#Callbacks
+
+The library provides the ability to transfer callbacks for a call at the beginning and end of the execution of the authentication, logout and refresh token functions. This feature can be used for logging, to calculate your system usage statistics, and so on.
+
+##Login
+
+To use callbacks for authentication, follow these steps:
+
+1. Create a function that will take `LoginModel` as a parameter and return a result of the Task type. For example:
+
+```csharp
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Login.Models;
+
+private Task OnLoginExecuting(LoginModel data)
+{
+    //Make something
+}
+```
+
+2. In the `Startup` class in the `Configure` method use
+
+```charp
+app
+    .OnLoginExecuting(OnLoginExecuting)
+    .OnLoginExecuted(OnLoginExecuted)
+    .UseDefaultLoginMiddleware();
+```

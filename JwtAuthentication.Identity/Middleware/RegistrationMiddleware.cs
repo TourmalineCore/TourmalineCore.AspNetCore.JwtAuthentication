@@ -36,13 +36,13 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware
             await InvokeAsyncBase(context, registrationService, _endpointOptions.RegistrationEndpointRoute);
         }
 
-        protected override async Task<AuthResponseModel> ExecuteServiceMethod(TRegistrationRequestModel model, IRegistrationService<TUser, TRegistrationRequestModel> service, HttpContext context)
+        protected override async Task<AuthResponseModel> ExecuteServiceMethod(TRegistrationRequestModel requestModel, IRegistrationService<TUser, TRegistrationRequestModel> service, HttpContext context)
         {
             var result = new AuthResponseModel();
 
             try
             {
-                result = await service.RegisterAsync(model, _mapping);
+                result = await service.RegisterAsync(requestModel, _mapping);
             }
             catch (RegistrationException ex)
             {
