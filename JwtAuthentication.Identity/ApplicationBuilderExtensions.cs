@@ -4,12 +4,15 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
-using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Logout;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Logout.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Refresh;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Refresh.Models;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Registration;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Registration.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
+using IRefreshMiddlewareBuilder = TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Refresh.IRefreshMiddlewareBuilder;
+using RefreshMiddlewareBuilder = TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Refresh.RefreshMiddlewareBuilder;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
 {
@@ -66,6 +69,33 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         }
 
         /// <summary>
+        /// Adds middleware to handle incoming user registration requests. It requires a function to map model received from client
+        /// to user entity.
+        /// </summary>
+        /// <typeparam name="TUser"></typeparam>
+        /// <param name="applicationBuilder"></param>
+        /// <param name="mapping"></param>
+        /// <param name="registrationEndpointOptions"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseRegistration<TUser>(
+            this IApplicationBuilder applicationBuilder,
+            Func<RegistrationRequestModel, TUser> mapping,
+            RegistrationEndpointOptions registrationEndpointOptions = null)
+            where TUser : IdentityUser
+        {
+            var options = registrationEndpointOptions ?? new RegistrationEndpointOptions();
+            Func<RefreshModel, Task> defaultOnRegistrationCallback = s => Task.CompletedTask;
+
+            return applicationBuilder
+                .UseMiddleware<RegistrationMiddleware<TUser, RegistrationRequestModel>>(
+                        mapping,
+                        defaultOnRegistrationCallback,
+                        defaultOnRegistrationCallback,
+                        options
+                    );
+        }
+
+        /// <summary>
         /// Adds middleware to handle incoming user registration requests with custom registration request model. It requires a
         /// function to map model received from client.
         /// to user entity.
@@ -84,31 +114,15 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             where TRegistrationRequestModel : RegistrationRequestModel
         {
             var options = registrationEndpointOptions ?? new RegistrationEndpointOptions();
+            Func<RefreshModel, Task> defaultOnRegistrationCallback = s => Task.CompletedTask;
 
             return applicationBuilder
-                .UseMiddleware<RegistrationMiddleware<TUser, TRegistrationRequestModel>>(mapping, options);
-        }
-
-        /// <summary>
-        /// Adds middleware to handle incoming user registration requests. It requires a function to map model received from client
-        /// to user entity.
-        /// </summary>
-        /// <typeparam name="TUser"></typeparam>
-        /// <typeparam name="TRegistrationRequestModel"></typeparam>
-        /// <param name="applicationBuilder"></param>
-        /// <param name="mapping"></param>
-        /// <param name="registrationEndpointOptions"></param>
-        /// <returns></returns>
-        public static IApplicationBuilder UseRegistration<TUser>(
-            this IApplicationBuilder applicationBuilder,
-            Func<RegistrationRequestModel, TUser> mapping,
-            RegistrationEndpointOptions registrationEndpointOptions = null)
-            where TUser : IdentityUser
-        {
-            var options = registrationEndpointOptions ?? new RegistrationEndpointOptions();
-
-            return applicationBuilder
-                .UseMiddleware<RegistrationMiddleware<TUser, RegistrationRequestModel>>(mapping, options);
+                .UseMiddleware<RegistrationMiddleware<TUser, TRegistrationRequestModel>>(
+                        mapping,
+                        defaultOnRegistrationCallback,
+                        defaultOnRegistrationCallback,
+                        options
+                    );
         }
 
         /// <summary>
@@ -179,6 +193,34 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
                 .GetInstance()
                 .SetAppBuilder(applicationBuilder)
                 .OnRefreshExecuted(callback);
+        }
+
+        /// <summary>
+        /// Registering a callback function to perform actions when  when the refresh starts.
+        /// </summary>
+        /// <param name="applicationBuilder"></param>
+        /// <param name="callback"></param>
+        /// <returns></returns>
+        public static IRegistrationMiddlewareBuilder OnRegistrationExecuting(this IApplicationBuilder applicationBuilder, Func<RegistrationModel, Task> callback)
+        {
+            return RegistrationMiddlewareBuilder
+                .GetInstance()
+                .SetAppBuilder(applicationBuilder)
+                .OnRegistrationExecuting(callback);
+        }
+
+        /// <summary>
+        /// Registering a callback function to perform actions when the refresh ends.
+        /// </summary>
+        /// <param name="applicationBuilder"></param>
+        /// <param name="callback"></param>
+        /// <returns></returns>
+        public static IRegistrationMiddlewareBuilder OnRegistrationExecuted(this IApplicationBuilder applicationBuilder, Func<RegistrationModel, Task> callback)
+        {
+            return RegistrationMiddlewareBuilder
+                .GetInstance()
+                .SetAppBuilder(applicationBuilder)
+                .OnRegistrationExecuted(callback);
         }
     }
 }
