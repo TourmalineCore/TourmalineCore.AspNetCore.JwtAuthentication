@@ -84,7 +84,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             where TUser : IdentityUser
         {
             var options = registrationEndpointOptions ?? new RegistrationEndpointOptions();
-            Func<RefreshModel, Task> defaultOnRegistrationCallback = s => Task.CompletedTask;
+            Func<RegistrationModel, Task> defaultOnRegistrationCallback = s => Task.CompletedTask;
 
             return applicationBuilder
                 .UseMiddleware<RegistrationMiddleware<TUser, RegistrationRequestModel>>(
@@ -114,7 +114,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             where TRegistrationRequestModel : RegistrationRequestModel
         {
             var options = registrationEndpointOptions ?? new RegistrationEndpointOptions();
-            Func<RefreshModel, Task> defaultOnRegistrationCallback = s => Task.CompletedTask;
+            Func<RegistrationModel, Task> defaultOnRegistrationCallback = s => Task.CompletedTask;
 
             return applicationBuilder
                 .UseMiddleware<RegistrationMiddleware<TUser, TRegistrationRequestModel>>(
