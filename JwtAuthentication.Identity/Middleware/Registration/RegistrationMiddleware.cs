@@ -8,9 +8,10 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Registration.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 
-namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Registration
 {
     internal class RegistrationMiddleware<TUser, TRegistrationRequestModel> : RequestMiddlewareBase<IRegistrationService<TUser, TRegistrationRequestModel>, TRegistrationRequestModel, AuthResponseModel
     >
@@ -21,13 +22,22 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware
         private readonly Func<TRegistrationRequestModel, TUser> _mapping;
         private readonly ILogger<RegistrationMiddleware<TUser, TRegistrationRequestModel>> _logger;
 
+        private readonly Func<RegistrationModel, Task> _onRegistrationExecuting;
+        private readonly Func<RegistrationModel, Task> _onRegistrationExecuted;
+
         public RegistrationMiddleware(
             RequestDelegate next,
-            Func<TRegistrationRequestModel, TUser> mapping, ILogger<RegistrationMiddleware<TUser, TRegistrationRequestModel>> logger, RegistrationEndpointOptions endpointOptions = null)
+            Func<TRegistrationRequestModel, TUser> mapping,
+            ILogger<RegistrationMiddleware<TUser, TRegistrationRequestModel>> logger, 
+            Func<RegistrationModel, Task> onRegistrationExecuting, 
+            Func<RegistrationModel, Task> onRegistrationExecuted,
+            RegistrationEndpointOptions endpointOptions = null)
             : base(next)
         {
             _mapping = mapping;
             _logger = logger;
+            _onRegistrationExecuting = onRegistrationExecuting;
+            _onRegistrationExecuted = onRegistrationExecuted;
             _endpointOptions = endpointOptions;
         }
 
@@ -36,13 +46,22 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware
             await InvokeAsyncBase(context, registrationService, _endpointOptions.RegistrationEndpointRoute);
         }
 
-        protected override async Task<AuthResponseModel> ExecuteServiceMethod(TRegistrationRequestModel requestModel, IRegistrationService<TUser, TRegistrationRequestModel> service, HttpContext context)
+        protected override async Task<AuthResponseModel> ExecuteServiceMethod(
+            TRegistrationRequestModel requestModel, IRegistrationService<TUser, TRegistrationRequestModel> service, HttpContext context)
         {
             var result = new AuthResponseModel();
 
             try
             {
+                var registrationModel = new RegistrationModel
+                {
+                    Login = requestModel.Login,
+                    Password = requestModel.Password
+                };
+
+                await _onRegistrationExecuting(registrationModel);
                 result = await service.RegisterAsync(requestModel, _mapping);
+                await _onRegistrationExecuted(registrationModel);
             }
             catch (RegistrationException ex)
             {

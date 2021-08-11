@@ -30,4 +30,8 @@
     <ProjectReference Include="..\JwtAuthentication.Core\JwtAuthentication.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Middleware\Registration\Models\" />
+  </ItemGroup>
+
 </Project>
