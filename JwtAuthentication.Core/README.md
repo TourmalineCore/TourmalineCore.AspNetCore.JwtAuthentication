@@ -2,10 +2,24 @@
 
 The library can be used for all projects based on .NET Core 3.0 - .NET Core 5.0.
 
+We are using Microsoft.AspNetCore.Authentication.JwtBearer with RSA for signing the keys.
 This library contains middleware and authentication extensions.
 With this library, you can very easily connect the JWT-based authentication to your project.
 Also, this library allows to override the logic of username and password validation.
 The library provides the ability to use a debug token to avoid the need to enter a username and password when the lifetime of the JWT expires.
+
+# Table of Content
+
+- [Authentication](#authentication)
+- [Basic Usage](#basic)
+- [Cookie](#cookie)
+- [Options](#options)
+- [Routing](#routing)
+- [Login Request Example](#login-request)
+- [Login Validation](#login-validation)
+- [Token Usage](#token-usage)
+- [Authorization](#authorization)
+- [Callbacks](#callbacks)
 
 # Authentication
 
@@ -22,10 +36,18 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core;
 
 public class Startup
 {
+    private readonly IConfiguration _configuration;
+
+    public Startup(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
     public void ConfigureServices(IServiceCollection services) 
     {
         ...
-        services.AddJwtAuthentication();
+        var authenticationOptions = (_configuration.GetSection(nameof(AuthenticationOptions)).Get<AuthenticationOptions>());
+        services.AddJwtAuthentication(authenticationOptions);
         ...
     }
 
@@ -49,10 +71,18 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core;
 
 public class Startup
 {
+    private readonly IConfiguration _configuration;
+
+    public Startup(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+    
     public void ConfigureServices(IServiceCollection services) 
     {
         ...
-        services.AddJwtAuthentication();
+        var authenticationOptions = (_configuration.GetSection(nameof(AuthenticationOptions)).Get<AuthenticationOptions>());
+        services.AddJwtAuthentication(authenticationOptions);
         ...
     }
 
@@ -68,15 +98,17 @@ public class Startup
 
 ## Options
 
-If you want to use your own values for options, then you need to pass AuthenticationOptions to the AddJwtAuthentication().
+To use package you need to pass AuthenticationOptions to the AddJwtAuthentication().
 
-Default values:
-```
-SigningKey = "jwtKeyjwtKeyjwtKeyjwtKeyjwtKey",
-Issuer = null,
-AccessTokenExpireInMinutes = 10080,
-IsDebugTokenEnabled = false,
-```
+| Name | Type | Default | Required | Description |
+|-|-|-|-|-|
+| PrivateSigningKey | string | null | yes | The base64-encoded RSA Private Key |
+| PublicSigningKey | string | null | yes | The Matching base64-encoded RSA Public Key |
+| Issuer | string | null | no | The Registered Issuer Value |
+| Audience | string | null | no | The Registered Audience Value |
+| AccessTokenExpireInMinutes | int | 10080 | no | Lifetime of the Access Token |
+| IsDebugTokenEnabled | bool | false | no | If true, user credentials will not be checked during authentication |
+
 
 ```csharp
 ...
@@ -86,10 +118,19 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 public void ConfigureServices(IServiceCollection services) 
 {
     ...
-    services.Configure<AuthenticationOptions>(Configuration.GetSection(nameof(AuthenticationOptions)));
-    var authenticationOptions = services.BuildServiceProvider().GetService<IOptions<AuthenticationOptions>>().Value; 
+    var authenticationOptions = _configuration.GetSection(nameof(AuthenticationOptions)).Get<AuthenticationOptions>()
     services.AddJwtAuthentication(authenticationOptions);
     ...
+}
+```
+
+Minimum appsettings.json configuration:
+```json
+{
+	"AuthenticationOptions": {
+		"PublicSigningKey": "<PUT YOUR PUBLIC RSA KEY HERE>",
+		"PrivateSigningKey": "<PUT YOUR PRIVATE RSA KEY HERE>"
+	}
 }
 ```
 
@@ -169,7 +210,7 @@ public class Startup
 	{
         ...
         services
-          .AddJwtAuthentication()
+          .AddJwtAuthentication(authenticationOptions)
           .AddUserCredentialValidator<UserCredentialsValidator>();
         ...
     }
@@ -232,10 +273,12 @@ public class UserClaimsProvider : IUserClaimsProvider
 2. Connect this provider in the Startup.cs.
    You can pass the name of the claim type you want to use as a parameter. `Default claim type = "Permission"`.
 ```csharp
+using TourmalineCore.AspNetCore.JwtAuthentication.Core;
+
 public void ConfigureServices(IServiceCollection services) 
 {
     ...
-    services.AddJwtAuthentication()
+    services.AddJwtAuthentication(authenticationOptions)
             .WithUserClaimsProvider<UserClaimsProvider>(UserClaimsProvider.ExampleClaimType);
     ...
 }
@@ -252,12 +295,12 @@ The claims in the token will look like this:
 }
 ```
 
-3. To enable checking of permissions, you must add the `RequiredPermission` attribute before the controller or method and pass as a parameter all permissions that are needed , for example:
+3. To enable checking of permissions, you must add the `RequiresPermission` attribute before the controller or method and pass as a parameter all permissions that are needed , for example:
 ```csharp
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Filters;
 
 [Authorize]
-[RequiredPermission(UserClaimsProvider.FirstExampleClaimName)]
+[RequiresPermission(UserClaimsProvider.FirstExampleClaimName)]
 [HttpGet]
 public IEnumerable<object> Get()
 {
@@ -272,7 +315,7 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Filters;
 [ApiController]
 [Route("[controller]")]
 [Authorize]
-[RequiredPermission(UserClaimsProvider.FirstExampleClaimName, UserClaimsProvider.SecondExampleClaimName)]
+[RequiresPermission(UserClaimsProvider.FirstExampleClaimName, UserClaimsProvider.SecondExampleClaimName)]
 public class ExampleController : ControllerBase
 {
     //Some methods
@@ -280,3 +323,39 @@ public class ExampleController : ControllerBase
 ```
 
 Thus, only those users who have the desired permission will have access to the controller or controller method.
+
+# Callbacks
+
+The library provides the ability to transfer callbacks for a call at the beginning and end of the execution of the authentication, logout and refresh token functions. This feature can be used for logging, to calculate your system usage statistics, and so on.
+
+## Login
+
+To use callbacks for authentication, follow these steps:
+
+1. Create a function that will take `LoginModel` as a parameter and return a result of the Task type. For example:
+
+```csharp
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Login.Models;
+
+private Task OnLoginExecuting(LoginModel data)
+{
+    //Make something
+}
+```
+
+2. In the `Startup` class in the `Configure` method use
+
+```charp
+app
+    .OnLoginExecuting(OnLoginExecuting)
+    .OnLoginExecuted(OnLoginExecuted)
+    .UseDefaultLoginMiddleware();
+```
+
+## Logout
+
+To call callbacks during logout, you need to follow the same steps as for login. Only use methods `OnLogoutExecuted` and `OnLogoutExecuting`. And your function should take `LogoutModel` as a parameter
+
+## Refresh
+
+To call callbacks during refresh, you need to follow the same steps as for login. Only use methods `OnRefreshExecuted` and `OnRefreshExecuting`. And your function should take `RefreshModel` as a parameter

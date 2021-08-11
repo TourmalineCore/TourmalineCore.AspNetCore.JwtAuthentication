@@ -10,14 +10,29 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract.Implementation;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Filters;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementation;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Signing;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.TokenHandlers;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Utils;
 using AuthenticationOptions = TourmalineCore.AspNetCore.JwtAuthentication.Core.Options.AuthenticationOptions;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
 {
     public static class AuthenticationExtensions
     {
+        /// <summary>
+        /// Adds the ability to validate JWT
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="authenticationOptions"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddJwtValidation(
+            this IServiceCollection services,
+            AuthenticationOptions authenticationOptions)
+        {
+            services.AddJwtBearer(authenticationOptions);
+
+            return services;
+        }
+
         /// <summary>
         /// Adds the ability to use the basic functionality of JWT
         /// </summary>
@@ -26,16 +41,14 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         /// <returns></returns>
         public static IServiceCollection AddJwtAuthentication(
             this IServiceCollection services,
-            AuthenticationOptions authenticationOptions = null)
+            AuthenticationOptions authenticationOptions)
         {
-            var options = authenticationOptions ?? new AuthenticationOptions();
-
             services.AddTransient<ITokenManager, TokenManager>();
             services.AddTransient<ILoginService, LoginService>();
             services.AddTransient<IUserCredentialsValidator, FakeUserCredentialValidator>();
             services.AddTransient<IUserClaimsProvider, DefaultUserClaimsProvider>();
 
-            services.AddJwtBearer(options);
+            services.AddJwtBearer(authenticationOptions);
 
             return services;
         }
@@ -73,6 +86,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
             this IServiceCollection services,
             AuthenticationOptions authenticationOptions)
         {
+            services.AddSingleton(authenticationOptions);
+
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
             Func<HttpContext, string> schemeSelector = context => null;
@@ -105,7 +120,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
                                 ValidateIssuer = false,
                                 ValidateAudience = false,
                                 ValidateIssuerSigningKey = true,
-                                IssuerSigningKey = new SymmetricSecurityKey(authenticationOptions.SigningKey.ToEncodedByteArray()),
+                                IssuerSigningKey = SigningHelper.GetPublicKey(authenticationOptions.PublicSigningKey),
                                 ClockSkew = TimeSpan.Zero,
                             };
 

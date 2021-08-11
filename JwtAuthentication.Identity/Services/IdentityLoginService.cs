@@ -1,11 +1,9 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
@@ -14,17 +12,14 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
     {
         private readonly ITokenManager _tokenManager;
 
-        private readonly AuthenticationOptions _options;
         private readonly SignInManager<TUser> _signInManager;
 
         public IdentityLoginService(
             ITokenManager tokenManager,
-            SignInManager<TUser> signInManager,
-            IOptions<AuthenticationOptions> options = null)
+            SignInManager<TUser> signInManager)
         {
             _tokenManager = tokenManager;
             _signInManager = signInManager;
-            _options = options?.Value;
         }
 
         public async Task<AuthResponseModel> LoginAsync(LoginRequestModel model)
@@ -44,9 +39,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             }
 
             var token = await _tokenManager.GetAccessToken(
-                    model.Login,
-                    _options.SigningKey,
-                    _options.AccessTokenExpireInMinutes
+                    model.Login
                 );
 
             return new AuthResponseModel

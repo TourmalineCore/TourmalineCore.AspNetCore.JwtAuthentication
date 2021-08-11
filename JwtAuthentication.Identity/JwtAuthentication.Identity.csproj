@@ -3,22 +3,18 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <PackageId>TourmalineCore.AspNetCore.JwtAuthentication.Identity</PackageId>
-    <Version>0.0.3-alpha</Version>
+    <Version>0.0.7</Version>
     <Authors>Nikita Medvedev, Koval Maxim</Authors>
     <Company>Tourmaline Core</Company>
     <Product>JwtAuthentication</Product>
     <Description>
-      This library can work with version .NET Core 3.0 and higher. In order to ensure compatibility of the library with .NET Core 3.0, we use Microsoft.AspNetCore.Authentication.JwtBearer version 3.0.3 and Microsoft.AspNetCore.Identity.EntityFrameworkCore version 3.0.3.
-      This library contains middleware and authentication extensions.
-      With this library, you can very easily connect the JWT-based authentication to your project with usage of EF Core and Identity to store users data.
-      Optianally, you can enable usage of Refresh token to provide additional level of security to your app. 
-      Also, this library allows to easily implement registration and logout functionality.
+      Collection of middleware, providing a JWT-based authentication using Microsoft's Identity and EF Core.
     </Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl></PackageProjectUrl>
-    <RepositoryUrl>https://github.com/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication/</RepositoryUrl>
+    <RepositoryUrl>https://github.com/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication/tree/master/JwtAuthentication.Identity</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
-    <PackageTags>.NET Core, Authentication, JWT, Identity, EF Core, Registration, Refresh Token, Logout</PackageTags>
+    <PackageTags>.NETCore, Authentication, JWT, Identity, EntityFrameworkCore, Registration, Refresh, Logout</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <AssemblyName>TourmalineCore.AspNetCore.JwtAuthentication.Identity</AssemblyName>
     <RootNamespace>TourmalineCore.AspNetCore.JwtAuthentication.Identity</RootNamespace>
@@ -27,11 +23,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="[3.0.*,)" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\JwtAuthentication.Core\JwtAuthentication.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Middleware\Registration\Models\" />
   </ItemGroup>
 
 </Project>

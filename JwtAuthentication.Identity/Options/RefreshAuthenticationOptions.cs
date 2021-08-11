@@ -4,6 +4,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options
 {
     public class RefreshAuthenticationOptions : AuthenticationOptions
     {
+        private int _accessTokenExpireInMinutes;
         private int _refreshTokenExpireInMinutes;
 
         public int RefreshTokenExpireInMinutes
@@ -14,8 +15,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options
 
         public override int AccessTokenExpireInMinutes
         {
-            get => base.AccessTokenExpireInMinutes == default ? 15 : base.AccessTokenExpireInMinutes;
-            set => base.AccessTokenExpireInMinutes = value;
+            get => _accessTokenExpireInMinutes == default ? 15 : _accessTokenExpireInMinutes;
+            set => _accessTokenExpireInMinutes = value;
         }
     }
 }

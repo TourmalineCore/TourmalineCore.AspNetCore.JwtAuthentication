@@ -1,26 +1,40 @@
-using Example.NetCore5._0.AuthenticationWithRefreshToken.Models;
 using Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity.Data;
+using Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 
 namespace Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
+
+        public Startup(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
+            var opt = _configuration.GetSection(nameof(AuthenticationOptions)).Get<RefreshAuthenticationOptions>();
+
+            var a = opt.AccessTokenExpireInMinutes;
+
             services.AddDbContext<AppDbContext>(options =>
                     options.UseInMemoryDatabase("Database")
                 );
 
             services
                 .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
-                .AddLoginWithRefresh()
+                .AddLoginWithRefresh(_configuration.GetSection("AuthenticationOptions").Get<RefreshAuthenticationOptions>())
                 .AddLogout()
                 .AddRegistration();
 
@@ -38,17 +52,18 @@ namespace Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity
 
             app.UseRouting();
 
-            app.UseJwtAuthentication();
-            app.UseDefaultLoginMiddleware();
+            app.UseDefaultLoginMiddleware()
+                .UseJwtAuthentication();
+
             app.UseRefreshTokenMiddleware();
             app.UseRefreshTokenLogoutMiddleware();
 
-            app.UseRegistration<CustomUser>(x => new CustomUser
-                    {
-                        UserName = x.Login,
-                        NormalizedUserName = x.Login,
-                    }
-                );
+            app.UseRegistration(x => new CustomUser
+                        {
+                            UserName = x.Login,
+                            NormalizedUserName = x.Login,
+                        }
+                    );
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

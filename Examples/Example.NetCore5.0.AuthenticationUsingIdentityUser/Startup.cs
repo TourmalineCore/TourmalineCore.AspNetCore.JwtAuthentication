@@ -3,15 +3,24 @@ using Example.NetCore5._0.AuthenticationUsingIdentityUser.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 
 namespace Example.NetCore5._0.AuthenticationUsingIdentityUser
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
+
+        public Startup(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(options =>
@@ -20,7 +29,7 @@ namespace Example.NetCore5._0.AuthenticationUsingIdentityUser
 
             services
                 .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
-                .AddBaseLogin();
+                .AddBaseLogin(_configuration.GetSection(nameof(AuthenticationOptions)).Get<AuthenticationOptions>());
 
             services.AddControllers();
         }

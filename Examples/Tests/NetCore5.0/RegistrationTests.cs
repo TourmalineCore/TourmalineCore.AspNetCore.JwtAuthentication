@@ -21,7 +21,7 @@ namespace Tests.NetCore5._0
         private const string Password = "Test1234.";
 
         public RegistrationTests(WebApplicationFactory<Startup> factory)
-            :base(factory)
+            : base(factory)
         {
         }
 
@@ -29,7 +29,7 @@ namespace Tests.NetCore5._0
         public async Task RegisterWithInvalidCreds_Returns400()
         {
             var registerResult = await RegisterAsync(Login, "1");
-            Assert.Equal(HttpStatusCode.BadRequest, registerResult.response.StatusCode);
+            Assert.Equal(HttpStatusCode.Conflict, registerResult.response.StatusCode);
         }
 
         [Fact]
@@ -49,14 +49,14 @@ namespace Tests.NetCore5._0
         public async Task RegisterWithCredsOfExistingUser_Returns400()
         {
             var registerResult = await RegisterAsync("Admin", "Admin");
-            Assert.Equal(HttpStatusCode.BadRequest, registerResult.response.StatusCode);
+            Assert.Equal(HttpStatusCode.Conflict, registerResult.response.StatusCode);
         }
 
         private async Task<(HttpResponseMessage response, AuthResponseModel authModel)> RegisterAsync(string login, string password)
         {
             var client = _factory.CreateClient();
 
-            var body = JsonContent.Create(new RegistrationRequestModel()
+            var body = JsonContent.Create(new RegistrationRequestModel
                     {
                         Login = login,
                         Password = password,

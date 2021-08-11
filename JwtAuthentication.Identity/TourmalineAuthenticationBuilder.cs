@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract.Implementation;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Filters;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
@@ -97,8 +98,10 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         /// </summary>
         /// <param name="authenticationOptions"></param>
         /// <returns></returns>
-        public TourmalineAuthenticationBuilder<TContext, TUser> AddLoginWithRefresh(RefreshAuthenticationOptions authenticationOptions = null)
+        public TourmalineAuthenticationBuilder<TContext, TUser> AddLoginWithRefresh(RefreshAuthenticationOptions authenticationOptions)
         {
+            Services.AddSingleton(authenticationOptions);
+
             TourmalineContextConfiguration.UseRefresh = true;
             AddJwt(Services, authenticationOptions);
             IdentityBuilder.AddSignInManager<RefreshSignInManager<TUser>>();
@@ -123,6 +126,23 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             where TUserCredentialsValidator : IUserCredentialsValidator
         {
             Services.AddTransient(typeof(IUserCredentialsValidator), typeof(TUserCredentialsValidator));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the ability to implement functionality for retrieving user claims 
+        /// </summary>
+        /// <typeparam name="TUserClaimsProvider"></typeparam>
+        /// <param name="permissionClaimTypeKey"></param>
+        /// <returns></returns>
+        public TourmalineAuthenticationBuilder<TContext, TUser> WithUserClaimsProvider<TUserClaimsProvider>(
+            string permissionClaimTypeKey = "Permission")
+            where TUserClaimsProvider : IUserClaimsProvider
+        {
+            RequiresPermission.ClaimType = permissionClaimTypeKey;
+
+            Services.AddTransient(typeof(IUserClaimsProvider), typeof(TUserClaimsProvider));
+
             return this;
         }
 

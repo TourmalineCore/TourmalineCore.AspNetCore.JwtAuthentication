@@ -24,6 +24,7 @@ namespace Tests.NetCore5._0
         public async Task LoginWithValidCreds_SetsValidCookieInResponse()
         {
             var (loginResponse, _) = await LoginAsync(Login, Password);
+
             var cookies = loginResponse
                 .Headers
                 .SingleOrDefault(header => header.Key == "Set-Cookie")
@@ -42,6 +43,7 @@ namespace Tests.NetCore5._0
         public async Task LoginWithInvalidCreds_DoesNotSetCookieInResponse()
         {
             var (loginResponse, _) = await LoginAsync(Login, "123");
+
             var cookies = loginResponse
                 .Headers
                 .SingleOrDefault(header => header.Key == "Set-Cookie");
@@ -55,7 +57,7 @@ namespace Tests.NetCore5._0
             var client = _factory.CreateClient();
 
             var message = new HttpRequestMessage(HttpMethod.Get, AuthorizedEndpointUrl);
-            message.Headers.Add("Cookie", new []{ "invalid-cookie" });
+            message.Headers.Add("Cookie", new[] { "invalid-cookie" });
 
             var response = await client.SendAsync(message);
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);

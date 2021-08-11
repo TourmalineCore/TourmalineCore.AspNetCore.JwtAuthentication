@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
@@ -20,7 +17,16 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Validators
         {
             var user = await _signInManager.UserManager.FindByNameAsync(login);
 
-            var signInResult = await _signInManager.PasswordSignInAsync(user, password, false, true);
+            if (user == null)
+            {
+                return false;
+            }
+
+            var signInResult = await _signInManager.PasswordSignInAsync(user,
+                    password,
+                    false,
+                    true
+                );
 
             return signInResult.Succeeded;
         }

@@ -2,17 +2,15 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Options
 {
     public class AuthenticationOptions
     {
-        private string _signingKey;
-
         private int _accessTokenExpireInMinutes;
 
-        public string SigningKey
-        {
-            get => _signingKey ?? "jwtKeyjwtKeyjwtKeyjwtKeyjwtKey";
-            set => _signingKey = value;
-        }
+        public string PublicSigningKey { get; set; }
+
+        public string PrivateSigningKey { get; set; }
 
         public string Issuer { get; set; }
+
+        public string Audience { get; set; }
 
         public virtual int AccessTokenExpireInMinutes
         {

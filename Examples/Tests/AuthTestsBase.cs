@@ -23,6 +23,7 @@ namespace Tests
         public AuthTestsBase(WebApplicationFactory<TProject> factory)
         {
             _factory = factory;
+
             _jsonSerializerSettings = new JsonSerializerOptions
             {
                 IgnoreNullValues = true,

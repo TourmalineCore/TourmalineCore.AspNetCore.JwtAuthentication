@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+
 #else
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -20,8 +21,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
 #else
         private readonly JsonSerializerOptions _jsonSerializerSettings;
 #endif
-
-        public RequestMiddlewareBase(RequestDelegate next)
+        protected RequestMiddlewareBase(RequestDelegate next)
         {
             _next = next;
 
@@ -53,7 +53,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
 #endif
         }
 
-        public async Task InvokeAsyncBase(HttpContext context, TService service, string endpointRoute)
+        protected async Task InvokeAsyncBase(HttpContext context, TService service, string endpointRoute)
         {
             if (context.Request.Method == HttpMethods.Post)
             {
@@ -76,7 +76,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
             await _next(context);
         }
 
-        protected async Task Response(HttpContext context, TResponseModel result)
+        private async Task Response(HttpContext context, TResponseModel result)
         {
             context.Response.ContentType = "application/json; charset=UTF-8";
 #if NETCOREAPP3_0 || NETCOREAPP3_1
@@ -87,7 +87,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
             await context.Response.Body.FlushAsync();
         }
 
-        protected async Task<T> DeserializeModel<T>(HttpRequest request)
+        private async Task<T> DeserializeModel<T>(HttpRequest request)
         {
             using (var reader = new StreamReader(request.Body))
             {
@@ -99,6 +99,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
             }
         }
 
-        protected abstract Task<TResponseModel> ExecuteServiceMethod(TRequestModel model, TService service, HttpContext context);
+        protected abstract Task<TResponseModel> ExecuteServiceMethod(TRequestModel requestModel, TService service, HttpContext context);
     }
 }

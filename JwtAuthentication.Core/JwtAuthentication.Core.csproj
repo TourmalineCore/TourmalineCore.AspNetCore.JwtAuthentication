@@ -3,20 +3,18 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.0;netcoreapp3.1;net5.0</TargetFrameworks>
     <PackageId>TourmalineCore.AspNetCore.JwtAuthentication.Core</PackageId>
-    <Version>0.3.0-alpha</Version>
-    <Authors>Koval Maxim, Nikita Medvedev</Authors>
+    <Version>0.3.2</Version>
+    <Authors>Koval Maxim, Nikita Medvedev, Aleksandr Shinkarev</Authors>
     <Company>Tourmaline Core</Company>
     <Product>JwtAuthentication</Product>
-    <Description>This library can work with version .NET Core 3.0 and higher. In order to ensure compatibility of the library with .NET Core 3.0, we use Microsoft.AspNetCore.Authentication.JwtBearer version 3.0.3. 
-This library contains middleware and authentication extensions.
-With this library, you can very easily connect the JWT-based authentication to your project.
-Also, this library allows to override the logic of username and password validation and allows to override route to login endpoint.
-The library provides the ability to use a debug token to avoid the need to enter a username and password when the lifetime of the JWT expires.</Description>
+    <Description>
+      Collection of middleware, providing a simple JWT-based authentication  
+    </Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl></PackageProjectUrl>
-    <RepositoryUrl>https://github.com/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication/</RepositoryUrl>
+    <RepositoryUrl>https://github.com/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication/tree/master/JwtAuthentication.Core</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
-    <PackageTags>.NET Core, Authentication, JWT, Cookie</PackageTags>
+    <PackageTags>.NETCore, Authentication, JWT, Cookie</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <AssemblyName>TourmalineCore.AspNetCore.JwtAuthentication.Core</AssemblyName>
     <RootNamespace>TourmalineCore.AspNetCore.JwtAuthentication.Core</RootNamespace>
@@ -25,15 +23,21 @@ The library provides the ability to use a debug token to avoid the need to enter
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' ">
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.*" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="[3.0.0, 3.1)" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.*" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="[3.1.0, 5.0)" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.*" />
+    <!-- Accepts any version 5.0.0 and above.
+     Will resolve to the smallest acceptable stable version.-->
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Middlewares\Login\Models\" />
   </ItemGroup>
 
 </Project>
