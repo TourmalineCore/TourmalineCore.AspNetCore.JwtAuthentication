@@ -22,6 +22,8 @@ namespace Tests.NetCore5._0
         private const string Login = "Admin";
         private const string Password = "Admin";
 
+        private const string FingerPrint = "fingerprint";
+
         public RefreshTests(WebApplicationFactory<Startup> factory)
             : base(factory)
         {
@@ -36,6 +38,22 @@ namespace Tests.NetCore5._0
 
             Assert.False(string.IsNullOrWhiteSpace(result.AccessToken.Value));
             Assert.False(string.IsNullOrWhiteSpace(result.RefreshToken.Value));
+        }
+
+        [Fact]
+        public async Task RefreshWithTheSameValidTokenMultipleTimes_ReturnsTokens()
+        {
+            var (_, authModel) = await LoginAsync(Login, Password);
+
+            var (_, firstResult) = await CallRefresh(authModel.RefreshToken.Value, FingerPrint);
+
+            await CallRefresh(authModel.RefreshToken.Value, FingerPrint);
+            await CallRefresh(authModel.RefreshToken.Value, FingerPrint);
+
+            var (_, lastResult) = await CallRefresh(authModel.RefreshToken.Value, FingerPrint);
+
+            Assert.Equal(firstResult.AccessToken, lastResult.AccessToken);
+            Assert.Equal(firstResult.RefreshToken, lastResult.RefreshToken);
         }
 
         [Fact]
