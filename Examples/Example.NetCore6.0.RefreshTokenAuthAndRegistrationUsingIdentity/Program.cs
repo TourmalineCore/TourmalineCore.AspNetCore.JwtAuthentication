@@ -1,0 +1,65 @@
+using Example.NetCore6._0.RefreshTokenAuthAndRegistrationUsingIdentity.Data;
+using Example.NetCore6._0.RefreshTokenAuthAndRegistrationUsingIdentity.Models;
+using Microsoft.EntityFrameworkCore;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+builder.Services.AddControllers();
+
+var configuration = builder.Configuration;
+var environment = builder.Environment;
+
+var opt = configuration.GetSection(nameof(AuthenticationOptions)).Get<RefreshAuthenticationOptions>();
+
+var a = opt.AccessTokenExpireInMinutes;
+
+builder.Services
+    .AddDbContext<AppDbContext>(options =>
+        options.UseInMemoryDatabase("Database")
+    );
+
+builder.Services
+    .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
+    .AddLoginWithRefresh(configuration.GetSection("AuthenticationOptions").Get<RefreshAuthenticationOptions>())
+    .AddLogout()
+    .AddRegistration();
+
+builder.Services.AddControllers();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+
+if (environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+
+app.UseDefaultDbUser<AppDbContext, CustomUser>("Admin", "Admin");
+
+app.UseRouting();
+
+app.UseDefaultLoginMiddleware()
+    .UseJwtAuthentication();
+
+app.UseRefreshTokenMiddleware();
+app.UseRefreshTokenLogoutMiddleware();
+
+app.UseRegistration(x => new CustomUser
+        {
+            UserName = x.Login,
+            NormalizedUserName = x.Login,
+        }
+    );
+
+app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+app.Run();
+
+public partial class Program { }

@@ -1,0 +1,41 @@
+using Example.NetCore6._0.AuthenticationUsingIdentityUser.Data;
+using Example.NetCore6._0.AuthenticationUsingIdentityUser.Models;
+using Microsoft.EntityFrameworkCore;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+var configuration = builder.Configuration;
+var environment = builder.Environment;
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseInMemoryDatabase("Database")
+    );
+
+builder.Services
+    .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
+    .AddBaseLogin(configuration.GetSection(nameof(AuthenticationOptions)).Get<AuthenticationOptions>());
+builder.Services.AddControllers();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+
+if (environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+
+app.UseRouting();
+
+app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+app
+    .UseDefaultLoginMiddleware()
+    .UseJwtAuthentication();
+
+app.Run();
