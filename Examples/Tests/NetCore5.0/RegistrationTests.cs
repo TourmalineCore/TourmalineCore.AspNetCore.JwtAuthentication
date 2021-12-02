@@ -1,8 +1,6 @@
 using System.Net;
-using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;

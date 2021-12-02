@@ -1,7 +1,4 @@
-using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Example.NetCore5._0.CookiesBasedAuthentication;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;

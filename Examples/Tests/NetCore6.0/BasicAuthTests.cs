@@ -1,8 +1,6 @@
 using System.Net;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
-using Example.NetCore6._0.RefreshTokenAuthAndRegistrationUsingIdentity;
 
 namespace Tests.NetCore6._0
 {

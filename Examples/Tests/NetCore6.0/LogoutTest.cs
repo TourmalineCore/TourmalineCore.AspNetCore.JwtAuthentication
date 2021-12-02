@@ -1,7 +1,5 @@
-using System;
 using System.Net;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using Xunit;
