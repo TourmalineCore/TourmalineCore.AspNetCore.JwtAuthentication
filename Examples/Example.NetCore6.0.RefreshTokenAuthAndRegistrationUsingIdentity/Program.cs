@@ -1,6 +1,10 @@
 using Example.NetCore6._0.RefreshTokenAuthAndRegistrationUsingIdentity.Data;
 using Example.NetCore6._0.RefreshTokenAuthAndRegistrationUsingIdentity.Models;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;

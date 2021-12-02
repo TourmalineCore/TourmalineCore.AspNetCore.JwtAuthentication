@@ -51,7 +51,13 @@ app
 
 app.UseJwtAuthentication();
 
+app.UseAuthorization();
+
 app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+app.MapControllers();
+
+app.Run();
 
 Task OnLogoutExecuting(LogoutModel data)
 {
@@ -68,8 +74,3 @@ Task OnRefreshExecuting(RefreshModel data)
     return Task.CompletedTask;
 }
 
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
