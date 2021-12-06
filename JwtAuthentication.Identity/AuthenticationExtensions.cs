@@ -30,5 +30,22 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
 
             return new TourmalineAuthenticationBuilder<TContext, TUser>(services, setupAction);
         }
+        public static TourmalineAuthenticationBuilder<TContext, TUser, TKey> AddJwtAuthenticationWithIdentity<TContext, TUser, TKey>(
+            this IServiceCollection services,
+            Action<IdentityOptions> setupAction = null)
+            where TContext : TourmalineDbContext<TUser, TKey>
+            where TUser : IdentityUser<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            services.AddLogging(config =>
+            {
+                config.AddDebug();
+                config.AddConsole();
+            });
+
+            return new TourmalineAuthenticationBuilder<TContext, TUser, TKey>(services, setupAction);
+        }
+
+
     }
 }

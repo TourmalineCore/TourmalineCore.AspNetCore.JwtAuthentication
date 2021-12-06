@@ -29,7 +29,7 @@ builder.Services
     );
 
 builder.Services
-    .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
+    .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser, long>()
     .AddLoginWithRefresh(configuration.GetSection("AuthenticationOptions").Get<RefreshAuthenticationOptions>())
     .AddLogout()
     .AddRegistration();
@@ -45,7 +45,7 @@ if (environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
-app.UseDefaultDbUser<AppDbContext, CustomUser>("Admin", "Admin");
+app.UseDefaultDbUser<AppDbContext, CustomUser, long>("Admin", "Admin");
 
 app.UseRouting();
 
@@ -55,7 +55,7 @@ app.UseDefaultLoginMiddleware()
 app.UseRefreshTokenMiddleware();
 app.UseRefreshTokenLogoutMiddleware();
 
-app.UseRegistration(x => new CustomUser
+app.UseRegistration<CustomUser, long>(x => new CustomUser
         {
             UserName = x.Login,
             NormalizedUserName = x.Login,

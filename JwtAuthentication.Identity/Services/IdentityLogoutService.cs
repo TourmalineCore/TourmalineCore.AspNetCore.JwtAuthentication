@@ -20,12 +20,12 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             await _signInManager.InvalidateRefreshTokenForUser(model.RefreshTokenValue, model.ClientFingerPrint);
         }
     }
-    
+
     internal class IdentityLogoutService<TUser, TKey> : ILogoutService where TUser : IdentityUser<TKey> where TKey : IEquatable<TKey>
     {
-        private readonly RefreshSignInManager<TUser> _signInManager;
+        private readonly RefreshSignInManager<TUser, TKey> _signInManager;
 
-        public IdentityLogoutService(RefreshSignInManager<TUser> signInManager)
+        public IdentityLogoutService(RefreshSignInManager<TUser, TKey> signInManager)
         {
             _signInManager = signInManager;
         }
