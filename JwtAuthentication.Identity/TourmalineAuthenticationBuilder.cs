@@ -15,16 +15,6 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Validators;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
 {
-    //public class TourmalineAuthenticationBuilder<TContext, TUser> : TourmalineAuthenticationBuilder<TContext, TUser, string>
-    //    where TContext : TourmalineDbContext<TUser>
-    //    where TUser : IdentityUser
-    //{
-    //    public TourmalineAuthenticationBuilder(IServiceCollection services, Action<IdentityOptions> setupAction = null)
-    //        : base(services, setupAction)
-    //    {
-    //    }
-    //}
-
     public class TourmalineAuthenticationBuilder<TContext, TUser> : TourmalineAuthenticationBuilder<TContext, TUser, string>
         where TContext : TourmalineDbContext<TUser, string>
         where TUser : IdentityUser<string>
@@ -50,6 +40,11 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             AddIdentity(setupAction);
         }
 
+        /// <summary>
+        /// Adds the user identity with db context
+        /// </summary>
+        /// <param name="setupAction"></param>
+        /// <returns></returns>
         private void AddIdentity(Action<IdentityOptions> setupAction = null)
         {
             Services.AddTransient<TourmalineDbContext<TUser, TKey>, TContext>();
