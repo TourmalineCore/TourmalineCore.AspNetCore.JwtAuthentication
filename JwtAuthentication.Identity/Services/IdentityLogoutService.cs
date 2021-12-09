@@ -6,18 +6,11 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 {
-    internal class IdentityLogoutService<TUser> : ILogoutService where TUser : IdentityUser
+    internal class IdentityLogoutService<TUser> : IdentityLogoutService<TUser, string> where TUser : IdentityUser
     {
-        private readonly RefreshSignInManager<TUser> _signInManager;
-
-        public IdentityLogoutService(RefreshSignInManager<TUser> signInManager)
+        public IdentityLogoutService(RefreshSignInManager<TUser, string> signInManager)
+            : base(signInManager)
         {
-            _signInManager = signInManager;
-        }
-
-        public async Task LogoutAsync(LogoutRequestModel model)
-        {
-            await _signInManager.InvalidateRefreshTokenForUser(model.RefreshTokenValue, model.ClientFingerPrint);
         }
     }
 

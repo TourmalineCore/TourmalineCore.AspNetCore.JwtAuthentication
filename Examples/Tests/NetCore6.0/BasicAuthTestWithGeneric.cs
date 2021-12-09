@@ -10,7 +10,7 @@ using Xunit;
 
 namespace Tests.NetCore6._0
 {
-    [Collection(nameof(Example.NetCore6._0.RefreshTokenAuthAndRegistrationUsingIdentity))]
+    [Collection(nameof(Example.NetCore6._0.AuthenticationUsingGenericIdentityUser))]
     public class BasicAuthTestWithGeneric :
     IClassFixture<WebApplicationFactory<ProgramGeneric>>
     {
@@ -89,10 +89,10 @@ namespace Tests.NetCore6._0
             var client = _factory.CreateClient();
 
             var body = JsonContent.Create(new LoginRequestModel
-                    {
-                        Login = login,
-                        Password = password,
-                    }
+            {
+                Login = login,
+                Password = password,
+            }
                 );
 
             var response = await client.PostAsync(LoginUrl, body);
