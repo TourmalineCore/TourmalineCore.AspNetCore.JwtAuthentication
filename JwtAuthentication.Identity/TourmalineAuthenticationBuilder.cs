@@ -107,7 +107,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             IdentityBuilder.AddSignInManager<RefreshSignInManager<TUser>>();
 
             Services.AddTransient<ITokenManager, TokenManager>();
-            Services.AddTransient<IRefreshTokenManager, RefreshTokenManager<TUser>>();
+            Services.AddTransient<IRefreshTokenManager<TUser>, RefreshTokenManager<TUser>>();
             Services.AddTransient<ILoginService, IdentityRefreshLoginService<TUser>>();
             Services.AddTransient<IRefreshService, IdentityRefreshLoginService<TUser>>();
             Services.AddTransient<IUserClaimsProvider, DefaultUserClaimsProvider>();
