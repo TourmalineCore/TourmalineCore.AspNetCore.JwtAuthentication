@@ -19,7 +19,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 {
     internal class RefreshSignInManager<TUser> : RefreshSignInManager<TUser, string> where TUser : IdentityUser
     {
-        public RefreshSignInManager(UserManager<TUser> userManager, IHttpContextAccessor contextAccessor, IUserClaimsPrincipalFactory<TUser> claimsFactory, IOptions<IdentityOptions> optionsAccessor, ILogger<SignInManager<TUser>> logger, IAuthenticationSchemeProvider schemes, IUserConfirmation<TUser> confirmation, IRefreshTokenManager refreshTokenManager, ITokenManager accessTokenManager, TourmalineDbContext<TUser, string> dbContext)
+        public RefreshSignInManager(UserManager<TUser> userManager, IHttpContextAccessor contextAccessor, IUserClaimsPrincipalFactory<TUser> claimsFactory, IOptions<IdentityOptions> optionsAccessor, ILogger<SignInManager<TUser>> logger, IAuthenticationSchemeProvider schemes, IUserConfirmation<TUser> confirmation, IRefreshTokenManager<TUser, string> refreshTokenManager, ITokenManager accessTokenManager, TourmalineDbContext<TUser, string> dbContext)
             : base(userManager, contextAccessor, claimsFactory,
                     optionsAccessor,
                     logger,
@@ -35,7 +35,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 
     internal class RefreshSignInManager<TUser, TKey> : SignInManager<TUser> where TUser : IdentityUser<TKey> where TKey : IEquatable<TKey>
     {
-        private readonly IRefreshTokenManager _refreshTokenManager;
+        private readonly IRefreshTokenManager<TUser, string> _refreshTokenManager;
         private readonly ITokenManager _accessTokenManager;
         private readonly TourmalineDbContext<TUser, TKey> _dbContext;
 
@@ -47,7 +47,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             ILogger<SignInManager<TUser>> logger,
             IAuthenticationSchemeProvider schemes,
             IUserConfirmation<TUser> confirmation,
-            IRefreshTokenManager refreshTokenManager,
+            IRefreshTokenManager<TUser, string> refreshTokenManager,
             ITokenManager accessTokenManager,
             TourmalineDbContext<TUser, TKey> dbContext)
             : base(userManager,
