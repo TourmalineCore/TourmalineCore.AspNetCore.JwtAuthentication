@@ -7,8 +7,6 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
 
 var configuration = builder.Configuration;
@@ -18,8 +16,6 @@ builder.Services
     .AddJwtAuthentication(configuration.GetSection(nameof(AuthenticationOptions)).Get<AuthenticationOptions>());
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
 
 if (environment.IsDevelopment())
 {
