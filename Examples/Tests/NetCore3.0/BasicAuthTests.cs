@@ -1,5 +1,4 @@
 using System.Net;
-using System.Threading.Tasks;
 using Example.NetCore3._0.BaseAuthentication;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;

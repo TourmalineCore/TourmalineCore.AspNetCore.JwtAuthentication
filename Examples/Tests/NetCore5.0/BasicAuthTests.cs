@@ -1,5 +1,4 @@
 using System.Net;
-using System.Threading.Tasks;
 using Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;

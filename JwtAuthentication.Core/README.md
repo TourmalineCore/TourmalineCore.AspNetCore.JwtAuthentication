@@ -1,6 +1,8 @@
 # TourmalineCore.AspNetCore.JwtAuthentication.Core
 
-The library can be used for all projects based on .NET Core 3.0 - .NET Core 5.0.
+The library can be used for all projects based on .NET Core 3.0 - .NET Core 6.0.
+
+Readme for usage on [.NET Core 6.0](Usage%20for%20.NET%206.md).
 
 We are using Microsoft.AspNetCore.Authentication.JwtBearer with RSA for signing the keys.
 This library contains middleware and authentication extensions.
