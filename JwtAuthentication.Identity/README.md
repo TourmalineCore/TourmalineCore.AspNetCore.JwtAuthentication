@@ -14,6 +14,7 @@ Also, this library allows to easily implement registration and logout functional
 # Table of Content
 
 - [Basic Usage](#basic-usage)
+    - [Generic ID feature](#generic-id-feature)
 - [Registration](#registration)
     - [Registration Request](#registration-request)
     - [Registration Routing](#registration-routing)
@@ -88,6 +89,78 @@ public class Startup
         ...
     }
 }
+```
+
+## Generic ID feature
+
+You can also use your own ID type in **IdentityUser** by passing a generic type key in the **TKey** parameter.
+
+For example by creating a user entity.
+
+```csharp
+public class CustomUser : IdentityUser<long> // where long is generic type
+{
+    public string Name { get; set; }
+}
+```
+
+Further, in methods where the generic user id type is involved, you must explicitly specify the generic id type.
+
+> Database context class 
+```csharp
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
+
+public class AppDbContext : TourmalineDbContext<CustomUser>
+{
+    public AppDbContext(DbContextOptions<AppDbContext> options)
+        : base(options)
+    {
+    }
+}
+```
+
+> Startup.cs
+
+```csharp
+...
+public void ConfigureServices(IServiceCollection services)
+        {
+            ...
+
+            services
+                .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser, long>()
+                .AddLoginWithRefresh(configuration.GetSection("AuthenticationOptions").Get<RefreshAuthenticationOptions>())
+                .AddLogout()
+                .AddRegistration();
+            
+            ...
+        }
+
+...
+
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            ...
+            
+            app.UseDefaultDbUser<AppDbContext, CustomUser, long>("Admin", "Admin");
+
+            app.UseDefaultLoginMiddleware()
+                .UseJwtAuthentication();
+
+            app.UseRefreshTokenMiddleware();
+            app.UseRefreshTokenLogoutMiddleware();
+
+            app.UseRegistration<CustomUser, long>(x => new CustomUser
+                {
+                    UserName = x.Login,
+                    NormalizedUserName = x.Login,
+                }
+            );
+
+            ...
+        }
+
+...
 ```
 
 # Registration
