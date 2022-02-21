@@ -19,7 +19,16 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 {
     internal class RefreshSignInManager<TUser> : RefreshSignInManager<TUser, string> where TUser : IdentityUser
     {
-        public RefreshSignInManager(UserManager<TUser> userManager, IHttpContextAccessor contextAccessor, IUserClaimsPrincipalFactory<TUser> claimsFactory, IOptions<IdentityOptions> optionsAccessor, ILogger<SignInManager<TUser>> logger, IAuthenticationSchemeProvider schemes, IUserConfirmation<TUser> confirmation, IRefreshTokenManager<TUser, string> refreshTokenManager, ITokenManager accessTokenManager, TourmalineDbContext<TUser, string> dbContext)
+        public RefreshSignInManager(UserManager<TUser> userManager,
+                                    IHttpContextAccessor contextAccessor,
+                                    IUserClaimsPrincipalFactory<TUser> claimsFactory,
+                                    IOptions<IdentityOptions> optionsAccessor,
+                                    ILogger<SignInManager<TUser>> logger,
+                                    IAuthenticationSchemeProvider schemes,
+                                    IUserConfirmation<TUser> confirmation,
+                                    IRefreshTokenManager<TUser> refreshTokenManager,
+                                    ITokenManager accessTokenManager,
+                                    TourmalineDbContext<TUser, string> dbContext)
             : base(userManager, contextAccessor, claimsFactory,
                     optionsAccessor,
                     logger,
@@ -35,7 +44,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 
     internal class RefreshSignInManager<TUser, TKey> : SignInManager<TUser> where TUser : IdentityUser<TKey> where TKey : IEquatable<TKey>
     {
-        private readonly IRefreshTokenManager<TUser, string> _refreshTokenManager;
+        private readonly IRefreshTokenManager<TUser> _refreshTokenManager;
         private readonly ITokenManager _accessTokenManager;
         private readonly TourmalineDbContext<TUser, TKey> _dbContext;
 
@@ -47,7 +56,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             ILogger<SignInManager<TUser>> logger,
             IAuthenticationSchemeProvider schemes,
             IUserConfirmation<TUser> confirmation,
-            IRefreshTokenManager<TUser, string> refreshTokenManager,
+            IRefreshTokenManager<TUser> refreshTokenManager,
             ITokenManager accessTokenManager,
             TourmalineDbContext<TUser, TKey> dbContext)
             : base(userManager,
@@ -77,6 +86,17 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
         {
             return await _accessTokenManager.GetAccessToken(appUser.NormalizedUserName);
         }
+
+        public async Task<AuthResponseModel> GetActiveRefreshToken(string clientFingerPrint)
+        {
+            var (appUser, refreshToken) = await _refreshTokenManager.FindActiveRefreshToken(clientFingerPrint);
+
+            return new AuthResponseModel
+            {
+                AccessToken = await GetBearerToken(appUser), 
+                RefreshToken = refreshToken,
+            };
+    }
 
         public async Task<TUser> InvalidateRefreshTokenForUser(Guid refreshTokenValue, string fingerPrint = null)
         {

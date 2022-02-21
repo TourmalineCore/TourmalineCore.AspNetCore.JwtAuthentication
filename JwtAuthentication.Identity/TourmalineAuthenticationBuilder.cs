@@ -123,7 +123,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             IdentityBuilder.AddSignInManager<RefreshSignInManager<TUser, TKey>>();
 
             Services.AddTransient<ITokenManager, TokenManager>();
-            Services.AddTransient<IRefreshTokenManager, RefreshTokenManager<TUser, TKey>>();
+            Services.AddTransient<IRefreshTokenManager<TUser>, RefreshTokenManager<TUser, TKey>>();
             Services.AddTransient<ILoginService, IdentityRefreshLoginService<TUser, TKey>>();
             Services.AddTransient<IRefreshService, IdentityRefreshLoginService<TUser, TKey>>();
             Services.AddTransient<IUserClaimsProvider, DefaultUserClaimsProvider>();
