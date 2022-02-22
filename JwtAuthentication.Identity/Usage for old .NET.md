@@ -1,8 +1,9 @@
-﻿# TourmalineCore.AspNetCore.JwtAuthentication.Identity
+# TourmalineCore.AspNetCore.JwtAuthentication.Identity
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication/.NET?label=tests%20and%20build)
 
 The library can be used for all projects based on .NET Core 3.0 - .NET Core 6.0.
 
-Readme for usage on [.NET Core 3.0 - .NET Core 5.0](README.md).
+Readme for usage on [.NET Core 6.0](README.md).
 
 This library contains middleware and authentication extensions.
 With this library, you can very easily connect the JWT-based authentication to your project with usage of EF Core and Identity to store users data.
@@ -10,6 +11,14 @@ Optianally, you can enable usage of Refresh token to provide additional level of
 Also, this library allows to easily implement registration and logout functionality.
 
 **NOTE**: This package is an extension of TourmalineCore.AspNetCore.JwtAuthentication.Core package, that contains basic functionality of JWT-based authentication. You can find more info about this package [here](https://github.com/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication/tree/master/JwtAuthentication.Core)
+
+# Installation
+![Nuget](https://img.shields.io/nuget/v/TourmalineCore.AspNetCore.JwtAuthentication.Identity?color=gre&label=stable%20version) ![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/TourmalineCore.AspNetCore.JwtAuthentication.Identity?label=pre-release%20version) ![Nuget](https://img.shields.io/nuget/dt/TourmalineCore.AspNetCore.JwtAuthentication.Identity)
+
+TourmalineCore.AspNetCore.JwtAuthentication.Identity is available on [NuGet](https://www.nuget.org/packages/TourmalineCore.AspNetCore.JwtAuthentication.Identity/). But also you can install latest stable version using **.NET CLI**
+```
+dotnet add package TourmalineCore.AspNetCore.JwtAuthentication.Identity
+```
 
 # Table of Content
 
@@ -50,45 +59,56 @@ public class AppDbContext : TourmalineDbContext<CustomUser>
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 
-var builder = WebApplication.CreateBuilder(args);
+public class Startup
+{
+    private readonly IConfiguration _configuration;
 
-var configuration = builder.Configuration;
+    public Startup(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
 
-...
-var authenticationOptions = (_configuration.GetSection(nameof(AuthenticationOptions)).Get<AuthenticationOptions>());
-buidler.
-    services
-        .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
-        .AddBaseLogin(authenticationOptions);
-...
+    public void ConfigureServices(IServiceCollection services) 
+	{
+        ...
+        var authenticationOptions = (_configuration.GetSection(nameof(AuthenticationOptions)).Get<AuthenticationOptions>());
+        services
+                .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
+                .AddBaseLogin(authenticationOptions);
+        ...
+    }
 
-var app = builder.Build();
-
-app
-    .UseJwtAuthentication();
-...
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        ...
+        app.UseJwtAuthentication();
+        ...
+    }
 }
 ```
 
 3. Optionally you can add the default user to the database
 ```csharp
-...
-
-var app = builder.Build();
-
-app
-    .UseDefaultDbUser<AppDbContext, CustomUser>("Admin", "Admin");
-...
+public class Startup
+{
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        ...
+        app.UseDefaultDbUser<AppDbContext, CustomUser>("Admin", "Admin");
+        ...
+    }
+}
 ```
 
 ## Generic ID feature
 
-You can also use your own ID type in IdentityUser by passing a generic type key in the TKey parameter.
+By default, the id for the user and the role identities is created by the string type in which the guid value is stored.
 
-For example by creating a user entity.
+But can also use your own ID type by passing a generic type key in the **TKey** parameter.
+
+For example, by creating a custom entity with its id long type.
 
 ```csharp
-...
 public class CustomUser : IdentityUser<long> // where long is generic type
 {
     public string Name { get; set; }
@@ -99,10 +119,9 @@ Further, in methods where the generic user id type is involved, you must explici
 
 > Database context class 
 ```csharp
-...
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 
-public class AppDbContext : TourmalineDbContext<CustomUser>
+public class AppDbContext : TourmalineDbContext<CustomUser, long>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
@@ -111,40 +130,40 @@ public class AppDbContext : TourmalineDbContext<CustomUser>
 }
 ```
 
-> Program.cs
+> Startup.cs
 
 ```csharp
 ...
-var builder = WebApplication.CreateBuilder(args);
+public void ConfigureServices(IServiceCollection services)
+        {
+            ...
 
-builder.Services
-    .AddDbContext<AppDbContext>(options =>
-            options.UseInMemoryDatabase("Database")
-        );
+            services
+                .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser, long>()
 
-builder.Services
-    .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser, long>()
-    .AddLoginWithRefresh(configuration.GetSection("AuthenticationOptions").Get<RefreshAuthenticationOptions>())
-    .AddLogout()
-    .AddRegistration();
+            ...
+        }
+
 ...
 
-var app = builder.Build();
-
-app.UseDefaultDbUser<AppDbContext, CustomUser, long>("Admin", "Admin");
-
-app.UseDefaultLoginMiddleware()
-    .UseJwtAuthentication();
-
-app.UseRefreshTokenMiddleware();
-app.UseRefreshTokenLogoutMiddleware();
-
-app.UseRegistration<CustomUser, long>(x => new CustomUser
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            UserName = x.Login,
-            NormalizedUserName = x.Login,
+            ...
+            
+            app.UseDefaultDbUser<AppDbContext, CustomUser, long>("Admin", "Admin");
+
+            app.UseDefaultLoginMiddleware()
+                .UseJwtAuthentication();
+
+            app.UseRegistration<CustomUser, long>(x => new CustomUser
+                {
+                    UserName = x.Login,
+                    NormalizedUserName = x.Login,
+                }
+            );
+
+            ...
         }
-    );
 
 ...
 ```
@@ -160,29 +179,37 @@ Using Identity allows you to easily implement regestration flow. To do that add 
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 
-var builder = WebApplication.CreateBuilder(args);
+public class Startup
+{
+    private readonly IConfiguration _configuration;
 
-var configuration = builder.Configuration;
+    public Startup(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
 
-...
-var authenticationOptions = (_configuration.GetSection(nameof(AuthenticationOptions)).Get<AuthenticationOptions>());
+    public void ConfigureServices(IServiceCollection services) 
+	{
+        ...
+        var authenticationOptions = (_configuration.GetSection(nameof(AuthenticationOptions)).Get<AuthenticationOptions>());
+        services
+            .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
+            .AddBaseLogin(authenticationOptions)
+            .AddRegistration();
+        ...
+    }
 
-buidler.
-    services
-        .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
-        .AddBaseLogin(authenticationOptions)
-        .AddRegistration();
-...
-
-var app = builder.Build();
-
-app
-    .UseRegistration<CustomUser, RegistrationRequestModel>(requestModel => new CustomUser()
-        {
-            UserName = requestModel.Login,
-            NormalizedUserName = requestModel.Login,
-        });
-...
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        ...
+        app.UseRegistration<CustomUser, RegistrationRequestModel>(requestModel => new CustomUser()
+            {
+                UserName = requestModel.Login,
+                NormalizedUserName = requestModel.Login,
+            });
+        ...
+    }
+}
 ```
 
 ## Registration request
@@ -203,20 +230,20 @@ The default route to the Registration endpoint is `/auth/register`.
 You can change it by passing in a **RegistrationEndpointOptions** object to the **UseRegistration** extension. Like this:
 
 ```csharp
-...
-
-var app = builder.Build();
-
-app.UseRegistration<CustomUser, CustomRegistrationRequest>(requestModel => new CustomUser()
-    {
-        UserName = requestModel.Login,
-        NormalizedUserName = requestModel.Login,
-    },
-    new RegistrationEndpointOptions()
-    { 
-        RegistrationEndpointRoute = "/new-user" 
-    });
-...
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+{
+    ...
+    app.UseRegistration<CustomUser, CustomRegistrationRequest>(requestModel => new CustomUser()
+        {
+            UserName = requestModel.Login,
+            NormalizedUserName = requestModel.Login,
+        },
+        new RegistrationEndpointOptions()
+        { 
+            RegistrationEndpointRoute = "/new-user" 
+        });
+    ...
+}
 ```
 
 # Refresh token
@@ -228,26 +255,35 @@ If you want to add another layer of security to your application, you can use th
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 
-var builder = WebApplication.CreateBuilder(args);
+public class Startup
+{
+    private readonly IConfiguration _configuration;
 
-var configuration = builder.Configuration;
+    public Startup(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
 
-...
-var authenticationOptions = (_configuration.GetSection(nameof(AuthenticationOptions)).Get<AuthenticationOptions>());
-buidler.
-    services
-        .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
-        .AddLoginWithRefresh(authenticationOptions);
-...
+    public void ConfigureServices(IServiceCollection services) 
+	{
+        ...
+        var authenticationOptions = (_configuration.GetSection(nameof(AuthenticationOptions)).Get<RefreshAuthenticationOptions>());
+        services
+            .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
+            .AddLoginWithRefresh(authenticationOptions);
+        ...
+    }
 
-var app = builder.Build();
-
-...
-app
-    .UseJwtAuthentication()
-    .UseDefaultLoginMiddleware()
-    .UseRefreshTokenMiddleware();
-...
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        ...
+        app
+            .UseJwtAuthentication()
+            .UseDefaultLoginMiddleware()
+            .UseRefreshTokenMiddleware();
+        ...
+    }
+}
 ```
 ## Login request with a Refresh Token
 
@@ -311,13 +347,16 @@ To use package you need to pass AuthenticationOptions to the AddJwtAuthenticatio
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 ...
 
-var builder = WebApplication.CreateBuilder(args);
-...
-var authenticationOptions = _configuration.GetSection("AuthenticationOptions").Get<RefreshAuthenticationOptions>();
-builder.services
-    .AddJwtAuthenticationWithIdentity<AppDbContext, User>()
-    .AddLoginWithRefresh(authenticationOptions);
-...
+public void ConfigureServices(IServiceCollection services) 
+{
+    ...
+    var authenticationOptions = _configuration.GetSection("AuthenticationOptions").Get<RefreshAuthenticationOptions>();
+
+    services
+        .AddJwtAuthenticationWithIdentity<AppDbContext, User>()
+        .AddLoginWithRefresh(authenticationOptions);
+    ...
+}
 ```
 
 Minimum appsettings.json configuration:
@@ -340,17 +379,18 @@ You can change it by passing in a **RefreshEndpointOptions** object to the **Use
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 ...
 
-var app = builder.Build();
-
-...
-app
-    .UseJwtAuthentication()
-    .UseDefaultLoginMiddleware();
-    .UseRefreshTokenMiddleware(new RefreshEndpointOptions
-    { 
-        RefreshEndpointRoute = "/test/refresh",
-    });
-...
+public async void Configure(IApplicationBuilder app, IHostingEnvironment env) 
+{
+    ...
+    app
+        .UseJwtAuthentication()
+        .UseDefaultLoginMiddleware();
+        .UseRefreshTokenMiddleware(new RefreshEndpointOptions
+        { 
+            RefreshEndpointRoute = "/test/refresh",
+        });
+    ...
+}
 ```
 
 # Logout
@@ -362,24 +402,29 @@ If you are using the refresh token, you will probably want to have a possibility
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 
+public class Startup
+{
+    public void ConfigureServices(IServiceCollection services) 
+	{
+        ...
+        services
+            .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
+            .AddLoginWithRefresh(authenticationOptions)
+            .AddLogout();
+        ...
+    }
 
-var builder = WebApplication.CreateBuilder(args);
-...
-builder.services
-    .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
-    .AddLoginWithRefresh(authenticationOptions)
-    .AddLogout();
-...
-
-var app = builder.Build();
-
-...
-app
-    .UseJwtAuthentication()
-    .UseDefaultLoginMiddleware()
-    .UseRefreshTokenMiddleware()
-    .UseRefreshTokenLogoutMiddleware();
-...
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        ...
+        app
+            .UseJwtAuthentication()
+            .UseDefaultLoginMiddleware()
+            .UseRefreshTokenMiddleware()
+            .UseRefreshTokenLogoutMiddleware();
+        ...
+    }
+}
 ```
 
 ## Logout request
@@ -427,13 +472,14 @@ public class UserClaimsProvider : IUserClaimsProvider
 ```csharp
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 
-var builder = WebApplication.CreateBuilder(args);
-...
-builder.services
-    .AddJwtAuthenticationWithIdentity<AppDbContext, User>()
-    .AddLoginWithRefresh(authenticationOptions)
-    .WithUserClaimsProvider<UserClaimsProvider>(UserClaimsProvider.ExampleClaimType);
-...
+public void ConfigureServices(IServiceCollection services) 
+{
+    ...
+    services.AddJwtAuthenticationWithIdentity<AppDbContext, User>()
+            .AddLoginWithRefresh(authenticationOptions)
+            .WithUserClaimsProvider<UserClaimsProvider>(UserClaimsProvider.ExampleClaimType);
+    ...
+}
 ```
 
 Please note that if you enable functionality for the refresh token, then `WithUserClaimsProvider` should be called after `AddLoginWithRefresh`.
