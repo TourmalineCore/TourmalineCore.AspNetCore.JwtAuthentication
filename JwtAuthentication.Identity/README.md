@@ -1,4 +1,5 @@
 # TourmalineCore.AspNetCore.JwtAuthentication.Identity
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication/.NET?label=tests%20and%20build)
 
 The library can be used for all projects based on .NET Core 3.0 - .NET Core 6.0.
 
@@ -10,6 +11,14 @@ Optianally, you can enable usage of Refresh token to provide additional level of
 Also, this library allows to easily implement registration and logout functionality.
 
 **NOTE**: This package is an extension of TourmalineCore.AspNetCore.JwtAuthentication.Core package, that contains basic functionality of JWT-based authentication. You can find more info about this package [here](https://github.com/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication/tree/master/JwtAuthentication.Core)
+
+# Installation
+![Nuget](https://img.shields.io/nuget/v/TourmalineCore.AspNetCore.JwtAuthentication.Identity?color=gre&label=stable%20version) ![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/TourmalineCore.AspNetCore.JwtAuthentication.Identity?label=pre-release%20version) ![Nuget](https://img.shields.io/nuget/dt/TourmalineCore.AspNetCore.JwtAuthentication.Identity)
+
+TourmalineCore.AspNetCore.JwtAuthentication.Identity is available on [NuGet](https://www.nuget.org/packages/TourmalineCore.AspNetCore.JwtAuthentication.Identity/). But also you can install latest stable version using **.NET CLI**
+```
+dotnet add package TourmalineCore.AspNetCore.JwtAuthentication.Identity
+```
 
 # Table of Content
 
@@ -93,9 +102,11 @@ public class Startup
 
 ## Generic ID feature
 
-You can also use your own ID type in **IdentityUser** by passing a generic type key in the **TKey** parameter.
+By default, the id for the user and the role identities is created by the string type in which the guid value is stored.
 
-For example by creating a user entity.
+But can also use your own ID type by passing a generic type key in the **TKey** parameter.
+
+For example, by creating a custom entity with its id long type.
 
 ```csharp
 public class CustomUser : IdentityUser<long> // where long is generic type
@@ -110,7 +121,7 @@ Further, in methods where the generic user id type is involved, you must explici
 ```csharp
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 
-public class AppDbContext : TourmalineDbContext<CustomUser>
+public class AppDbContext : TourmalineDbContext<CustomUser, long>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
@@ -129,10 +140,7 @@ public void ConfigureServices(IServiceCollection services)
 
             services
                 .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser, long>()
-                .AddLoginWithRefresh(configuration.GetSection("AuthenticationOptions").Get<RefreshAuthenticationOptions>())
-                .AddLogout()
-                .AddRegistration();
-            
+
             ...
         }
 
@@ -146,9 +154,6 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 
             app.UseDefaultLoginMiddleware()
                 .UseJwtAuthentication();
-
-            app.UseRefreshTokenMiddleware();
-            app.UseRefreshTokenLogoutMiddleware();
 
             app.UseRegistration<CustomUser, long>(x => new CustomUser
                 {
