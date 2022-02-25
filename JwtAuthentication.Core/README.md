@@ -1,4 +1,4 @@
-﻿# TourmalineCore.AspNetCore.JwtAuthentication.Core
+# TourmalineCore.AspNetCore.JwtAuthentication.Core
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication/.NET?label=tests%20and%20build)
 
 The library can be used for all projects based on .NET Core 3.0 - .NET Core 6.0.
@@ -11,7 +11,7 @@ With this library, you can very easily connect the JWT-based authentication to y
 Also, this library allows to override the logic of username and password validation.
 The library provides the ability to use a debug token to avoid the need to enter a username and password when the lifetime of the JWT expires.
 
-# Installation
+## Installation
 ![Nuget](https://img.shields.io/nuget/v/TourmalineCore.AspNetCore.JwtAuthentication.Core?color=gre&label=stable%20version) ![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/TourmalineCore.AspNetCore.JwtAuthentication.Core?label=pre-release%20version) ![Nuget](https://img.shields.io/nuget/dt/TourmalineCore.AspNetCore.JwtAuthentication.Core)
 
 TourmalineCore.AspNetCore.JwtAuthentication.Core is available on [NuGet](https://www.nuget.org/packages/TourmalineCore.AspNetCore.JwtAuthentication.Core/). But also you can install latest stable version using **.NET CLI**
@@ -20,22 +20,27 @@ dotnet add package TourmalineCore.AspNetCore.JwtAuthentication.Core
 ```
 
 
-# Table of Content
-
+## Table of Content
+- [TourmalineCore.AspNetCore.JwtAuthentication.Core](#tourmalinecoreaspnetcorejwtauthenticationcore)
+  * [Installation](#installation)
+  * [Table of Content](#table-of-content)
 - [Authentication](#authentication)
-- [Basic Usage](#basic)
-- [Cookie](#cookie)
-- [Options](#options)
-- [Routing](#routing)
-- [Login Request Example](#login-request)
-- [Login Validation](#login-validation)
-- [Token Usage](#token-usage)
+  * [Basic usage](#basic-usage)
+  * [Using cookie](#using-cookie)
+  * [Options](#options)
+  * [Routing](#routing)
+  * [Login request](#login-request)
+  * [Login validation](#login-validation)
+  * [Token usage](#token-usage)
 - [Authorization](#authorization)
 - [Callbacks](#callbacks)
+  * [Login](#login)
+  * [Logout](#logout)
+  * [Refresh](#refresh)
 
 # Authentication
 
-## Basic
+## Basic usage
 
 To start using JWT-based authentication, need to use one method in the Startup.cs file.
 In this case, the default options will be used.
@@ -66,7 +71,7 @@ app
 
 ```
 
-## Cookie
+## Using cookie
 
 This package also allows you to store the received token in a cookie. To do that you need to use Cookie login middleware instead of default login. After successful login the token will be added to a cookie, that user will receive in a response. Then they can use this cookie for the authentication instead of writing the token to the Authentication header of every request. 
 
