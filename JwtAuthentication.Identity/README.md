@@ -1,4 +1,4 @@
-﻿# TourmalineCore.AspNetCore.JwtAuthentication.Identity
+# TourmalineCore.AspNetCore.JwtAuthentication.Identity
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication/.NET?label=tests%20and%20build)
 
 The library can be used for all projects based on .NET Core 3.0 - .NET Core 6.0.
@@ -12,7 +12,7 @@ Also, this library allows to easily implement registration and logout functional
 
 **NOTE**: This package is an extension of TourmalineCore.AspNetCore.JwtAuthentication.Core package, that contains basic functionality of JWT-based authentication. You can find more info about this package [here](https://github.com/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication/tree/master/JwtAuthentication.Core)
 
-# Installation
+## Installation
 ![Nuget](https://img.shields.io/nuget/v/TourmalineCore.AspNetCore.JwtAuthentication.Identity?color=gre&label=stable%20version) ![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/TourmalineCore.AspNetCore.JwtAuthentication.Identity?label=pre-release%20version) ![Nuget](https://img.shields.io/nuget/dt/TourmalineCore.AspNetCore.JwtAuthentication.Identity)
 
 TourmalineCore.AspNetCore.JwtAuthentication.Identity is available on [NuGet](https://www.nuget.org/packages/TourmalineCore.AspNetCore.JwtAuthentication.Identity/). But also you can install latest stable version using **.NET CLI**
@@ -20,20 +20,23 @@ TourmalineCore.AspNetCore.JwtAuthentication.Identity is available on [NuGet](htt
 dotnet add package TourmalineCore.AspNetCore.JwtAuthentication.Identity
 ```
 
-# Table of Content
+## Table of Content
 
-- [Basic Usage](#basic-usage)
-    - [Generic ID feature](#generic-id-feature)
+- [TourmalineCore.AspNetCore.JwtAuthentication.Identity](#tourmalinecoreaspnetcorejwtauthenticationidentity)
+  * [Installation](#installation)
+  * [Table of Content](#table-of-content)
+- [Basic usage](#basic-usage)
+  * [Generic ID feature](#generic-id-feature)
 - [Registration](#registration)
-    - [Registration Request](#registration-request)
-    - [Registration Routing](#registration-routing)
-- [Refresh](#refresh-token)
-    - [Login request with a Refresh Token](#Login-request-with-a-Refresh-Token)
-    - [Refresh Token Request](#Refresh-Token-Request)
-    - [Refresh Token Options](#Refresh-Token-Options)
-    - [Refresh Routing](#Refresh-Token-Options)
-    - [Logout](#logout)
-        - [Logout Request](#logout-request)
+  * [Registration request](#registration-request)
+  * [Registration Routing](#registration-routing)
+- [Refresh token](#refresh-token)
+  * [Login request with a Refresh Token](#login-request-with-a-refresh-token)
+  * [Refresh Token Request](#refresh-token-request)
+  * [Refresh Token Options](#refresh-token-options)
+  * [Refresh Routing](#refresh-routing)
+- [Logout](#logout)
+  * [Logout request](#logout-request)
 - [Authorization](#authorization)
 
 
