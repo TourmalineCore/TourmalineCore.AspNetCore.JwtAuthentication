@@ -145,6 +145,9 @@ Minimum appsettings.json configuration:
 }
 ```
 
+For generate pair RSA keys, use https://mkjwk.org/.
+Here we can generate key pair in RSA521 algorithm and 2048 key size. In package we use X.509 PEM Format.
+
 ## Routing
 
 The default route to the login endpoint is `/auth/login`.
