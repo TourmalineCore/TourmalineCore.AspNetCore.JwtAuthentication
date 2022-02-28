@@ -1,4 +1,4 @@
-# TourmalineCore.AspNetCore.JwtAuthentication.Identity
+﻿# TourmalineCore.AspNetCore.JwtAuthentication.Identity
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication/.NET?label=tests%20and%20build)
 
 The library can be used for all projects based on .NET Core 3.0 - .NET Core 6.0.
@@ -111,12 +111,12 @@ public class CustomUser : IdentityUser<long> // where long is generic type
 
 Further, in methods where the generic user id type is involved, you must explicitly specify the generic id type.
 
-> Database context class 
+> AppDbContext.cs 
 ```csharp
 ...
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 
-public class AppDbContext : TourmalineDbContext<CustomUser>
+public class AppDbContext : TourmalineDbContext<CustomUser, long>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
