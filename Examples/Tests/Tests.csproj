@@ -6,7 +6,7 @@
 	  <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
+	<ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
     <PackageReference Include="Moq" Version="4.16.1" />
@@ -27,6 +27,7 @@
     <ProjectReference Include="..\Example.NetCore5.0.RefreshTokenAuthAndRegistrationUsingIdentity\Example.NetCore5.0.RefreshTokenAuthAndRegistrationUsingIdentity.csproj" />
     <ProjectReference Include="..\..\JwtAuthentication.Core\JwtAuthentication.Core.csproj" />
     <ProjectReference Include="..\..\JwtAuthentication.Identity\JwtAuthentication.Identity.csproj" />
+    <ProjectReference Include="..\Example.NetCore6.0.AuthenticationUsingGenericIdentityUser\Example.NetCore6.0.AuthenticationUsingGenericIdentityUser.csproj" />
     <ProjectReference Include="..\Example.NetCore6.0.CookiesBasedAuthentication\Example.NetCore6.0.CookiesBasedAuthentication.csproj" />
     <ProjectReference Include="..\Example.NetCore6.0.RefreshTokenAuthAndRegistrationUsingIdentity\Example.NetCore6.0.RefreshTokenAuthAndRegistrationUsingIdentity.csproj" />
   </ItemGroup>

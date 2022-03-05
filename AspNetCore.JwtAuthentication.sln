@@ -42,17 +42,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetCore3.", "NetCore3.", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetCore6.0", "NetCore6.0", "{4FF83CB3-A634-4D07-BEE0-B5391B86F071}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore6.0.AuthenticationUsingIdentityUser", "Examples\Example.NetCore6.0.AuthenticationUsingIdentityUser\Example.NetCore6.0.AuthenticationUsingIdentityUser.csproj", "{28707296-5273-471B-89FB-FA3D6C62CA67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore6.0.AuthenticationUsingIdentityUser", "Examples\Example.NetCore6.0.AuthenticationUsingIdentityUser\Example.NetCore6.0.AuthenticationUsingIdentityUser.csproj", "{28707296-5273-471B-89FB-FA3D6C62CA67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore6.0.AuthenticationWithRefreshToken", "Examples\Example.NetCore6.0.AuthenticationWithRefreshToken\Example.NetCore6.0.AuthenticationWithRefreshToken.csproj", "{5AE1CC8C-80A2-46AF-A02E-BE129080F489}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore6.0.AuthenticationWithRefreshToken", "Examples\Example.NetCore6.0.AuthenticationWithRefreshToken\Example.NetCore6.0.AuthenticationWithRefreshToken.csproj", "{5AE1CC8C-80A2-46AF-A02E-BE129080F489}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore6.0.CookiesBasedAuthentication", "Examples\Example.NetCore6.0.CookiesBasedAuthentication\Example.NetCore6.0.CookiesBasedAuthentication.csproj", "{E3C800A0-012F-4440-BD78-813FE51F4830}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore6.0.CookiesBasedAuthentication", "Examples\Example.NetCore6.0.CookiesBasedAuthentication\Example.NetCore6.0.CookiesBasedAuthentication.csproj", "{E3C800A0-012F-4440-BD78-813FE51F4830}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore6.0.PermissionBasedAuthorization", "Examples\Example.NetCore6.0.PermissionBasedAuthorization\Example.NetCore6.0.PermissionBasedAuthorization.csproj", "{421DEC55-2DF8-4DCB-B53D-ED59C15062A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore6.0.PermissionBasedAuthorization", "Examples\Example.NetCore6.0.PermissionBasedAuthorization\Example.NetCore6.0.PermissionBasedAuthorization.csproj", "{421DEC55-2DF8-4DCB-B53D-ED59C15062A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore6.0.RefreshTokenAuthAndRegistrationUsingIdentity", "Examples\Example.NetCore6.0.RefreshTokenAuthAndRegistrationUsingIdentity\Example.NetCore6.0.RefreshTokenAuthAndRegistrationUsingIdentity.csproj", "{C7F24A8E-C454-4EB7-9F33-5ABCAD04AE24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore6.0.RefreshTokenAuthAndRegistrationUsingIdentity", "Examples\Example.NetCore6.0.RefreshTokenAuthAndRegistrationUsingIdentity\Example.NetCore6.0.RefreshTokenAuthAndRegistrationUsingIdentity.csproj", "{C7F24A8E-C454-4EB7-9F33-5ABCAD04AE24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore6.0.WithCredentialsValidator", "Examples\Example.NetCore6.0.WithCredentialsValidator\Example.NetCore6.0.WithCredentialsValidator.csproj", "{2652FCF8-3604-435E-8963-92A4A365FA33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore6.0.WithCredentialsValidator", "Examples\Example.NetCore6.0.WithCredentialsValidator\Example.NetCore6.0.WithCredentialsValidator.csproj", "{2652FCF8-3604-435E-8963-92A4A365FA33}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore6.0.AuthenticationUsingGenericIdentityUser", "Examples\Example.NetCore6.0.AuthenticationUsingGenericIdentityUser\Example.NetCore6.0.AuthenticationUsingGenericIdentityUser.csproj", "{C617F7DD-6E7E-4B5D-8766-C82C37EFFF6E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -136,6 +138,10 @@ Global
 		{2652FCF8-3604-435E-8963-92A4A365FA33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2652FCF8-3604-435E-8963-92A4A365FA33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2652FCF8-3604-435E-8963-92A4A365FA33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C617F7DD-6E7E-4B5D-8766-C82C37EFFF6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C617F7DD-6E7E-4B5D-8766-C82C37EFFF6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C617F7DD-6E7E-4B5D-8766-C82C37EFFF6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C617F7DD-6E7E-4B5D-8766-C82C37EFFF6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -161,6 +167,7 @@ Global
 		{421DEC55-2DF8-4DCB-B53D-ED59C15062A2} = {4FF83CB3-A634-4D07-BEE0-B5391B86F071}
 		{C7F24A8E-C454-4EB7-9F33-5ABCAD04AE24} = {4FF83CB3-A634-4D07-BEE0-B5391B86F071}
 		{2652FCF8-3604-435E-8963-92A4A365FA33} = {4FF83CB3-A634-4D07-BEE0-B5391B86F071}
+		{C617F7DD-6E7E-4B5D-8766-C82C37EFFF6E} = {4FF83CB3-A634-4D07-BEE0-B5391B86F071}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C2026BF9-DACC-4EA4-AF04-B8A590EA38BF}

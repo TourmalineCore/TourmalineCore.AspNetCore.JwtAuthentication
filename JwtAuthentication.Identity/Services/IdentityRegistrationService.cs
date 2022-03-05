@@ -8,9 +8,20 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 {
-    internal class IdentityRegistrationService<TUser, TRegistrationRequestModel> : IRegistrationService<TUser, TRegistrationRequestModel>
+    internal class IdentityRegistrationService<TUser, TRegistrationRequestModel> : IdentityRegistrationService<TUser, string, TRegistrationRequestModel>
         where TUser : IdentityUser
         where TRegistrationRequestModel : RegistrationRequestModel
+    {
+        public IdentityRegistrationService(ILoginService loginService, SignInManager<TUser> signInManager)
+            : base(loginService, signInManager)
+        {
+        }
+    }
+
+    internal class IdentityRegistrationService<TUser, TKey, TRegistrationRequestModel> : IRegistrationService<TUser, TRegistrationRequestModel>
+        where TUser : IdentityUser<TKey>
+        where TRegistrationRequestModel : RegistrationRequestModel
+        where TKey : IEquatable<TKey>
     {
         private readonly ILoginService _loginService;
 
