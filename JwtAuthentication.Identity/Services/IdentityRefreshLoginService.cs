@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
@@ -14,15 +15,18 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
         private readonly RefreshSignInManager<TUser> _signInManager;
         private readonly IValidator<RefreshTokenRequestModel> _refreshTokenValidator;
         private readonly IUserCredentialsValidator _userCredentialsValidator;
+        private readonly IRefreshTokenManager<TUser> _refreshTokenManager;
 
         public IdentityRefreshLoginService(
             RefreshSignInManager<TUser> signInManager,
             IValidator<RefreshTokenRequestModel> refreshTokenValidator,
-            IUserCredentialsValidator userCredentialsValidator)
+            IUserCredentialsValidator userCredentialsValidator,
+            IRefreshTokenManager<TUser> refreshTokenManager)
         {
             _signInManager = signInManager;
             _refreshTokenValidator = refreshTokenValidator;
             _userCredentialsValidator = userCredentialsValidator;
+            _refreshTokenManager = refreshTokenManager;
         }
 
         public async Task<AuthResponseModel> LoginAsync(LoginRequestModel model)
@@ -35,23 +39,34 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             }
 
             var user = await _signInManager.UserManager.FindByNameAsync(model.Login);
-            return await _signInManager.GenerateAuthTokens(user, model.ClientFingerPrint);
+            var refreshToken = await _refreshTokenManager.GenerateRefreshToken(user, model.ClientFingerPrint);
+            return await _signInManager.GenerateAuthTokens(user, refreshToken);
         }
 
-        public async Task<AuthResponseModel> RefreshAsync(RefreshTokenRequestModel model)
+        public async Task<AuthResponseModel> RefreshAsync(Guid refreshTokenValue, string clientFingerPrint)
         {
-            await _refreshTokenValidator.ValidateAsync(model);
-
-            try
+            await _refreshTokenValidator.ValidateAsync(new RefreshTokenRequestModel
             {
-                var user = await _signInManager.InvalidateRefreshTokenForUser(model.RefreshTokenValue, model.ClientFingerPrint);
+                RefreshTokenValue = refreshTokenValue,
+                ClientFingerPrint = clientFingerPrint,
+            });
 
-                return await _signInManager.GenerateAuthTokens(user, model.ClientFingerPrint);
-            }
-            catch (RefreshTokenException)
+            var (appUser, tokenAlreadyInvalidated) = await _refreshTokenManager.InvalidateRefreshToken(refreshTokenValue, clientFingerPrint);
+
+            if (!tokenAlreadyInvalidated)
             {
-                return await _signInManager.GetActiveRefreshToken(model.ClientFingerPrint);
+                var refreshToken = await _refreshTokenManager.GenerateRefreshToken(appUser, clientFingerPrint);
+                return await _signInManager.GenerateAuthTokens(appUser, refreshToken);
             }
+
+            if (await _refreshTokenManager.IsPotentialRefreshTokenTheft(refreshTokenValue, appUser.Id))
+            {
+                throw new AuthenticationException(ErrorTypes.RefreshTokenIsProbablyStolen);
+            }
+
+            var activeRefreshToken = await _refreshTokenManager.FindActiveRefreshTokenAsync(appUser.Id);
+
+            return await _signInManager.GenerateAuthTokens(appUser, activeRefreshToken);
         }
     }
 }

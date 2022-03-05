@@ -17,6 +17,7 @@ namespace Tests.NetCore6._0
 
         private const string Login = "Admin";
         private const string Password = "Admin";
+        private const string FingerPrint = "fingerprint";
 
         public RefreshTests(WebApplicationFactory<Program> factory)
             : base(factory)
@@ -42,6 +43,24 @@ namespace Tests.NetCore6._0
         }
 
         [Fact]
+        public async Task RefreshWithTheSameValidTokenMultipleTimes_ReturnsTokens()
+        {
+            var (_, authModel) = await LoginAsync(Login, Password, FingerPrint);
+
+            await CallRefresh(authModel.RefreshToken.Value, FingerPrint);
+            var (_, firstResult) = await CallRefresh(authModel.RefreshToken.Value, FingerPrint);
+
+            await CallRefresh(authModel.RefreshToken.Value, FingerPrint);
+            var (_, lastResult) = await CallRefresh(authModel.RefreshToken.Value, FingerPrint);
+
+            Assert.False(string.IsNullOrWhiteSpace(lastResult.AccessToken.Value));
+            Assert.False(string.IsNullOrWhiteSpace(lastResult.RefreshToken.Value));
+
+            Assert.Equal(lastResult.AccessToken.Value, firstResult.AccessToken.Value);
+            Assert.Equal(lastResult.RefreshToken.Value, firstResult.RefreshToken.Value);
+        }
+
+        [Fact]
         public async Task LogoutWithValidToken_DiscardsRefresh()
         {
             var loginResult = await LoginAsync(Login, Password);
@@ -59,9 +78,6 @@ namespace Tests.NetCore6._0
             var logoutResult = await client.PostAsync(LogoutUrl, body);
 
             Assert.Equal(HttpStatusCode.OK, logoutResult.StatusCode);
-
-            var secondRefreshResult = await CallRefresh(refreshResult.authModel.RefreshToken.Value);
-            Assert.Equal(HttpStatusCode.Conflict, secondRefreshResult.response.StatusCode);
         }
 
         private async Task<(HttpResponseMessage response, AuthResponseModel authModel)> CallRefresh(string refresh, string fingerprint = null)

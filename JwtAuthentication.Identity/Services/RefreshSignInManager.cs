@@ -15,7 +15,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 {
     internal class RefreshSignInManager<TUser> : SignInManager<TUser> where TUser : IdentityUser
     {
-        private readonly IRefreshTokenManager<TUser> _refreshTokenManager;
         private readonly ITokenManager _accessTokenManager;
 
         public RefreshSignInManager(
@@ -26,7 +25,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             ILogger<SignInManager<TUser>> logger,
             IAuthenticationSchemeProvider schemes,
             IUserConfirmation<TUser> confirmation,
-            IRefreshTokenManager<TUser> refreshTokenManager,
             ITokenManager accessTokenManager)
             : base(userManager,
                     contextAccessor,
@@ -37,33 +35,16 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
                     confirmation
                 )
         {
-            _refreshTokenManager = refreshTokenManager;
             _accessTokenManager = accessTokenManager;
         }
 
-        public async Task<AuthResponseModel> GenerateAuthTokens(TUser appUser, string fingerPrint)
+        public async Task<AuthResponseModel> GenerateAuthTokens(TUser appUser, TokenModel refreshToken)
         {
-            return new AuthResponseModel
-            {
-                AccessToken = await GetBearerToken(appUser),
-                RefreshToken = await _refreshTokenManager.GetRefreshToken(appUser, fingerPrint),
-            };
-        }
-
-        public async Task<AuthResponseModel> GetActiveRefreshToken(string clientFingerPrint)
-        {
-            var (appUser, refreshToken) = await _refreshTokenManager.FindActiveRefreshToken(clientFingerPrint);
-
             return new AuthResponseModel
             {
                 AccessToken = await GetBearerToken(appUser),
                 RefreshToken = refreshToken,
             };
-        }
-
-        public async Task<TUser> InvalidateRefreshTokenForUser(Guid refreshTokenValue, string clientFingerPrint = null)
-        {
-            return await _refreshTokenManager.InvalidateRefreshToken(refreshTokenValue, clientFingerPrint);
         }
 
         public override Task SignInWithClaimsAsync(TUser user, AuthenticationProperties authenticationProperties, IEnumerable<Claim> additionalClaims)

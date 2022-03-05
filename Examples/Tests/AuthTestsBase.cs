@@ -1,9 +1,7 @@
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
@@ -38,7 +36,7 @@ namespace Tests
             };
         }
 
-        internal async Task<(HttpResponseMessage response, AuthResponseModel authModel)> LoginAsync(string login, string password)
+        internal async Task<(HttpResponseMessage response, AuthResponseModel authModel)> LoginAsync(string login, string password, string clientFingerPrint = null)
         {
             var client = _factory.CreateClient();
 
@@ -46,6 +44,7 @@ namespace Tests
                     {
                         Login = login,
                         Password = password,
+                        ClientFingerPrint = clientFingerPrint,
                     }
                 );
 

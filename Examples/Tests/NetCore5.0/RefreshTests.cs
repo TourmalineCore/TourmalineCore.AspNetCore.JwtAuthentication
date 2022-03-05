@@ -18,7 +18,6 @@ namespace Tests.NetCore5._0
 
         private const string Login = "Admin";
         private const string Password = "Admin";
-
         private const string FingerPrint = "fingerprint";
 
         public RefreshTests(WebApplicationFactory<Startup> factory)
@@ -40,17 +39,19 @@ namespace Tests.NetCore5._0
         [Fact]
         public async Task RefreshWithTheSameValidTokenMultipleTimes_ReturnsTokens()
         {
-            var (_, authModel) = await LoginAsync(Login, Password);
+            var (_, authModel) = await LoginAsync(Login, Password, FingerPrint);
 
+            await CallRefresh(authModel.RefreshToken.Value, FingerPrint);
             var (_, firstResult) = await CallRefresh(authModel.RefreshToken.Value, FingerPrint);
 
             await CallRefresh(authModel.RefreshToken.Value, FingerPrint);
-            await CallRefresh(authModel.RefreshToken.Value, FingerPrint);
-
             var (_, lastResult) = await CallRefresh(authModel.RefreshToken.Value, FingerPrint);
 
-            Assert.Equal(firstResult.AccessToken, lastResult.AccessToken);
-            Assert.Equal(firstResult.RefreshToken, lastResult.RefreshToken);
+            Assert.False(string.IsNullOrWhiteSpace(lastResult.AccessToken.Value));
+            Assert.False(string.IsNullOrWhiteSpace(lastResult.RefreshToken.Value));
+
+            Assert.Equal(lastResult.AccessToken.Value, firstResult.AccessToken.Value);
+            Assert.Equal(lastResult.RefreshToken.Value, firstResult.RefreshToken.Value);
         }
 
         [Fact]
@@ -78,9 +79,6 @@ namespace Tests.NetCore5._0
             var logoutResult = await client.PostAsync(LogoutUrl, body);
 
             Assert.Equal(HttpStatusCode.OK, logoutResult.StatusCode);
-
-            var secondRefreshResult = await CallRefresh(refreshResult.authModel.RefreshToken.Value);
-            Assert.Equal(HttpStatusCode.Conflict, secondRefreshResult.response.StatusCode);
         }
 
         private async Task<(HttpResponseMessage response, AuthResponseModel authModel)> CallRefresh(string refresh, string fingerprint = null)

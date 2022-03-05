@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,8 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
+
+[assembly: InternalsVisibleTo("Tests")]
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 {
@@ -24,7 +27,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             _options = options;
         }
 
-        public async Task<TokenModel> GetRefreshToken(object user, string clientFingerPrint)
+        public async Task<TokenModel> GenerateRefreshToken(object user, string clientFingerPrint)
         {
             var refreshToken = CreateRefreshToken(user, clientFingerPrint);
 
@@ -35,7 +38,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             return BuildTokenModelByRefreshToken(refreshToken);
         }
 
-        public async Task<TUser> InvalidateRefreshToken(Guid refreshTokenValue, string clientFingerPrint)
+        public async Task<(TUser, bool tokenAlreadyInvalidated)> InvalidateRefreshToken(Guid refreshTokenValue, string clientFingerPrint)
         {
             var token = await _dbContext
                 .Set<RefreshToken<TUser>>()
@@ -45,37 +48,53 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
                 .Where(x => clientFingerPrint == null || x.ClientFingerPrint == clientFingerPrint)
                 .FirstOrDefaultAsync(x => x.Value == refreshTokenValue);
 
-            ThrowExceptionIfTokenOrUserIsNull(token);
+            ThrowExceptionIfTokenIsNull(token);
+            ThrowExceptionIfUserIsNull(token);
 
             if (!token.IsActive)
             {
-                throw new RefreshTokenException(ErrorTypes.RefreshTokenHasAlreadyBeenInvalidated);
+                return (token.User, true);
             }
 
-            token.IsActive = false;
+            token.Expire();
             await _dbContext.SaveChangesAsync();
 
-            return token.User;
+            return (token.User, false);
         }
 
-        public async Task<(TUser, TokenModel)> FindActiveRefreshToken(string clientFingerPrint)
+        public async Task<TokenModel> FindActiveRefreshTokenAsync(string userId)
         {
-            if (clientFingerPrint == null)
-            {
-                throw new AuthenticationException(ErrorTypes.FingerprintCannotBeNull);
-            }
-
             var activeRefreshToken = await _dbContext
                 .Set<RefreshToken<TUser>>()
                 .AsQueryable()
-                .Include(x => x.User)
-                .FirstOrDefaultAsync(x => x.ClientFingerPrint == clientFingerPrint);
+                .FirstOrDefaultAsync(x => x.UserId == userId && x.IsActive);
 
-            ThrowExceptionIfTokenOrUserIsNull(activeRefreshToken);
+            ThrowExceptionIfTokenIsNull(activeRefreshToken);
 
-            return (activeRefreshToken.User, BuildTokenModelByRefreshToken(activeRefreshToken));
+            return BuildTokenModelByRefreshToken(activeRefreshToken);
         }
 
+        public async Task<bool> IsPotentialRefreshTokenTheft(Guid refreshTokenValue, string userId)
+        {
+            var token = await FindRefreshToken(refreshTokenValue, userId);
+
+            return (DateTime.UtcNow - token.ExpiredAt).Minutes > _options.AlreadyExpiredRefreshTokenTtlInMinutes;
+        }
+
+        private async Task<RefreshToken<TUser>> FindRefreshToken(Guid refreshTokenValue, string userId)
+        {
+            var token = await _dbContext
+                .Set<RefreshToken<TUser>>()
+                .Include(x => x.User)
+                .AsQueryable()
+                .Where(x => x.ExpiresIn > DateTime.UtcNow)
+                .Where(x => x.UserId == userId)
+                .FirstOrDefaultAsync(x => x.Value == refreshTokenValue);
+
+            ThrowExceptionIfTokenIsNull(token);
+
+            return token;
+        }
 
         private RefreshToken<TUser> CreateRefreshToken(object user, string clientFingerPrint)
         {
@@ -102,13 +121,16 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             };
         }
 
-        private static void ThrowExceptionIfTokenOrUserIsNull(RefreshToken<TUser> token)
+        private static void ThrowExceptionIfTokenIsNull(RefreshToken<TUser> token)
         {
             if (token == null)
             {
                 throw new AuthenticationException(ErrorTypes.RefreshTokenNotFound);
             }
+        }
 
+        private static void ThrowExceptionIfUserIsNull(RefreshToken<TUser> token)
+        {
             if (token.User == null)
             {
                 throw new AuthenticationException(ErrorTypes.UserNotFound);

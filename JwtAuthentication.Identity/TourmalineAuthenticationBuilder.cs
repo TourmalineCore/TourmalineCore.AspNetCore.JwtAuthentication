@@ -153,6 +153,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         public TourmalineAuthenticationBuilder<TContext, TUser> AddLogout()
         {
             Services.AddTransient<ILogoutService, IdentityLogoutService<TUser>>();
+            Services.AddTransient<IRefreshService, IdentityRefreshLoginService<TUser>>();
             return this;
         }
 
