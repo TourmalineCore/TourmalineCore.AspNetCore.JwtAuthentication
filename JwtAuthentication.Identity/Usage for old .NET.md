@@ -441,33 +441,11 @@ If it was successful, it will return `true` in a response body.
 
 # Authorization
 
-This library implements claims-based authorization. With this, claims are added to the token payload and verified upon request. In order to use this mechanism, you need:
+The TourmalineCore.AspNetCore.JwtAuthentication.Identity extension implements claims-based authorization. With this, claims are added to the token payload and verified upon request. The basic implementation of authorization can be seen in the documentation of the package TourmalineCore.AspNetCore.JwtAuthentication.Core.
 
-1. Create a class that implements the IUserClaimsProvider interface that will return a list of the claims that you need. For example:
-```csharp
-...
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
+The only difference in implementation will be in the second step when adding services.
 
-public class UserClaimsProvider : IUserClaimsProvider
-{
-    public const string ExampleClaimType = "ExamplePermission";
-    
-    private const string FirstExampleClaimName = "CanUseExampleFirst";
-
-    private const string SecondExampleClaimName = "CanUseExampleSecond";
-	
-    public Task<List<Claim>> GetUserClaimsAsync(string login)
-    {
-        return Task.FromResult(new List<Claim>
-            {
-                new Claim(ExampleClaimType, FirstExampleClaimName),
-                new Claim(ExampleClaimType, SecondExampleClaimName),
-            });
-    }
-}
-```
-
-2. Connect this provider in the Startup.cs.
+Connect this provider in the Startup.cs.
    You can pass the name of the claim type you want to use as a parameter. `Default claim type = "Permission"`.
 ```csharp
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
@@ -483,43 +461,3 @@ public void ConfigureServices(IServiceCollection services)
 ```
 
 Please note that if you enable functionality for the refresh token, then `WithUserClaimsProvider` should be called after `AddLoginWithRefresh`.
-
-The claims in the token will look like this:
-```
-{
-  "ExamplePermission": [ // instead "ExamplePermission" will be "Permission" when using the default option
-    "CanUseExampleFirst",
-    "CanUseExampleSecond"
-  ],
-  "exp": 1611815230
-}
-```
-
-3. To enable checking of permissions, you must add the `RequiresPermission` attribute before the controller or method and pass as a parameter all permissions that are needed , for example:
-```csharp
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Filters;
-
-[Authorize]
-[RequiresPermission(UserClaimsProvider.FirstExampleClaimName)]
-[HttpGet]
-public IEnumerable<object> Get()
-{
-    //Make something
-}
-```
-
-For controllers:
-```csharp
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Filters;
-
-[ApiController]
-[Route("[controller]")]
-[Authorize]
-[RequiresPermission(UserClaimsProvider.FirstExampleClaimName, UserClaimsProvider.SecondExampleClaimName)]
-public class ExampleController : ControllerBase
-{
-    //Some methods
-}
-```
-
-Thus, only those users who have the desired permission will have access to the controller or controller method.
