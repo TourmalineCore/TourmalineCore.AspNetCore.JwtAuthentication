@@ -25,7 +25,7 @@ public class RefreshTokenManagerTests
     [Fact]
     public async Task CheckTokenOnPotentialTheft_TokenExpiredLongTimeAgo_ReturnTrue()
     {
-        var res = await _refreshTokenManager.IsPotentialRefreshTokenTheft(_guidForTokenWhichProbablyHasStolen, null);
+        var res = await _refreshTokenManager.IsPotentialRefreshTokenTheft("1", _guidForTokenWhichProbablyHasStolen);
 
         Assert.True(res);
     }
@@ -33,30 +33,28 @@ public class RefreshTokenManagerTests
     [Fact]
     public async Task CheckTokenOnPotentialTheft_TokenExpiredRecently_ReturnFalse()
     {
-        var res = await _refreshTokenManager.IsPotentialRefreshTokenTheft(_guidForTokenWhichRecentlyExpired, null);
+        var res = await _refreshTokenManager.IsPotentialRefreshTokenTheft("2", _guidForTokenWhichRecentlyExpired);
 
         Assert.False(res);
     }
 
     private Mock<TourmalineDbContext<CustomUser>> GetDbContextMock()
     {
-        var tokens = new List<RefreshToken<CustomUser>>()
+        var tokens = new List<RefreshToken<CustomUser>>
         {
             new()
             {
                 ExpiredAt = new DateTime(2021, 01, 01),
                 ExpiresIn = DateTime.UtcNow + TimeSpan.FromDays(7),
                 Value = _guidForTokenWhichProbablyHasStolen,
-                User = new CustomUser
-                {
-                    Id = "1",
-                },
+                UserId = "1",
             },
             new()
             {
                 ExpiredAt = DateTime.UtcNow,
                 ExpiresIn = DateTime.UtcNow + TimeSpan.FromDays(7),
                 Value = _guidForTokenWhichRecentlyExpired,
+                UserId = "2",
                 User = new CustomUser
                 {
                     Id = "2",

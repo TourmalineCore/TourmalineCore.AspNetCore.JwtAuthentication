@@ -1,6 +1,5 @@
 using System.Net;
 using System.Net.Http.Json;
-using System.Text.Json;
 using Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
@@ -13,7 +12,6 @@ namespace Tests.NetCore5._0
     public class RefreshTests
         : AuthTestsBase<Startup>
     {
-        private const string RefreshUrl = "/auth/refresh";
         private const string LogoutUrl = "/auth/logout";
 
         private const string Login = "Admin";
@@ -30,7 +28,7 @@ namespace Tests.NetCore5._0
         {
             var loginResult = await LoginAsync(Login, Password);
 
-            var (_, result) = await CallRefresh(loginResult.authModel.RefreshToken.Value);
+            var (_, result) = await CallRefresh(loginResult.authModel);
 
             Assert.False(string.IsNullOrWhiteSpace(result.AccessToken.Value));
             Assert.False(string.IsNullOrWhiteSpace(result.RefreshToken.Value));
@@ -41,11 +39,11 @@ namespace Tests.NetCore5._0
         {
             var (_, authModel) = await LoginAsync(Login, Password, FingerPrint);
 
-            await CallRefresh(authModel.RefreshToken.Value, FingerPrint);
-            var (_, firstResult) = await CallRefresh(authModel.RefreshToken.Value, FingerPrint);
+            await CallRefresh(authModel, FingerPrint);
+            var (_, firstResult) = await CallRefresh(authModel, FingerPrint);
 
-            await CallRefresh(authModel.RefreshToken.Value, FingerPrint);
-            var (_, lastResult) = await CallRefresh(authModel.RefreshToken.Value, FingerPrint);
+            await CallRefresh(authModel, FingerPrint);
+            var (_, lastResult) = await CallRefresh(authModel, FingerPrint);
 
             Assert.False(string.IsNullOrWhiteSpace(lastResult.AccessToken.Value));
             Assert.False(string.IsNullOrWhiteSpace(lastResult.RefreshToken.Value));
@@ -57,7 +55,7 @@ namespace Tests.NetCore5._0
         [Fact]
         public async Task RefreshWithInvalidToken_Returns401()
         {
-            var (response, _) = await CallRefresh(Guid.NewGuid().ToString());
+            var (response, _) = await CallRefresh(new AuthResponseModel(), Guid.NewGuid().ToString());
             Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
         }
 
@@ -66,7 +64,7 @@ namespace Tests.NetCore5._0
         {
             var loginResult = await LoginAsync(Login, Password);
 
-            var refreshResult = await CallRefresh(loginResult.authModel.RefreshToken.Value);
+            var refreshResult = await CallRefresh(loginResult.authModel);
 
             var client = _factory.CreateClient();
 
@@ -79,22 +77,6 @@ namespace Tests.NetCore5._0
             var logoutResult = await client.PostAsync(LogoutUrl, body);
 
             Assert.Equal(HttpStatusCode.OK, logoutResult.StatusCode);
-        }
-
-        private async Task<(HttpResponseMessage response, AuthResponseModel authModel)> CallRefresh(string refresh, string fingerprint = null)
-        {
-            var client = _factory.CreateClient();
-
-            var body = JsonContent.Create(new RefreshTokenRequestModel
-                    {
-                        RefreshTokenValue = Guid.Parse(refresh),
-                        ClientFingerPrint = fingerprint,
-                    }
-                );
-
-            var response = await client.PostAsync(RefreshUrl, body);
-            var result = JsonSerializer.Deserialize<AuthResponseModel>(response.Content.ReadAsStringAsync().Result, _jsonSerializerSettings);
-            return (response, result);
         }
     }
 }

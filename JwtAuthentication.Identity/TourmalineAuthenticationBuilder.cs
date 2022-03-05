@@ -113,6 +113,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             Services.AddTransient<IUserClaimsProvider, DefaultUserClaimsProvider>();
             Services.AddTransient<IValidator<RefreshTokenRequestModel>, RefreshTokenValidator>();
             Services.AddTransient<IUserCredentialsValidator, IdentityUserCredentialsValidator<TUser>>();
+            Services.AddTransient<ILogoutService, IdentityLogoutService<TUser>>();
 
             return this;
         }
@@ -153,7 +154,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         public TourmalineAuthenticationBuilder<TContext, TUser> AddLogout()
         {
             Services.AddTransient<ILogoutService, IdentityLogoutService<TUser>>();
-            Services.AddTransient<IRefreshService, IdentityRefreshLoginService<TUser>>();
+            Services.AddTransient<IdentityRefreshLoginService<TUser>>();
             return this;
         }
 

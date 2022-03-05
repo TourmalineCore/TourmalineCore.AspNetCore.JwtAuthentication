@@ -17,6 +17,7 @@ namespace Tests
 
         protected const string LoginUrl = "/auth/login";
         protected const string AuthorizedEndpointUrl = "/example";
+        protected const string RefreshUrl = "/auth/refresh";
 
         public AuthTestsBase(WebApplicationFactory<TProject> factory)
         {
@@ -53,6 +54,23 @@ namespace Tests
             var authModel = JsonSerializer.Deserialize<AuthResponseModel>(response.Content.ReadAsStringAsync().Result, _jsonSerializerSettings);
 
             return (response, authModel);
+        }
+
+        internal async Task<(HttpResponseMessage response, AuthResponseModel authModel)> CallRefresh(AuthResponseModel authResponseModel, string fingerprint = null)
+        {
+            var client = _factory.CreateClient();
+
+            var body = JsonContent.Create(new RefreshTokenRequestModel
+                    {
+                        RefreshTokenValue = Guid.Parse(authResponseModel.RefreshToken.Value),
+                        ClientFingerPrint = fingerprint,
+                    }
+                );
+
+            var response = await client.PostAsync(RefreshUrl, body);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authResponseModel.AccessToken.Value);
+            var result = JsonSerializer.Deserialize<AuthResponseModel>(response.Content.ReadAsStringAsync().Result, _jsonSerializerSettings);
+            return (response, result);
         }
 
         internal async Task<HttpResponseMessage> CallAuthorizedEndpointAsync(string accessToken)

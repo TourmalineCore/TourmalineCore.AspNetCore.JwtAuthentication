@@ -38,28 +38,31 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             return BuildTokenModelByRefreshToken(refreshToken);
         }
 
-        public async Task<(TUser, bool tokenAlreadyInvalidated)> InvalidateRefreshToken(Guid refreshTokenValue, string clientFingerPrint)
+        public async Task<bool> IsTokenAlreadyInvalidated(string userId, Guid refreshTokenValue)
         {
             var token = await _dbContext
                 .Set<RefreshToken<TUser>>()
                 .AsQueryable()
-                .Include(x => x.User)
-                .Where(x => x.ExpiresIn > DateTime.UtcNow)
-                .Where(x => clientFingerPrint == null || x.ClientFingerPrint == clientFingerPrint)
-                .FirstOrDefaultAsync(x => x.Value == refreshTokenValue);
+                .FirstOrDefaultAsync(x => x.Value == refreshTokenValue && x.UserId == userId);
 
             ThrowExceptionIfTokenIsNull(token);
-            ThrowExceptionIfUserIsNull(token);
 
-            if (!token.IsActive)
-            {
-                return (token.User, true);
-            }
+            return !token.IsActive;
+        }
+
+        public async Task InvalidateRefreshToken(string userId, Guid refreshTokenValue)
+        {
+            var token = await _dbContext
+                .Set<RefreshToken<TUser>>()
+                .AsQueryable()
+                .FirstOrDefaultAsync(x => x.Value == refreshTokenValue 
+                                          && x.UserId == userId 
+                                          && x.ExpiresIn > DateTime.UtcNow);
+
+            ThrowExceptionIfTokenIsNull(token);
 
             token.Expire();
             await _dbContext.SaveChangesAsync();
-
-            return (token.User, false);
         }
 
         public async Task<TokenModel> FindActiveRefreshTokenAsync(string userId)
@@ -74,7 +77,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             return BuildTokenModelByRefreshToken(activeRefreshToken);
         }
 
-        public async Task<bool> IsPotentialRefreshTokenTheft(Guid refreshTokenValue, string userId)
+        public async Task<bool> IsPotentialRefreshTokenTheft(string userId, Guid refreshTokenValue)
         {
             var token = await FindRefreshToken(refreshTokenValue, userId);
 

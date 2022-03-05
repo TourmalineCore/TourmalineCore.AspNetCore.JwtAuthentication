@@ -8,10 +8,12 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services
     {
         Task<TokenModel> GenerateRefreshToken(object user, string clientFingerPrint);
 
-        Task<(TUser, bool tokenAlreadyInvalidated)> InvalidateRefreshToken(Guid refreshTokenValue, string clientFingerPrint);
+        Task InvalidateRefreshToken(string userId, Guid refreshTokenValue);
+
+        Task<bool> IsTokenAlreadyInvalidated(string userId, Guid refreshTokenValue);
+
+        Task<bool> IsPotentialRefreshTokenTheft(string userId, Guid refreshTokenValue);
 
         Task<TokenModel> FindActiveRefreshTokenAsync(string userId);
-
-        Task<bool> IsPotentialRefreshTokenTheft(Guid refreshTokenValue, string userId);
     }
 }

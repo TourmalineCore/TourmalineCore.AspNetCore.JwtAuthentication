@@ -7,6 +7,7 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Extensions;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Refresh.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 
@@ -55,7 +56,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Refres
                 };
 
                 await _onRefreshExecuting(contractRefreshModel);
-                result = await service.RefreshAsync(contractRefreshModel.RefreshTokenValue, contractRefreshModel.ClientFingerPrint);
+                result = await service.RefreshAsync(context.User.GetUserName(), contractRefreshModel.RefreshTokenValue, contractRefreshModel.ClientFingerPrint);
                 await _onRefreshExecuted(contractRefreshModel);
             }
             catch (AuthenticationException ex)
