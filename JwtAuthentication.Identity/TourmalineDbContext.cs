@@ -39,6 +39,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         where TRole : IdentityRole<TKey>
         where TKey : IEquatable<TKey>
     {
+        private const string DefaultRefreshTokenTableName = "RefreshToken<User>";
+
         public TourmalineDbContext(DbContextOptions options)
             : base(options)
         {
@@ -48,12 +50,19 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         {
             base.OnModelCreating(modelBuilder);
 
-            if (TourmalineContextConfiguration.UseRefresh)
+            if (!TourmalineContextConfiguration.UseRefresh)
             {
-                modelBuilder.Model.AddEntityType(typeof(RefreshToken<TUser, TKey>));
-                modelBuilder.Entity<RefreshToken<TUser, TKey>>().HasKey(x => x.Id);
-                modelBuilder.Entity<RefreshToken<TUser, TKey>>().HasIndex(x => x.Value);
+                return;
             }
+
+            modelBuilder.Model.AddEntityType(typeof(RefreshToken<TUser, TKey>));
+            modelBuilder.Entity<RefreshToken<TUser, TKey>>(entity =>
+                    {
+                        entity.HasKey(x => x.Id);
+                        entity.HasIndex(x => x.Value);
+                        entity.ToTable(DefaultRefreshTokenTableName);
+                    }
+                );
         }
     }
 }
