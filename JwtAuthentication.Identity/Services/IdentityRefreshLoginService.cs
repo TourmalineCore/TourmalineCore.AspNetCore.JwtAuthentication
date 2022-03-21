@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
@@ -9,14 +10,22 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Validators;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 {
-    internal class IdentityRefreshLoginService<TUser> : ILoginService, IRefreshService where TUser : IdentityUser
+    internal class IdentityRefreshLoginService<TUser> : IdentityRefreshLoginService<TUser, string> where TUser : IdentityUser
     {
-        private readonly RefreshSignInManager<TUser> _signInManager;
+        public IdentityRefreshLoginService(RefreshSignInManager<TUser, string> signInManager, IValidator<RefreshTokenRequestModel> refreshTokenValidator, IUserCredentialsValidator userCredentialsValidator)
+            : base(signInManager, refreshTokenValidator, userCredentialsValidator)
+        {
+        }
+    }
+
+    internal class IdentityRefreshLoginService<TUser, TKey> : ILoginService, IRefreshService where TUser : IdentityUser<TKey> where TKey : IEquatable<TKey>
+    {
+        private readonly RefreshSignInManager<TUser, TKey> _signInManager;
         private readonly IValidator<RefreshTokenRequestModel> _refreshTokenValidator;
         private readonly IUserCredentialsValidator _userCredentialsValidator;
 
         public IdentityRefreshLoginService(
-            RefreshSignInManager<TUser> signInManager,
+            RefreshSignInManager<TUser, TKey> signInManager,
             IValidator<RefreshTokenRequestModel> refreshTokenValidator,
             IUserCredentialsValidator userCredentialsValidator)
         {

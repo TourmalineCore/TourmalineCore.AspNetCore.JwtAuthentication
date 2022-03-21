@@ -1,9 +1,6 @@
-using System;
 using System.Net;
-using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
@@ -55,9 +52,9 @@ namespace Tests.NetCore5._0
             var client = _factory.CreateClient();
 
             var body = JsonContent.Create(new RefreshTokenRequestModel
-                    {
-                        RefreshTokenValue = Guid.Parse(refreshResult.authModel.RefreshToken.Value),
-                    }
+            {
+                RefreshTokenValue = Guid.Parse(refreshResult.authModel.RefreshToken.Value),
+            }
                 );
 
             var logoutResult = await client.PostAsync(LogoutUrl, body);
@@ -73,10 +70,10 @@ namespace Tests.NetCore5._0
             var client = _factory.CreateClient();
 
             var body = JsonContent.Create(new RefreshTokenRequestModel
-                    {
-                        RefreshTokenValue = Guid.Parse(refresh),
-                        ClientFingerPrint = fingerprint,
-                    }
+            {
+                RefreshTokenValue = Guid.Parse(refresh),
+                ClientFingerPrint = fingerprint,
+            }
                 );
 
             var response = await client.PostAsync(RefreshUrl, body);

@@ -31,7 +31,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             this IApplicationBuilder applicationBuilder,
             string username,
             string password)
-            where TContext : TourmalineDbContext<TUser> where TUser : IdentityUser
+            where TContext : TourmalineDbContext<TUser> 
+            where TUser : IdentityUser
         {
             using var serviceScope = applicationBuilder.ApplicationServices.CreateScope();
             var context = serviceScope.ServiceProvider.GetRequiredService<TContext>();
@@ -39,6 +40,43 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             var user = Activator.CreateInstance<TUser>();
 
             user.Id = Guid.NewGuid().ToString();
+            user.UserName = username;
+            user.NormalizedUserName = username.ToUpper();
+            user.EmailConfirmed = true;
+            user.SecurityStamp = Guid.NewGuid().ToString();
+
+            user.PasswordHash = new PasswordHasher<TUser>().HashPassword(user, password);
+
+            context.Users.Add(user);
+            context.SaveChanges();
+
+            return applicationBuilder
+                .UseAuthentication()
+                .UseAuthorization();
+        }
+        /// <summary>
+        /// Adds a user with generic id to the database with specified credentials
+        /// </summary>
+        /// <typeparam name="TContext"></typeparam>
+        /// <typeparam name="TUser"></typeparam>
+        /// <typeparam name="TKey"></typeparam>
+        /// <param name="applicationBuilder"></param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseDefaultDbUser<TContext, TUser, TKey>(
+            this IApplicationBuilder applicationBuilder,
+            string username,
+            string password)
+            where TContext : TourmalineDbContext<TUser, TKey>
+            where TUser : IdentityUser<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            using var serviceScope = applicationBuilder.ApplicationServices.CreateScope();
+            var context = serviceScope.ServiceProvider.GetRequiredService<TContext>();
+            
+            var user = Activator.CreateInstance<TUser>();
+            
             user.UserName = username;
             user.NormalizedUserName = username.ToUpper();
             user.EmailConfirmed = true;
@@ -83,11 +121,31 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             RegistrationEndpointOptions registrationEndpointOptions = null)
             where TUser : IdentityUser
         {
+            return UseRegistration<TUser, string>(applicationBuilder, mapping, registrationEndpointOptions);
+        }
+
+        /// <summary>
+        /// Adds middleware to handle incoming user registration requests. It requires a function to map model received from client
+        /// to user entity with generic primary key.
+        /// </summary>
+        /// <typeparam name="TUser"></typeparam>
+        /// <typeparam name="TKey"></typeparam>
+        /// <param name="applicationBuilder"></param>
+        /// <param name="mapping"></param>
+        /// <param name="registrationEndpointOptions"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseRegistration<TUser, TKey>(
+            this IApplicationBuilder applicationBuilder,
+            Func<RegistrationRequestModel, TUser> mapping,
+            RegistrationEndpointOptions registrationEndpointOptions = null)
+            where TUser : IdentityUser<TKey>
+            where TKey : IEquatable<TKey>
+        {
             var options = registrationEndpointOptions ?? new RegistrationEndpointOptions();
             Func<RegistrationModel, Task> defaultOnRegistrationCallback = s => Task.CompletedTask;
 
             return applicationBuilder
-                .UseMiddleware<RegistrationMiddleware<TUser, RegistrationRequestModel>>(
+                .UseMiddleware<RegistrationMiddleware<TUser, TKey, RegistrationRequestModel>>(
                         mapping,
                         defaultOnRegistrationCallback,
                         defaultOnRegistrationCallback,
@@ -113,11 +171,34 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             where TUser : IdentityUser
             where TRegistrationRequestModel : RegistrationRequestModel
         {
+            return UseRegistration<TUser, string, TRegistrationRequestModel>(applicationBuilder, mapping, registrationEndpointOptions);
+        }
+
+        /// <summary>
+        /// Adds middleware to handle incoming user registration requests with custom registration request model. It requires a
+        /// function to map model received from client.
+        /// to user entity.
+        /// </summary>
+        /// <typeparam name="TUser"></typeparam>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TRegistrationRequestModel"></typeparam>
+        /// <param name="applicationBuilder"></param>
+        /// <param name="mapping"></param>
+        /// <param name="registrationEndpointOptions"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseRegistration<TUser, TKey, TRegistrationRequestModel>(
+            this IApplicationBuilder applicationBuilder,
+            Func<TRegistrationRequestModel, TUser> mapping,
+            RegistrationEndpointOptions registrationEndpointOptions = null)
+            where TUser : IdentityUser<TKey>
+            where TKey : IEquatable<TKey>
+            where TRegistrationRequestModel : RegistrationRequestModel
+        {
             var options = registrationEndpointOptions ?? new RegistrationEndpointOptions();
             Func<RegistrationModel, Task> defaultOnRegistrationCallback = s => Task.CompletedTask;
 
             return applicationBuilder
-                .UseMiddleware<RegistrationMiddleware<TUser, TRegistrationRequestModel>>(
+                .UseMiddleware<RegistrationMiddleware<TUser, TKey, TRegistrationRequestModel>>(
                         mapping,
                         defaultOnRegistrationCallback,
                         defaultOnRegistrationCallback,

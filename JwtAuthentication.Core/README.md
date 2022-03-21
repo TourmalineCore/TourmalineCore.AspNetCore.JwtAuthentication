@@ -1,6 +1,9 @@
-# TourmalineCore.AspNetCore.JwtAuthentication.Core
+﻿# TourmalineCore.AspNetCore.JwtAuthentication.Core
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication/.NET?label=tests%20and%20build)
 
-The library can be used for all projects based on .NET Core 3.0 - .NET Core 5.0.
+The library can be used for all projects based on .NET Core 3.0 - .NET Core 6.0.
+
+Readme for usage on [.NET Core 3.0 - .NET Core 5.0](Usage%20for%20old%20.NET.md).
 
 We are using Microsoft.AspNetCore.Authentication.JwtBearer with RSA for signing the keys.
 This library contains middleware and authentication extensions.
@@ -8,92 +11,102 @@ With this library, you can very easily connect the JWT-based authentication to y
 Also, this library allows to override the logic of username and password validation.
 The library provides the ability to use a debug token to avoid the need to enter a username and password when the lifetime of the JWT expires.
 
-# Table of Content
+## Installation
+![Nuget](https://img.shields.io/nuget/v/TourmalineCore.AspNetCore.JwtAuthentication.Core?color=gre&label=stable%20version) ![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/TourmalineCore.AspNetCore.JwtAuthentication.Core?label=pre-release%20version) ![Nuget](https://img.shields.io/nuget/dt/TourmalineCore.AspNetCore.JwtAuthentication.Core)
 
+TourmalineCore.AspNetCore.JwtAuthentication.Core is available on [NuGet](https://www.nuget.org/packages/TourmalineCore.AspNetCore.JwtAuthentication.Core/). But also you can install latest stable version using **.NET CLI**
+```
+dotnet add package TourmalineCore.AspNetCore.JwtAuthentication.Core
+```
+
+
+## Table of Content
+- [TourmalineCore.AspNetCore.JwtAuthentication.Core](#tourmalinecoreaspnetcorejwtauthenticationcore)
+  * [Installation](#installation)
+  * [Table of Content](#table-of-content)
 - [Authentication](#authentication)
-- [Basic Usage](#basic)
-- [Cookie](#cookie)
-- [Options](#options)
-- [Routing](#routing)
-- [Login Request Example](#login-request)
-- [Login Validation](#login-validation)
-- [Token Usage](#token-usage)
+  * [Basic usage](#basic-usage)
+  * [Using cookie](#using-cookie)
+  * [Options](#options)
+  * [Routing](#routing)
+  * [Login request](#login-request)
+  * [Login validation](#login-validation)
+  * [Token usage](#token-usage)
 - [Authorization](#authorization)
 - [Callbacks](#callbacks)
+  * [Login](#login)
+  * [Logout](#logout)
+  * [Refresh](#refresh)
 
 # Authentication
 
-## Basic
+## Basic usage
 
 To start using JWT-based authentication, need to use one method in the Startup.cs file.
 In this case, the default options will be used.
 
 Then, the token will be required in the request header of every authorized endpoint, like this: `Authorization: Bearer {token}`.
 
+
 ```csharp
 ...
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 
-public class Startup
-{
-    private readonly IConfiguration _configuration;
+var builder = WebApplication.CreateBuilder(args);
 
-    public Startup(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
+var configuration = builder.Configuration;
 
-    public void ConfigureServices(IServiceCollection services) 
-    {
-        ...
-        var authenticationOptions = (_configuration.GetSection(nameof(AuthenticationOptions)).Get<AuthenticationOptions>());
-        services.AddJwtAuthentication(authenticationOptions);
-        ...
-    }
+var authenticationOptions = (configuration.GetSection(nameof(AuthenticationOptions)).Get<AuthenticationOptions>());
+builder.Services.AddJwtAuthentication(authenticationOptions);
 
-    public async void Configure(IApplicationBuilder app, IHostingEnvironment env) 
-    {
-        ...
-        app.UseDefaultLoginMiddleware()
-        app.UseJwtAuthentication();
-        ...
-    }
-}
+...
+
+var app = builder.Build();
+
+app
+    .UseDefaultLoginMiddleware()
+    .UseJwtAuthentication();
+...
+
 ```
 
-## Cookie
+## Using cookie
 
 This package also allows you to store the received token in a cookie. To do that you need to use Cookie login middleware instead of default login. After successful login the token will be added to a cookie, that user will receive in a response. Then they can use this cookie for the authentication instead of writing the token to the Authentication header of every request. 
 
 ```csharp
 ...
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 
-public class Startup
-{
-    private readonly IConfiguration _configuration;
+var builder = WebApplication.CreateBuilder(args);
 
-    public Startup(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
-    
-    public void ConfigureServices(IServiceCollection services) 
-    {
-        ...
-        var authenticationOptions = (_configuration.GetSection(nameof(AuthenticationOptions)).Get<AuthenticationOptions>());
-        services.AddJwtAuthentication(authenticationOptions);
-        ...
-    }
+...
 
-    public async void Configure(IApplicationBuilder app, IHostingEnvironment env) 
-    {
-        ...
-        app.UseCookieLoginMiddleware(new CookieAuthOptions{ Key = "ExampleCookieName" });
-        app.UseJwtAuthentication();
-        ...
-    }
-}
+var configuration = builder.Configuration;
+var environment = builder.Environment;
+
+var authenticationOptions = configuration.GetSection(nameof(AuthenticationOptions)).Get<AuthenticationOptions>()
+builder.Services
+    .AddJwtAuthentication(authenticationOptions);
+
+...
+
+var app = builder.Build();
+
+app.UseCookieLoginMiddleware(new CookieAuthOptions
+        {
+            Key = "ExampleCookieName",
+        }
+    );
+
+app.UseJwtAuthentication();
+
+app.UseAuthorization();
+
+...
+
 ```
 
 ## Options
@@ -115,13 +128,14 @@ To use package you need to pass AuthenticationOptions to the AddJwtAuthenticatio
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 ...
 
-public void ConfigureServices(IServiceCollection services) 
-{
-    ...
-    var authenticationOptions = _configuration.GetSection(nameof(AuthenticationOptions)).Get<AuthenticationOptions>()
-    services.AddJwtAuthentication(authenticationOptions);
-    ...
-}
+var builder = WebApplication.CreateBuilder(args);
+
+var configuration = builder.Configuration;
+...
+var authenticationOptions = configuration.GetSection(nameof(AuthenticationOptions)).Get<AuthenticationOptions>();
+builder
+    .services.AddJwtAuthentication(authenticationOptions);
+...
 ```
 
 Minimum appsettings.json configuration:
@@ -134,32 +148,36 @@ Minimum appsettings.json configuration:
 }
 ```
 
+For generate pair RSA keys, use https://mkjwk.org/.
+Here we can generate key pair in RSA521 algorithm and 2048 key size. In package we use X.509 PEM Format.
+
 ## Routing
 
 The default route to the login endpoint is `/auth/login`.
 You can change it by passing in a LoginEndpointOptions object to the UseDefaultLoginMiddleware extension. Like this:
 
 ```csharp
-public async void Configure(IApplicationBuilder app, IHostingEnvironment env) 
-{
-    ...
-    app.UseDefaultLoginMiddleware(new LoginEndpointOptions{ LoginEndpointRoute = "/test/login" });
-    app.UseJwtAuthentication();
-    ...
-}
+...
+
+var app = builder.Build();
+
+app
+    .UseDefaultLoginMiddleware(new LoginEndpointOptions{ LoginEndpointRoute = "/test/login" });
+    .UseJwtAuthentication();
+...
 ```
 **OR** like this if you are using cookie middleware:
 
 ```csharp
-public async void Configure(IApplicationBuilder app, IHostingEnvironment env) 
-{
+...
+
+var app = builder.Build();
+
+app.UseCookieLoginMiddleware(
+    new CookieAuthOptions{ Key = "ExampleCookieName" }, 
+    new LoginEndpointOptions{ LoginEndpointRoute = "/test/login" });
+app.UseJwtAuthentication();
     ...
-    app.UseCookieLoginMiddleware(
-        new CookieAuthOptions{ Key = "ExampleCookieName" }, 
-        new LoginEndpointOptions{ LoginEndpointRoute = "/test/login" });
-    app.UseJwtAuthentication();
-    ...
-}
 ```
 
 ## Login request
@@ -203,18 +221,20 @@ public class UserCredentialsValidator : IUserCredentialsValidator
         return Task.FromResult(login == Login && password == Password);
     }
 }
-	
-public class Startup
-{
-    public void ConfigureServices(IServiceCollection services) 
-	{
-        ...
-        services
+```
+
+Program.cs
+```csharp
+...
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
+...
+
+var builder = WebApplication.CreateBuilder(args);
+...
+builder.services
           .AddJwtAuthentication(authenticationOptions)
           .AddUserCredentialValidator<UserCredentialsValidator>();
-        ...
-    }
-}
+...
 ```
 
 ## Token usage
@@ -275,13 +295,12 @@ public class UserClaimsProvider : IUserClaimsProvider
 ```csharp
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
 
-public void ConfigureServices(IServiceCollection services) 
-{
-    ...
-    services.AddJwtAuthentication(authenticationOptions)
+var builder = WebApplication.CreateBuilder(args);
+...
+builder.services
+            .AddJwtAuthentication(authenticationOptions)
             .WithUserClaimsProvider<UserClaimsProvider>(UserClaimsProvider.ExampleClaimType);
-    ...
-}
+...
 ```
 
 The claims in the token will look like this:
@@ -343,9 +362,11 @@ private Task OnLoginExecuting(LoginModel data)
 }
 ```
 
-2. In the `Startup` class in the `Configure` method use
+2. In the `Program` class in the app builder section use
 
 ```charp
+var app = builder.Build();
+
 app
     .OnLoginExecuting(OnLoginExecuting)
     .OnLoginExecuted(OnLoginExecuted)
