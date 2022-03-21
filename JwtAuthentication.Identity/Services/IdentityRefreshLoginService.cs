@@ -51,16 +51,14 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
         {
             await _refreshTokenValidator.ValidateAsync(model);
 
-            try
-            {
-                var user = await _signInManager.InvalidateRefreshTokenForUser(model.RefreshTokenValue, model.ClientFingerPrint);
+            var user = await _signInManager.InvalidateRefreshTokenForUser(model.RefreshTokenValue, model.ClientFingerPrint);
 
-                return await _signInManager.GenerateAuthTokens(user, model.ClientFingerPrint);
-            }
-            catch (RefreshTokenException)
+            if (user == null)
             {
-                return await _signInManager.GetActiveRefreshToken(model.ClientFingerPrint);
+                throw new AuthenticationException(ErrorTypes.RefreshTokenOrFingerprintNotFound);
             }
+
+            return await _signInManager.GenerateAuthTokens(user, model.ClientFingerPrint);
         }
     }
 }

@@ -7,7 +7,9 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Models
     {
     }
 
-    public class RefreshToken<TUser, TKey> where TUser : IdentityUser<TKey> where TKey : IEquatable<TKey>
+    public class RefreshToken<TUser, TKey> 
+        where TUser : IdentityUser<TKey> 
+        where TKey : IEquatable<TKey>
     {
         public long Id { get; set; }
 
@@ -19,7 +21,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Models
 
         public string ClientFingerPrint { get; set; }
 
-        public string UserId { get; set; }
+        public TKey UserId { get; set; }
 
         public TUser User { get; set; }
     }

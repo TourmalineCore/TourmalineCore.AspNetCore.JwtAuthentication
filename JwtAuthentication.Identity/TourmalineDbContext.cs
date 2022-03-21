@@ -56,6 +56,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             }
 
             modelBuilder.Model.AddEntityType(typeof(RefreshToken<TUser, TKey>));
+
             modelBuilder.Entity<RefreshToken<TUser, TKey>>(entity =>
                     {
                         entity.HasKey(x => x.Id);
