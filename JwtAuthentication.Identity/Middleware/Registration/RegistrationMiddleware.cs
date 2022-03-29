@@ -13,14 +13,30 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Registration
 {
-    internal class RegistrationMiddleware<TUser, TRegistrationRequestModel> : RequestMiddlewareBase<IRegistrationService<TUser, TRegistrationRequestModel>, TRegistrationRequestModel, AuthResponseModel
-    >
+    internal class RegistrationMiddleware<TUser, TRegistrationRequestModel> : RegistrationMiddleware<TUser, string, TRegistrationRequestModel>
         where TUser : IdentityUser
+        where TRegistrationRequestModel : RegistrationRequestModel
+    {
+        public RegistrationMiddleware(RequestDelegate next, Func<TRegistrationRequestModel, TUser> mapping, ILogger<RegistrationMiddleware<TUser, string, TRegistrationRequestModel>> logger, Func<RegistrationModel, Task> onRegistrationExecuting, Func<RegistrationModel, Task> onRegistrationExecuted, RegistrationEndpointOptions endpointOptions = null)
+            : base(next, mapping, logger,
+                    onRegistrationExecuting,
+                    onRegistrationExecuted,
+                    endpointOptions
+                )
+        {
+        }
+    }
+
+    internal class RegistrationMiddleware<TUser, TKey, TRegistrationRequestModel> : RequestMiddlewareBase<IRegistrationService<TUser, TRegistrationRequestModel>, TRegistrationRequestModel,
+        AuthResponseModel
+    >
+        where TUser : IdentityUser<TKey>
+        where TKey : IEquatable<TKey>
         where TRegistrationRequestModel : RegistrationRequestModel
     {
         private readonly RegistrationEndpointOptions _endpointOptions;
         private readonly Func<TRegistrationRequestModel, TUser> _mapping;
-        private readonly ILogger<RegistrationMiddleware<TUser, TRegistrationRequestModel>> _logger;
+        private readonly ILogger<RegistrationMiddleware<TUser, TKey, TRegistrationRequestModel>> _logger;
 
         private readonly Func<RegistrationModel, Task> _onRegistrationExecuting;
         private readonly Func<RegistrationModel, Task> _onRegistrationExecuted;
@@ -28,8 +44,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Regist
         public RegistrationMiddleware(
             RequestDelegate next,
             Func<TRegistrationRequestModel, TUser> mapping,
-            ILogger<RegistrationMiddleware<TUser, TRegistrationRequestModel>> logger, 
-            Func<RegistrationModel, Task> onRegistrationExecuting, 
+            ILogger<RegistrationMiddleware<TUser, TKey, TRegistrationRequestModel>> logger,
+            Func<RegistrationModel, Task> onRegistrationExecuting,
             Func<RegistrationModel, Task> onRegistrationExecuted,
             RegistrationEndpointOptions endpointOptions = null)
             : base(next)
@@ -56,7 +72,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Regist
                 var registrationModel = new RegistrationModel
                 {
                     Login = requestModel.Login,
-                    Password = requestModel.Password
+                    Password = requestModel.Password,
                 };
 
                 await _onRegistrationExecuting(registrationModel);

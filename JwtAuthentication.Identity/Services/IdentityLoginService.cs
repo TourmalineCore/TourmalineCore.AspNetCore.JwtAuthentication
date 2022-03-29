@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
@@ -8,7 +9,15 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 {
-    internal class IdentityLoginService<TUser> : ILoginService where TUser : IdentityUser
+    internal class IdentityLoginService<TUser> : IdentityLoginService<TUser, string> where TUser : IdentityUser
+    {
+        public IdentityLoginService(ITokenManager tokenManager, SignInManager<TUser> signInManager)
+            : base(tokenManager, signInManager)
+        {
+        }
+    }
+
+    internal class IdentityLoginService<TUser, TKey> : ILoginService where TUser : IdentityUser<TKey> where TKey : IEquatable<TKey>
     {
         private readonly ITokenManager _tokenManager;
 
@@ -52,4 +61,5 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             };
         }
     }
+
 }

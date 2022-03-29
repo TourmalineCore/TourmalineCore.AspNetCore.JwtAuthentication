@@ -11,7 +11,7 @@ namespace Tests.Units;
 
 public class RefreshTokenManagerTests
 {
-    private readonly RefreshTokenManager<CustomUser> _refreshTokenManager;
+    private readonly RefreshTokenManager<CustomUser, string> _refreshTokenManager;
     private readonly Guid _guidForTokenWhichProbablyHasStolen = Guid.NewGuid();
     private readonly Guid _guidForTokenWhichRecentlyExpired = Guid.NewGuid();
 
@@ -19,7 +19,7 @@ public class RefreshTokenManagerTests
     {
         var authenticationOptions = new RefreshAuthenticationOptions();
 
-        _refreshTokenManager = new RefreshTokenManager<CustomUser>(GetDbContextMock().Object, authenticationOptions);
+        _refreshTokenManager = new RefreshTokenManager<CustomUser, string>(GetDbContextMock().Object, authenticationOptions);
     }
 
     [Fact]

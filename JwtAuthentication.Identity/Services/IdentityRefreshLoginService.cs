@@ -10,18 +10,36 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Validators;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 {
-    internal class IdentityRefreshLoginService<TUser> : ILoginService, IRefreshService, ILogoutService where TUser : IdentityUser
+    internal class IdentityRefreshLoginService<TUser> : IdentityRefreshLoginService<TUser, string> where TUser : IdentityUser
     {
-        private readonly RefreshSignInManager<TUser> _signInManager;
+        public IdentityRefreshLoginService(
+            RefreshSignInManager<TUser, string> signInManager, 
+            IValidator<RefreshTokenRequestModel> refreshTokenValidator, 
+            IUserCredentialsValidator userCredentialsValidator,
+            IRefreshTokenManager<string> refreshTokenManager)
+            : base(
+                signInManager, 
+                refreshTokenValidator, 
+                userCredentialsValidator,
+                refreshTokenManager)
+        {
+        }
+    }
+
+    internal class IdentityRefreshLoginService<TUser, TKey> : ILoginService, IRefreshService 
+        where TUser : IdentityUser<TKey> 
+        where TKey : IEquatable<TKey>
+    {
+        private readonly RefreshSignInManager<TUser, TKey> _signInManager;
         private readonly IValidator<RefreshTokenRequestModel> _refreshTokenValidator;
         private readonly IUserCredentialsValidator _userCredentialsValidator;
-        private readonly IRefreshTokenManager<TUser> _refreshTokenManager;
+        private readonly IRefreshTokenManager<TKey> _refreshTokenManager;
 
         public IdentityRefreshLoginService(
-            RefreshSignInManager<TUser> signInManager,
+            RefreshSignInManager<TUser, TKey> signInManager,
             IValidator<RefreshTokenRequestModel> refreshTokenValidator,
             IUserCredentialsValidator userCredentialsValidator,
-            IRefreshTokenManager<TUser> refreshTokenManager)
+            IRefreshTokenManager<TKey> refreshTokenManager)
         {
             _signInManager = signInManager;
             _refreshTokenValidator = refreshTokenValidator;

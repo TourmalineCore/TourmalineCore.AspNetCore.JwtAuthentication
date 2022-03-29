@@ -3,11 +3,11 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>Example.NetCore6._0.AuthenticationUsingIdentityUser</RootNamespace>
+	  <ImplicitUsings>disable</ImplicitUsings>
+    <RootNamespace>Example.NetCore6._0.AuthenticationUsingGenericIdentityUser</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
+	<ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.12" />
   </ItemGroup>
 

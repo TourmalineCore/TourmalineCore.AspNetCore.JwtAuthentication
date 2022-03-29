@@ -1,7 +1,8 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Example.NetCore6._0.AuthenticationWithRefreshToken.Controllers
+namespace Example.NetCore6._0.AuthenticationUsingGenericIdentityUser.Controllers
 {
     [ApiController]
     [Route("[controller]")]

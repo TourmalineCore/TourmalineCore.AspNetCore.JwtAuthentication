@@ -15,9 +15,20 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Validators;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
 {
-    public class TourmalineAuthenticationBuilder<TContext, TUser>
-        where TContext : TourmalineDbContext<TUser>
-        where TUser : IdentityUser
+    public class TourmalineAuthenticationBuilder<TContext, TUser> : TourmalineAuthenticationBuilder<TContext, TUser, string>
+        where TContext : TourmalineDbContext<TUser, string>
+        where TUser : IdentityUser<string>
+    {
+        public TourmalineAuthenticationBuilder(IServiceCollection services, Action<IdentityOptions> setupAction = null)
+            : base(services, setupAction)
+        {
+        }
+    }
+
+    public class TourmalineAuthenticationBuilder<TContext, TUser, TKey>
+        where TContext : TourmalineDbContext<TUser, TKey>
+        where TUser : IdentityUser<TKey>
+        where TKey : IEquatable<TKey>
     {
         private static IServiceCollection Services { get; set; }
 
@@ -29,9 +40,14 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             AddIdentity(setupAction);
         }
 
+        /// <summary>
+        /// Adds the user identity with db context
+        /// </summary>
+        /// <param name="setupAction"></param>
+        /// <returns></returns>
         private void AddIdentity(Action<IdentityOptions> setupAction = null)
         {
-            Services.AddTransient<TourmalineDbContext<TUser>, TContext>();
+            Services.AddTransient<TourmalineDbContext<TUser, TKey>, TContext>();
 
             var setup = setupAction
                         ?? (options =>
@@ -57,15 +73,15 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         /// </summary>
         /// <param name="authenticationOptions"></param>
         /// <returns></returns>
-        public TourmalineAuthenticationBuilder<TContext, TUser> AddBaseLogin(AuthenticationOptions authenticationOptions = null)
+        public TourmalineAuthenticationBuilder<TContext, TUser, TKey> AddBaseLogin(AuthenticationOptions authenticationOptions = null)
         {
             AddJwt(Services, authenticationOptions);
             IdentityBuilder.AddSignInManager<SignInManager<TUser>>();
 
             Services.AddTransient<ITokenManager, TokenManager>();
-            Services.AddTransient<ILoginService, IdentityLoginService<TUser>>();
+            Services.AddTransient<ILoginService, IdentityLoginService<TUser, TKey>>();
             Services.AddTransient<IUserClaimsProvider, DefaultUserClaimsProvider>();
-            Services.AddTransient<IUserCredentialsValidator, IdentityUserCredentialsValidator<TUser>>();
+            Services.AddTransient<IUserCredentialsValidator, IdentityUserCredentialsValidator<TUser, TKey>>();
 
             return this;
         }
@@ -75,10 +91,10 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         /// </summary>
         /// <typeparam name="TRegistrationRequestModel"></typeparam>
         /// <returns></returns>
-        public TourmalineAuthenticationBuilder<TContext, TUser> AddRegistration<TRegistrationRequestModel>()
+        public TourmalineAuthenticationBuilder<TContext, TUser, TKey> AddRegistration<TRegistrationRequestModel>()
             where TRegistrationRequestModel : RegistrationRequestModel
         {
-            Services.AddTransient<IRegistrationService<TUser, TRegistrationRequestModel>, IdentityRegistrationService<TUser, TRegistrationRequestModel>>();
+            Services.AddTransient<IRegistrationService<TUser, TRegistrationRequestModel>, IdentityRegistrationService<TUser, TKey, TRegistrationRequestModel>>();
             return this;
         }
 
@@ -86,9 +102,9 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         /// Adds the ability to handle incoming user registration requests
         /// </summary>
         /// <returns></returns>
-        public TourmalineAuthenticationBuilder<TContext, TUser> AddRegistration()
+        public TourmalineAuthenticationBuilder<TContext, TUser, TKey> AddRegistration()
         {
-            Services.AddTransient<IRegistrationService<TUser, RegistrationRequestModel>, IdentityRegistrationService<TUser, RegistrationRequestModel>>();
+            Services.AddTransient<IRegistrationService<TUser, RegistrationRequestModel>, IdentityRegistrationService<TUser, TKey, RegistrationRequestModel>>();
             return this;
         }
 
@@ -98,22 +114,21 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         /// </summary>
         /// <param name="authenticationOptions"></param>
         /// <returns></returns>
-        public TourmalineAuthenticationBuilder<TContext, TUser> AddLoginWithRefresh(RefreshAuthenticationOptions authenticationOptions)
+        public TourmalineAuthenticationBuilder<TContext, TUser, TKey> AddLoginWithRefresh(RefreshAuthenticationOptions authenticationOptions)
         {
             Services.AddSingleton(authenticationOptions);
 
             TourmalineContextConfiguration.UseRefresh = true;
             AddJwt(Services, authenticationOptions);
-            IdentityBuilder.AddSignInManager<RefreshSignInManager<TUser>>();
+            IdentityBuilder.AddSignInManager<RefreshSignInManager<TUser, TKey>>();
 
             Services.AddTransient<ITokenManager, TokenManager>();
-            Services.AddTransient<IRefreshTokenManager<TUser>, RefreshTokenManager<TUser>>();
-            Services.AddTransient<ILoginService, IdentityRefreshLoginService<TUser>>();
-            Services.AddTransient<IRefreshService, IdentityRefreshLoginService<TUser>>();
+            Services.AddTransient<IRefreshTokenManager<TKey>, RefreshTokenManager<TUser, TKey>>();
+            Services.AddTransient<ILoginService, IdentityRefreshLoginService<TUser, TKey>>();
+            Services.AddTransient<IRefreshService, IdentityRefreshLoginService<TUser, TKey>>();
             Services.AddTransient<IUserClaimsProvider, DefaultUserClaimsProvider>();
             Services.AddTransient<IValidator<RefreshTokenRequestModel>, RefreshTokenValidator>();
-            Services.AddTransient<IUserCredentialsValidator, IdentityUserCredentialsValidator<TUser>>();
-            Services.AddTransient<ILogoutService, IdentityLogoutService<TUser>>();
+            Services.AddTransient<IUserCredentialsValidator, IdentityUserCredentialsValidator<TUser, TKey>>();
 
             return this;
         }
@@ -123,7 +138,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         /// </summary>
         /// <typeparam name="TUserCredentialsValidator"></typeparam>
         /// <returns></returns>
-        public TourmalineAuthenticationBuilder<TContext, TUser> AddUserCredentialsValidator<TUserCredentialsValidator>()
+        public TourmalineAuthenticationBuilder<TContext, TUser, TKey> AddUserCredentialsValidator<TUserCredentialsValidator>()
             where TUserCredentialsValidator : IUserCredentialsValidator
         {
             Services.AddTransient(typeof(IUserCredentialsValidator), typeof(TUserCredentialsValidator));
@@ -136,7 +151,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         /// <typeparam name="TUserClaimsProvider"></typeparam>
         /// <param name="permissionClaimTypeKey"></param>
         /// <returns></returns>
-        public TourmalineAuthenticationBuilder<TContext, TUser> WithUserClaimsProvider<TUserClaimsProvider>(
+        public TourmalineAuthenticationBuilder<TContext, TUser, TKey> WithUserClaimsProvider<TUserClaimsProvider>(
             string permissionClaimTypeKey = "Permission")
             where TUserClaimsProvider : IUserClaimsProvider
         {
@@ -151,10 +166,9 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         /// Adds the ability to handle incoming user logout requests
         /// </summary>
         /// <returns></returns>
-        public TourmalineAuthenticationBuilder<TContext, TUser> AddLogout()
+        public TourmalineAuthenticationBuilder<TContext, TUser, TKey> AddLogout()
         {
-            Services.AddTransient<ILogoutService, IdentityLogoutService<TUser>>();
-            Services.AddTransient<IdentityRefreshLoginService<TUser>>();
+            Services.AddTransient<ILogoutService, IdentityLogoutService<TUser, TKey>>();
             return this;
         }
 

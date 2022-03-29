@@ -1,5 +1,5 @@
-using Example.NetCore6._0.RefreshTokenAuthAndRegistrationUsingIdentity.Data;
-using Example.NetCore6._0.RefreshTokenAuthAndRegistrationUsingIdentity.Models;
+using Example.NetCore6._0.AuthenticationUsingGenericIdentityUser.Data;
+using Example.NetCore6._0.AuthenticationUsingGenericIdentityUser.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -23,14 +23,15 @@ var accessTokenExpireInMinutes = refreshAuthenticationOptions.AccessTokenExpireI
 
 builder.Services
     .AddDbContext<AppDbContext>(options =>
-        options.UseInMemoryDatabase("Database")
-    );
+            options.UseInMemoryDatabase("Database")
+        );
 
 builder.Services
-    .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
+    .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser, long>()
     .AddLoginWithRefresh(configuration.GetSection("AuthenticationOptions").Get<RefreshAuthenticationOptions>())
     .AddLogout()
     .AddRegistration();
+
 
 builder.Services.AddControllers();
 
@@ -41,7 +42,7 @@ if (environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
-app.UseDefaultDbUser<AppDbContext, CustomUser>("Admin", "Admin");
+app.UseDefaultDbUser<AppDbContext, CustomUser, long>("Admin", "Admin");
 
 app.UseRouting();
 
@@ -51,15 +52,15 @@ app.UseDefaultLoginMiddleware()
 app.UseRefreshTokenMiddleware();
 app.UseRefreshTokenLogoutMiddleware();
 
-app.UseRegistration(x => new CustomUser
-{
-    UserName = x.Login,
-    NormalizedUserName = x.Login,
-}
+app.UseRegistration<CustomUser, long>(x => new CustomUser
+        {
+            UserName = x.Login,
+            NormalizedUserName = x.Login,
+        }
     );
 
 app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
 app.Run();
 
-public partial class Program { }
+public partial class ProgramGeneric { }

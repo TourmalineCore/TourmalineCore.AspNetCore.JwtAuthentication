@@ -13,10 +13,36 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 {
-    internal class RefreshSignInManager<TUser> : SignInManager<TUser> where TUser : IdentityUser
+    internal class RefreshSignInManager<TUser> : RefreshSignInManager<TUser, string> where TUser : IdentityUser
     {
+        public RefreshSignInManager(UserManager<TUser> userManager,
+                                    IHttpContextAccessor contextAccessor,
+                                    IUserClaimsPrincipalFactory<TUser> claimsFactory,
+                                    IOptions<IdentityOptions> optionsAccessor,
+                                    ILogger<SignInManager<TUser>> logger,
+                                    IAuthenticationSchemeProvider schemes,
+                                    IUserConfirmation<TUser> confirmation,
+                                    IRefreshTokenManager<string> refreshTokenManager,
+                                    ITokenManager accessTokenManager,
+                                    TourmalineDbContext<TUser, string> dbContext)
+            : base(userManager, contextAccessor, claimsFactory,
+                    optionsAccessor,
+                    logger,
+                    schemes,
+                    confirmation,
+                    refreshTokenManager,
+                    accessTokenManager
+                )
+        {
+        }
+    }
+
+    internal class RefreshSignInManager<TUser, TKey> : SignInManager<TUser> 
+        where TUser : IdentityUser<TKey> 
+        where TKey : IEquatable<TKey>
+    {
+        private readonly IRefreshTokenManager<TKey> _refreshTokenManager;
         private readonly ITokenManager _accessTokenManager;
-        private readonly IRefreshTokenManager<TUser> _refreshTokenManager;
 
         public RefreshSignInManager(
             UserManager<TUser> userManager,
@@ -26,8 +52,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             ILogger<SignInManager<TUser>> logger,
             IAuthenticationSchemeProvider schemes,
             IUserConfirmation<TUser> confirmation,
-            ITokenManager accessTokenManager,
-            IRefreshTokenManager<TUser> refreshTokenManager)
+            IRefreshTokenManager<TKey> refreshTokenManager,
+            ITokenManager accessTokenManager)
             : base(userManager,
                     contextAccessor,
                     claimsFactory,
