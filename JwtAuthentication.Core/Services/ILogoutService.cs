@@ -8,6 +8,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services
 {
     internal interface ILogoutService
     {
-        public Task LogoutAsync(string userName, LogoutRequestModel model);
+        public Task LogoutAsync(LogoutRequestModel model);
     }
 }

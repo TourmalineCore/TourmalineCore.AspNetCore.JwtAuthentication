@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
-using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
 using Xunit;
@@ -37,26 +37,31 @@ namespace Tests.NetCore6._0
         [Fact]
         public async Task RefreshWithInvalidToken_Returns401()
         {
-            var (response, _) = await CallRefresh(new AuthResponseModel(), Guid.NewGuid().ToString());
+            var invalidAuthResponseModel = new AuthResponseModel
+            {
+                RefreshToken = new TokenModel
+                {
+                    Value = Guid.NewGuid().ToString(),
+                },
+                AccessToken = new TokenModel
+                {
+                    Value = string.Empty,
+                },
+            };
+
+            var (response, _) = await CallRefresh(invalidAuthResponseModel, Guid.NewGuid().ToString());
             Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
         }
 
         [Fact]
-        public async Task RefreshWithTheSameValidTokenMultipleTimes_ReturnsTokens()
+        public async Task RefreshWithTheSameValidTokenMultipleTimes_Returns401()
         {
             var (_, authModel) = await LoginAsync(Login, Password, FingerPrint);
 
             await CallRefresh(authModel, FingerPrint);
-            var (_, firstResult) = await CallRefresh(authModel, FingerPrint);
+            var (response, _) = await CallRefresh(authModel, FingerPrint);
 
-            await CallRefresh(authModel, FingerPrint);
-            var (_, lastResult) = await CallRefresh(authModel, FingerPrint);
-
-            Assert.False(string.IsNullOrWhiteSpace(lastResult.AccessToken.Value));
-            Assert.False(string.IsNullOrWhiteSpace(lastResult.RefreshToken.Value));
-
-            Assert.Equal(lastResult.AccessToken.Value, firstResult.AccessToken.Value);
-            Assert.Equal(lastResult.RefreshToken.Value, firstResult.RefreshToken.Value);
+            Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
         }
 
         [Fact]

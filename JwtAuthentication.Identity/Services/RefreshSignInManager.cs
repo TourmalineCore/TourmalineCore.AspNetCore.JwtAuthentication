@@ -22,9 +22,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
                                     ILogger<SignInManager<TUser>> logger,
                                     IAuthenticationSchemeProvider schemes,
                                     IUserConfirmation<TUser> confirmation,
-                                    IRefreshTokenManager<string> refreshTokenManager,
-                                    ITokenManager accessTokenManager,
-                                    TourmalineDbContext<TUser, string> dbContext)
+                                    IRefreshTokenManager<TUser, string> refreshTokenManager,
+                                    ITokenManager accessTokenManager)
             : base(userManager, contextAccessor, claimsFactory,
                     optionsAccessor,
                     logger,
@@ -41,7 +40,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
         where TUser : IdentityUser<TKey> 
         where TKey : IEquatable<TKey>
     {
-        private readonly IRefreshTokenManager<TKey> _refreshTokenManager;
+        private readonly IRefreshTokenManager<TUser, TKey> _refreshTokenManager;
         private readonly ITokenManager _accessTokenManager;
 
         public RefreshSignInManager(
@@ -52,7 +51,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             ILogger<SignInManager<TUser>> logger,
             IAuthenticationSchemeProvider schemes,
             IUserConfirmation<TUser> confirmation,
-            IRefreshTokenManager<TKey> refreshTokenManager,
+            IRefreshTokenManager<TUser, TKey> refreshTokenManager,
             ITokenManager accessTokenManager)
             : base(userManager,
                     contextAccessor,
@@ -65,15 +64,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
         {
             _accessTokenManager = accessTokenManager;
             _refreshTokenManager = refreshTokenManager;
-        }
-
-        public async Task<AuthResponseModel> GenerateAuthTokens(TUser appUser)
-        {
-            return new AuthResponseModel
-            {
-                AccessToken = await GetBearerToken(appUser),
-                RefreshToken = await _refreshTokenManager.FindActiveRefreshTokenAsync(appUser.Id),
-            };
         }
 
         public async Task<AuthResponseModel> GenerateAuthTokens(TUser appUser, string clientFingerPrint)

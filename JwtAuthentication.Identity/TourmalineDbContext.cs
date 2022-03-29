@@ -8,6 +8,11 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
 {
     public class TourmalineDbContext<TUser> : TourmalineDbContext<TUser, string> where TUser : IdentityUser
     {
+        public TourmalineDbContext()
+            : base(new DbContextOptions<TourmalineDbContext<TUser>>())
+        {
+        }
+
         public TourmalineDbContext(DbContextOptions options)
             : base(options)
         {

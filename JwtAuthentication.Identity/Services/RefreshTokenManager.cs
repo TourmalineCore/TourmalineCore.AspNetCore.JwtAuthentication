@@ -24,7 +24,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
         }
     }
 
-    internal class RefreshTokenManager<TUser, TKey> : IRefreshTokenManager<TKey>
+    internal class RefreshTokenManager<TUser, TKey> : IRefreshTokenManager<TUser, TKey>
         where TUser : IdentityUser<TKey>
         where TKey : IEquatable<TKey>
     {
@@ -50,6 +50,27 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             return BuildTokenModelByRefreshToken(refreshToken);
         }
 
+        public async Task<TUser> FindUserOfRefreshToken(Guid refreshTokenValue, string clientFingerPrint)
+        {
+            var token = await _dbContext
+                .Set<RefreshToken<TUser, TKey>>()
+                .AsQueryable()
+                .Include(x => x.User)
+                .FirstOrDefaultAsync(x => x.Value == refreshTokenValue 
+                                           && x.IsActive
+                                           && x.ExpiresIn > DateTime.UtcNow
+                                           && (clientFingerPrint == null || x.ClientFingerPrint == clientFingerPrint));
+
+            ThrowExceptionIfTokenIsNull(token);
+
+            if (token.User == null)
+            {
+                throw new AuthenticationException(ErrorTypes.UserNotFound);
+            }
+
+            return token.User;
+        }
+
         public async Task<bool> IsTokenAlreadyInvalidated(TKey userId, Guid refreshTokenValue)
         {
             var token = await _dbContext
@@ -64,47 +85,28 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 
         public async Task InvalidateRefreshToken(TKey userId, Guid refreshTokenValue)
         {
-            var token = await _dbContext
-                .Set<RefreshToken<TUser, TKey>>()
-                .AsQueryable()
-                .FirstOrDefaultAsync(x => x.Value == refreshTokenValue 
-                                          && x.UserId.Equals(userId)
-                                          && x.ExpiresIn > DateTime.UtcNow);
-
-            ThrowExceptionIfTokenIsNull(token);
-
+            var token = await FindRefreshToken(userId, refreshTokenValue);
             token.Expire();
+
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<TokenModel> FindActiveRefreshTokenAsync(TKey userId)
+        public async Task<bool> IsRefreshTokenStolen(TKey userId, Guid refreshTokenValue, int refreshConfidenceIntervalInSeconds)
         {
-            var activeRefreshToken = await _dbContext
-                .Set<RefreshToken<TUser, TKey>>()
-                .AsQueryable()
-                .FirstOrDefaultAsync(x => x.UserId.Equals(userId) && x.IsActive);
+            var token = await FindRefreshToken(userId, refreshTokenValue);
 
-            ThrowExceptionIfTokenIsNull(activeRefreshToken);
-
-            return BuildTokenModelByRefreshToken(activeRefreshToken);
+            return (DateTime.UtcNow - token.ExpiredAt).TotalSeconds > refreshConfidenceIntervalInSeconds;
         }
 
-        public async Task<bool> IsPotentialRefreshTokenTheft(TKey userId, Guid refreshTokenValue)
-        {
-            var token = await FindRefreshToken(refreshTokenValue, userId);
-
-            return (DateTime.UtcNow - token.ExpiredAt).Minutes > _options.AlreadyExpiredRefreshTokenTtlInMinutes;
-        }
-
-        private async Task<RefreshToken<TUser, TKey>> FindRefreshToken(Guid refreshTokenValue, TKey userId)
+        private async Task<RefreshToken<TUser, TKey>> FindRefreshToken(TKey userId, Guid refreshTokenValue)
         {
             var token = await _dbContext
                 .Set<RefreshToken<TUser, TKey>>()
                 .Include(x => x.User)
                 .AsQueryable()
-                .Where(x => x.ExpiresIn > DateTime.UtcNow)
-                .Where(x => x.UserId.Equals(userId))
-                .FirstOrDefaultAsync(x => x.Value == refreshTokenValue);
+                .FirstOrDefaultAsync(x => x.Value == refreshTokenValue
+                                          && x.UserId.Equals(userId)
+                                          && x.ExpiresIn > DateTime.UtcNow);
 
             ThrowExceptionIfTokenIsNull(token);
 
@@ -141,14 +143,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             if (token == null)
             {
                 throw new AuthenticationException(ErrorTypes.RefreshTokenNotFound);
-            }
-        }
-
-        private static void ThrowExceptionIfUserIsNull(RefreshToken<TUser, TKey> token)
-        {
-            if (token.User == null)
-            {
-                throw new AuthenticationException(ErrorTypes.UserNotFound);
             }
         }
     }

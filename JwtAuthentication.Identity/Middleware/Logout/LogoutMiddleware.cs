@@ -6,7 +6,6 @@ using Microsoft.Extensions.Logging;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
-using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Extensions;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Logout.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 
@@ -53,7 +52,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Logout
                 };
 
                 await _onLogoutExecuting(contractLogoutModel);
-                await service.LogoutAsync(context.User.GetUserName(), requestModel);
+                await service.LogoutAsync(requestModel);
                 await _onLogoutExecuted(contractLogoutModel);
             }
             catch (AuthenticationException ex)

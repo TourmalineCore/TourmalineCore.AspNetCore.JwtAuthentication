@@ -6,18 +6,11 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options
     {
         private int _accessTokenExpireInMinutes;
         private int _refreshTokenExpireInMinutes;
-        private int _alreadyExpiredRefreshTokenTtlInMinutes;
 
         public int RefreshTokenExpireInMinutes
         {
             get => _refreshTokenExpireInMinutes == default ? 10080 : _refreshTokenExpireInMinutes;
             set => _refreshTokenExpireInMinutes = value;
-        }
-
-        public int AlreadyExpiredRefreshTokenTtlInMinutes
-        {
-            get => _alreadyExpiredRefreshTokenTtlInMinutes == default ? 5 : _alreadyExpiredRefreshTokenTtlInMinutes;
-            set => _alreadyExpiredRefreshTokenTtlInMinutes = value;
         }
 
         public override int AccessTokenExpireInMinutes

@@ -6,6 +6,7 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Validators;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
@@ -16,35 +17,40 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             RefreshSignInManager<TUser, string> signInManager, 
             IValidator<RefreshTokenRequestModel> refreshTokenValidator, 
             IUserCredentialsValidator userCredentialsValidator,
-            IRefreshTokenManager<string> refreshTokenManager)
+            IRefreshTokenManager<TUser, string> refreshTokenManager,
+            RefreshOptions refreshOptions)
             : base(
                 signInManager, 
                 refreshTokenValidator, 
                 userCredentialsValidator,
-                refreshTokenManager)
+                refreshTokenManager,
+                refreshOptions)
         {
         }
     }
 
-    internal class IdentityRefreshLoginService<TUser, TKey> : ILoginService, IRefreshService 
+    internal class IdentityRefreshLoginService<TUser, TKey> : ILoginService, IRefreshService
         where TUser : IdentityUser<TKey> 
         where TKey : IEquatable<TKey>
     {
         private readonly RefreshSignInManager<TUser, TKey> _signInManager;
         private readonly IValidator<RefreshTokenRequestModel> _refreshTokenValidator;
         private readonly IUserCredentialsValidator _userCredentialsValidator;
-        private readonly IRefreshTokenManager<TKey> _refreshTokenManager;
+        private readonly IRefreshTokenManager<TUser, TKey> _refreshTokenManager;
+        private readonly RefreshOptions _refreshOptions;
 
         public IdentityRefreshLoginService(
             RefreshSignInManager<TUser, TKey> signInManager,
             IValidator<RefreshTokenRequestModel> refreshTokenValidator,
             IUserCredentialsValidator userCredentialsValidator,
-            IRefreshTokenManager<TKey> refreshTokenManager)
+            IRefreshTokenManager<TUser, TKey> refreshTokenManager, 
+            RefreshOptions refreshOptions)
         {
             _signInManager = signInManager;
             _refreshTokenValidator = refreshTokenValidator;
             _userCredentialsValidator = userCredentialsValidator;
             _refreshTokenManager = refreshTokenManager;
+            _refreshOptions = refreshOptions;
         }
 
         public async Task<AuthResponseModel> LoginAsync(LoginRequestModel model)
@@ -60,7 +66,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             return await _signInManager.GenerateAuthTokens(user, model.ClientFingerPrint);
         }
 
-        public async Task<AuthResponseModel> RefreshAsync(string userName, Guid refreshTokenValue, string clientFingerPrint)
+        public async Task<AuthResponseModel> RefreshAsync(Guid refreshTokenValue, string clientFingerPrint)
         {
             await _refreshTokenValidator.ValidateAsync(new RefreshTokenRequestModel
             {
@@ -68,31 +74,31 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
                 ClientFingerPrint = clientFingerPrint,
             });
 
-            var user = await _signInManager.UserManager.FindByNameAsync(userName);
+            var user = await _refreshTokenManager.FindUserOfRefreshToken(refreshTokenValue, clientFingerPrint);
             var userId = user.Id;
 
-            var isTokenAlreadyInvalidated = await _refreshTokenManager.IsTokenAlreadyInvalidated(userId, refreshTokenValue);
-
-            if (!isTokenAlreadyInvalidated)
+            if (_refreshOptions.UseRefreshConfidenceInterval)
             {
-                await _refreshTokenManager.InvalidateRefreshToken(userId, refreshTokenValue);
+                var isTokenAlreadyInvalidated = await _refreshTokenManager.IsTokenAlreadyInvalidated(userId, refreshTokenValue);
+
+                if (!isTokenAlreadyInvalidated)
+                {
+                    await _refreshTokenManager.InvalidateRefreshToken(userId, refreshTokenValue);
+                    return await _signInManager.GenerateAuthTokens(user, clientFingerPrint);
+                }
+
+                var isRefreshTokenStolen = await _refreshTokenManager.IsRefreshTokenStolen(userId, refreshTokenValue, _refreshOptions.RefreshConfidenceIntervalInSeconds);
+
+                if (isRefreshTokenStolen)
+                {
+                    throw new AuthenticationException(ErrorTypes.RefreshTokenIsStolen);
+                }
+
                 return await _signInManager.GenerateAuthTokens(user, clientFingerPrint);
             }
 
-            var isPotentialRefreshTokenTheft = await _refreshTokenManager.IsPotentialRefreshTokenTheft(userId, refreshTokenValue);
-
-            if (isPotentialRefreshTokenTheft)
-            {
-                throw new AuthenticationException(ErrorTypes.RefreshTokenIsProbablyStolen);
-            }
-
-            return await _signInManager.GenerateAuthTokens(user);
-        }
-
-        public async Task LogoutAsync(string userName, LogoutRequestModel model)
-        {
-            var user = await _signInManager.UserManager.FindByNameAsync(userName);
-            await _refreshTokenManager.InvalidateRefreshToken(user.Id, model.RefreshTokenValue);
+            await _refreshTokenManager.InvalidateRefreshToken(userId, refreshTokenValue);
+            return await _signInManager.GenerateAuthTokens(user, clientFingerPrint);
         }
     }
 }

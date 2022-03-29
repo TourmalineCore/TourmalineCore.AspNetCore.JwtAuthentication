@@ -4,16 +4,18 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services
 {
-    internal interface IRefreshTokenManager<TKey>
+    internal interface IRefreshTokenManager<TUser, in TKey>
+        where TUser : class    
+        where TKey : IEquatable<TKey>
     {
         Task<TokenModel> GenerateRefreshToken(object user, string clientFingerPrint);
+
+        Task<TUser> FindUserOfRefreshToken(Guid refreshTokenValue, string clientFingerPrint);
 
         Task InvalidateRefreshToken(TKey userId, Guid refreshTokenValue);
 
         Task<bool> IsTokenAlreadyInvalidated(TKey userId, Guid refreshTokenValue);
 
-        Task<bool> IsPotentialRefreshTokenTheft(TKey userId, Guid refreshTokenValue);
-
-        Task<TokenModel> FindActiveRefreshTokenAsync(TKey userId);
+        Task<bool> IsRefreshTokenStolen(TKey userId, Guid refreshTokenValue, int refreshConfidenceIntervalInSeconds);
     }
 }

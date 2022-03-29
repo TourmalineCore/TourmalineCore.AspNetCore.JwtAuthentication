@@ -9,6 +9,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services
 {
     internal interface IRefreshService
     {
-        public Task<AuthResponseModel> RefreshAsync(string userName, Guid refreshTokenValue, string clientFingerPrint);
+        public Task<AuthResponseModel> RefreshAsync(Guid refreshTokenValue, string clientFingerPrint);
     }
 }

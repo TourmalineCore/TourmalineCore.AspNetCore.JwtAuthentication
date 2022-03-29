@@ -11,6 +11,8 @@ namespace Tests.Units;
 
 public class RefreshTokenManagerTests
 {
+    private const int RefreshConfidenceIntervalInSeconds = 300;
+
     private readonly RefreshTokenManager<CustomUser, string> _refreshTokenManager;
     private readonly Guid _guidForTokenWhichProbablyHasStolen = Guid.NewGuid();
     private readonly Guid _guidForTokenWhichRecentlyExpired = Guid.NewGuid();
@@ -25,7 +27,7 @@ public class RefreshTokenManagerTests
     [Fact]
     public async Task CheckTokenOnPotentialTheft_TokenExpiredLongTimeAgo_ReturnTrue()
     {
-        var res = await _refreshTokenManager.IsPotentialRefreshTokenTheft("1", _guidForTokenWhichProbablyHasStolen);
+        var res = await _refreshTokenManager.IsRefreshTokenStolen("1", _guidForTokenWhichProbablyHasStolen, RefreshConfidenceIntervalInSeconds);
 
         Assert.True(res);
     }
@@ -33,14 +35,14 @@ public class RefreshTokenManagerTests
     [Fact]
     public async Task CheckTokenOnPotentialTheft_TokenExpiredRecently_ReturnFalse()
     {
-        var res = await _refreshTokenManager.IsPotentialRefreshTokenTheft("2", _guidForTokenWhichRecentlyExpired);
+        var res = await _refreshTokenManager.IsRefreshTokenStolen("2", _guidForTokenWhichRecentlyExpired, RefreshConfidenceIntervalInSeconds);
 
         Assert.False(res);
     }
 
     private Mock<TourmalineDbContext<CustomUser>> GetDbContextMock()
     {
-        var tokens = new List<RefreshToken<CustomUser>>
+        var tokens = new List<RefreshToken<CustomUser, string>>
         {
             new()
             {
@@ -65,7 +67,7 @@ public class RefreshTokenManagerTests
         var appDbContextMock = new Mock<TourmalineDbContext<CustomUser>>();
 
         appDbContextMock
-            .Setup(x => x.Set<RefreshToken<CustomUser>>())
+            .Setup(x => x.Set<RefreshToken<CustomUser, string>>())
             .Returns(tokens.AsQueryable().BuildMockDbSet().Object);
 
         return appDbContextMock;
