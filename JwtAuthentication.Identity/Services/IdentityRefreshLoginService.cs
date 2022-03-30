@@ -97,7 +97,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
                 return await _signInManager.GenerateAuthTokens(user, clientFingerPrint);
             }
 
-            await _refreshTokenManager.InvalidateRefreshToken(userId, refreshTokenValue);
+            await _refreshTokenManager.InvalidateRefreshToken(user.Id, refreshTokenValue);
             return await _signInManager.GenerateAuthTokens(user, clientFingerPrint);
         }
     }

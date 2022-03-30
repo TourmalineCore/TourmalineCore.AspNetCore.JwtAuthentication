@@ -29,9 +29,11 @@
     <ProjectReference Include="..\Example.NetCore5.0.RefreshTokenAuthAndRegistrationUsingIdentity\Example.NetCore5.0.RefreshTokenAuthAndRegistrationUsingIdentity.csproj" />
     <ProjectReference Include="..\..\JwtAuthentication.Core\JwtAuthentication.Core.csproj" />
     <ProjectReference Include="..\..\JwtAuthentication.Identity\JwtAuthentication.Identity.csproj" />
+    <ProjectReference Include="..\Example.NetCore5.0.RefreshTokenWithConfidenceInterval\Example.NetCore5.0.RefreshTokenWithConfidenceInterval.csproj" />
     <ProjectReference Include="..\Example.NetCore6.0.AuthenticationUsingGenericIdentityUser\Example.NetCore6.0.AuthenticationUsingGenericIdentityUser.csproj" />
     <ProjectReference Include="..\Example.NetCore6.0.CookiesBasedAuthentication\Example.NetCore6.0.CookiesBasedAuthentication.csproj" />
     <ProjectReference Include="..\Example.NetCore6.0.RefreshTokenAuthAndRegistrationUsingIdentity\Example.NetCore6.0.RefreshTokenAuthAndRegistrationUsingIdentity.csproj" />
+    <ProjectReference Include="..\Example.NetCore6.0.RefreshTokenWithConfidenceInterval\Example.NetCore6.0.RefreshTokenWithConfidenceInterval.csproj" />
   </ItemGroup>
 
 	<ItemGroup>

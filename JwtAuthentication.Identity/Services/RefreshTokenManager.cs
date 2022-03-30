@@ -57,7 +57,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
                 .AsQueryable()
                 .Include(x => x.User)
                 .FirstOrDefaultAsync(x => x.Value == refreshTokenValue 
-                                           && x.IsActive
                                            && x.ExpiresIn > DateTime.UtcNow
                                            && (clientFingerPrint == null || x.ClientFingerPrint == clientFingerPrint));
 
@@ -73,19 +72,23 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 
         public async Task<bool> IsTokenAlreadyInvalidated(TKey userId, Guid refreshTokenValue)
         {
-            var token = await _dbContext
-                .Set<RefreshToken<TUser, TKey>>()
-                .AsQueryable()
-                .FirstOrDefaultAsync(x => x.Value == refreshTokenValue && x.UserId.Equals(userId));
-
-            ThrowExceptionIfTokenIsNull(token);
+            var token = await FindRefreshToken(userId, refreshTokenValue);
 
             return !token.IsActive;
         }
 
         public async Task InvalidateRefreshToken(TKey userId, Guid refreshTokenValue)
         {
-            var token = await FindRefreshToken(userId, refreshTokenValue);
+            var token = await _dbContext
+                .Set<RefreshToken<TUser, TKey>>()
+                .Include(x => x.User)
+                .AsQueryable()
+                .FirstOrDefaultAsync(x => x.Value == refreshTokenValue
+                                          && x.IsActive
+                                          && x.UserId.Equals(userId));
+
+            ThrowExceptionIfTokenIsNull(token);
+
             token.Expire();
 
             await _dbContext.SaveChangesAsync();
@@ -104,9 +107,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
                 .Set<RefreshToken<TUser, TKey>>()
                 .Include(x => x.User)
                 .AsQueryable()
-                .FirstOrDefaultAsync(x => x.Value == refreshTokenValue
-                                          && x.UserId.Equals(userId)
-                                          && x.ExpiresIn > DateTime.UtcNow);
+                .FirstOrDefaultAsync(x => x.Value == refreshTokenValue && x.UserId.Equals(userId));
 
             ThrowExceptionIfTokenIsNull(token);
 
