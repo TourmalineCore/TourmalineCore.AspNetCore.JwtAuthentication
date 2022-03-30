@@ -32,6 +32,7 @@ dotnet add package TourmalineCore.AspNetCore.JwtAuthentication.Identity
     - [Refresh Token Request](#Refresh-Token-Request)
     - [Refresh Token Options](#Refresh-Token-Options)
     - [Refresh Routing](#Refresh-Token-Options)
+    - [Refresh Confidence Interval](#refresh-confidence-interval)
     - [Logout](#logout)
         - [Logout Request](#logout-request)
 - [Authorization](#authorization)
@@ -390,6 +391,51 @@ public async void Configure(IApplicationBuilder app, IHostingEnvironment env)
             RefreshEndpointRoute = "/test/refresh",
         });
     ...
+}
+```
+
+## Refresh Confidence Interval
+
+In some applications, your tokens may be refreshed in an indefinite order, which may cause an unexpected user logout (for example, applications with multiple tabs).
+
+To solve such situations, you can use a confidence interval that will allow you to correctly process refresh requests with potentially expired tokens if the interval between the current time and the token expiration time is less than the confidence interval time.
+
+Usage example:
+```csharp
+...
+using TourmalineCore.AspNetCore.JwtAuthentication.Core;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
+
+public class Startup
+{
+    private readonly IConfiguration _configuration;
+
+    public Startup(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
+    public void ConfigureServices(IServiceCollection services) 
+	{
+        ...
+        var authenticationOptions = (_configuration.GetSection(nameof(AuthenticationOptions)).Get<RefreshAuthenticationOptions>());
+        const int refreshConfidenceIntervalInSeconds = 300;
+        services
+            .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
+            .AddLoginWithRefresh(authenticationOptions)
+            .AddRefreshConfidenceInterval(refreshConfidenceIntervalInSeconds);
+        ...
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        ...
+        app
+            .UseJwtAuthentication()
+            .UseDefaultLoginMiddleware()
+            .UseRefreshTokenMiddleware();
+        ...
+    }
 }
 ```
 

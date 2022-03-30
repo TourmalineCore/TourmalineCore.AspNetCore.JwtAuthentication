@@ -35,6 +35,7 @@ dotnet add package TourmalineCore.AspNetCore.JwtAuthentication.Identity
   * [Refresh Token Request](#refresh-token-request)
   * [Refresh Token Options](#refresh-token-options)
   * [Refresh Routing](#refresh-routing)
+  * [Refresh Confidence Interval](#refresh-confidence-interval)
 - [Logout](#logout)
   * [Logout request](#logout-request)
 - [Authorization](#authorization)
@@ -354,6 +355,30 @@ app
     { 
         RefreshEndpointRoute = "/test/refresh",
     });
+...
+```
+
+## Refresh Confidence Interval
+
+In some applications, your tokens may be refreshed in an indefinite order, which may cause an unexpected user logout (for example, applications with multiple tabs).
+
+To solve such situations, you can use a confidence interval that will allow you to correctly process refresh requests with potentially expired tokens if the interval between the current time and the token expiration time is less than the confidence interval time.
+
+Usage example:
+```csharp
+...
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
+...
+
+var builder = WebApplication.CreateBuilder(args);
+...
+var refreshAuthenticationOptions = configuration.GetSection(nameof(AuthenticationOptions)).Get<RefreshAuthenticationOptions>();
+const int refreshConfidenceIntervalInSeconds = 300;
+
+builder.Services
+    .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
+    .AddLoginWithRefresh(refreshAuthenticationOptions)
+    .AddRefreshConfidenceInterval(refreshConfidenceIntervalInSeconds);
 ...
 ```
 

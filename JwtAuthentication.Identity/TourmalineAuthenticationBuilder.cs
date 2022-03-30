@@ -184,8 +184,9 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         }
 
         /// <summary>
-        /// Enables options which will use the refresh confidence interval
+        /// Adds the ability to correctly handle refresh requests with potentially expired tokens if the interval between the current time and the token expiration time is less than the confidence interval
         /// </summary>
+        /// <param name="seconds"></param>
         /// <returns></returns>
         public TourmalineAuthenticationBuilder<TContext, TUser, TKey> AddRefreshConfidenceInterval(int seconds)
         {
