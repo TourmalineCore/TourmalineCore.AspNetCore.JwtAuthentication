@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc.Testing;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 using Xunit;
 
 namespace Tests.NetCore6._0

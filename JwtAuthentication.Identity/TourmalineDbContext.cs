@@ -69,6 +69,11 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
                         entity.ToTable(DefaultRefreshTokenTableName);
                     }
                 );
+
+            if (!TourmalineContextConfiguration.UseRefreshConfidenceInterval)
+            {
+                modelBuilder.Entity<RefreshToken<TUser, TKey>>().Ignore(x => x.ExpiredAt);
+            }
         }
     }
 }

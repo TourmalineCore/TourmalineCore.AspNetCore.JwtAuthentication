@@ -77,13 +77,9 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         {
             AddJwt(Services, authenticationOptions);
 
-            Services.AddSingleton(new RefreshOptions
-            {
-                UseRefreshConfidenceInterval = false,
-            });
-
             IdentityBuilder.AddSignInManager<SignInManager<TUser>>();
 
+            Services.AddSingleton(new RefreshOptions());
             Services.AddTransient<ITokenManager, TokenManager>();
             Services.AddTransient<ILoginService, IdentityLoginService<TUser, TKey>>();
             Services.AddTransient<IUserClaimsProvider, DefaultUserClaimsProvider>();
@@ -123,15 +119,14 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         public TourmalineAuthenticationBuilder<TContext, TUser, TKey> AddLoginWithRefresh(RefreshAuthenticationOptions authenticationOptions)
         {
             Services.AddSingleton(authenticationOptions);
-            Services.AddSingleton(new RefreshOptions
-            {
-                UseRefreshConfidenceInterval = false,
-            });
 
             TourmalineContextConfiguration.UseRefresh = true;
+            TourmalineContextConfiguration.UseRefreshConfidenceInterval = false;
+
             AddJwt(Services, authenticationOptions);
             IdentityBuilder.AddSignInManager<RefreshSignInManager<TUser, TKey>>();
 
+            Services.AddSingleton(new RefreshOptions());
             Services.AddTransient<ITokenManager, TokenManager>();
             Services.AddTransient<IRefreshTokenManager<TUser, TKey>, RefreshTokenManager<TUser, TKey>>();
             Services.AddTransient<ILoginService, IdentityRefreshLoginService<TUser, TKey>>();
@@ -190,9 +185,10 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         /// <returns></returns>
         public TourmalineAuthenticationBuilder<TContext, TUser, TKey> AddRefreshConfidenceInterval(int seconds)
         {
+            TourmalineContextConfiguration.UseRefreshConfidenceInterval = true;
+
             Services.AddSingleton(new RefreshOptions
             {
-                UseRefreshConfidenceInterval = true,
                 RefreshConfidenceIntervalInSeconds = seconds,
             });
 

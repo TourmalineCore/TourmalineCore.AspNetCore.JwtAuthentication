@@ -77,7 +77,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             var user = await _refreshTokenManager.FindUserOfRefreshToken(refreshTokenValue, clientFingerPrint);
             var userId = user.Id;
 
-            if (_refreshOptions.UseRefreshConfidenceInterval)
+            if (TourmalineContextConfiguration.UseRefreshConfidenceInterval)
             {
                 var isTokenAlreadyInvalidated = await _refreshTokenManager.IsTokenAlreadyInvalidated(userId, refreshTokenValue);
 
