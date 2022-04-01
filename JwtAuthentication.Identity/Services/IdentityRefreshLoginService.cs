@@ -74,7 +74,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
                 ClientFingerPrint = clientFingerPrint,
             });
 
-            var user = await _refreshTokenManager.FindUserOfRefreshToken(refreshTokenValue, clientFingerPrint);
+            var user = await _refreshTokenManager.FindRefreshTokenUser(refreshTokenValue, clientFingerPrint);
             var userId = user.Id;
 
             if (TourmalineContextConfiguration.UseRefreshConfidenceInterval)

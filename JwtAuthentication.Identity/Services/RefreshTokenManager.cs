@@ -50,7 +50,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             return BuildTokenModelByRefreshToken(refreshToken);
         }
 
-        public async Task<TUser> FindUserOfRefreshToken(Guid refreshTokenValue, string clientFingerPrint)
+        public async Task<TUser> FindRefreshTokenUser(Guid refreshTokenValue, string clientFingerPrint)
         {
             var token = await _dbContext
                 .Set<RefreshToken<TUser, TKey>>()

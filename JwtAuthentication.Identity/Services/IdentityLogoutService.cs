@@ -27,7 +27,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 
         public async Task LogoutAsync(LogoutRequestModel model)
         {
-            var user = await _refreshTokenManager.FindUserOfRefreshToken(model.RefreshTokenValue, model.ClientFingerPrint);
+            var user = await _refreshTokenManager.FindRefreshTokenUser(model.RefreshTokenValue, model.ClientFingerPrint);
             await _refreshTokenManager.InvalidateRefreshToken(user.Id, model.RefreshTokenValue);
         }
     }
