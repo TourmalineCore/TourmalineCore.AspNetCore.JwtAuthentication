@@ -72,7 +72,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
 
             if (!TourmalineContextConfiguration.UseRefreshConfidenceInterval)
             {
-                modelBuilder.Entity<RefreshToken<TUser, TKey>>().Ignore(x => x.ExpiredAt);
+                modelBuilder.Entity<RefreshToken<TUser, TKey>>().Ignore(x => x.ExpiredAtUtc);
             }
         }
     }

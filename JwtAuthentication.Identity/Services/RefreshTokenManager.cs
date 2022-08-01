@@ -98,7 +98,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
         {
             var token = await FindRefreshToken(userId, refreshTokenValue);
 
-            return (DateTime.UtcNow - token.ExpiredAt).TotalSeconds > refreshConfidenceIntervalInSeconds;
+            return (DateTime.UtcNow - token.ExpiredAtUtc).TotalSeconds > refreshConfidenceIntervalInSeconds;
         }
 
         private async Task<RefreshToken<TUser, TKey>> FindRefreshToken(TKey userId, Guid refreshTokenValue)

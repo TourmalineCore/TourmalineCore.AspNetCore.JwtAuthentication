@@ -25,12 +25,12 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Models
 
         public TUser User { get; set; }
 
-        public DateTime ExpiredAt { get; set; }
+        public DateTime ExpiredAtUtc { get; set; }
 
         public void Expire()
         {
             IsActive = false;
-            ExpiredAt = DateTime.UtcNow;
+            ExpiredAtUtc = DateTime.UtcNow;
         }
     }
 }

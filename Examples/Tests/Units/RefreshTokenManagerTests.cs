@@ -46,14 +46,14 @@ public class RefreshTokenManagerTests
         {
             new()
             {
-                ExpiredAt = new DateTime(2021, 01, 01),
+                ExpiredAtUtc = new DateTime(2021, 01, 01),
                 ExpiresIn = DateTime.UtcNow + TimeSpan.FromDays(7),
                 Value = _guidForTokenWhichProbablyHasStolen,
                 UserId = "1",
             },
             new()
             {
-                ExpiredAt = DateTime.UtcNow,
+                ExpiredAtUtc = DateTime.UtcNow,
                 ExpiresIn = DateTime.UtcNow + TimeSpan.FromDays(7),
                 Value = _guidForTokenWhichRecentlyExpired,
                 UserId = "2",
