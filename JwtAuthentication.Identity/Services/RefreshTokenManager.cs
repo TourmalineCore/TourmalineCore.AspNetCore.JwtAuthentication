@@ -55,6 +55,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             var token = await _dbContext
                 .Set<RefreshToken<TUser, TKey>>()
                 .AsQueryable()
+                .AsNoTracking()
                 .Include(x => x.User)
                 .FirstOrDefaultAsync(x => x.Value == refreshTokenValue 
                                            && x.ExpiresIn > DateTime.UtcNow
@@ -107,6 +108,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
                 .Set<RefreshToken<TUser, TKey>>()
                 .Include(x => x.User)
                 .AsQueryable()
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Value == refreshTokenValue && x.UserId.Equals(userId));
 
             ThrowExceptionIfTokenIsNull(token);
