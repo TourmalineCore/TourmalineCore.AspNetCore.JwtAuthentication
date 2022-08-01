@@ -69,7 +69,7 @@ namespace Tests
 
             var response = await client.PostAsync(RefreshUrl, body);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authResponseModel.AccessToken.Value);
-            var result = JsonSerializer.Deserialize<AuthResponseModel>(response.Content.ReadAsStringAsync().Result, _jsonSerializerSettings);
+            var result = JsonSerializer.Deserialize<AuthResponseModel>(await response.Content.ReadAsStringAsync(), _jsonSerializerSettings);
             return (response, result);
         }
 
