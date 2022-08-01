@@ -39,7 +39,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             _options = options;
         }
 
-        public async Task<TokenModel> GenerateRefreshToken(object user, string clientFingerPrint)
+        public async Task<TokenModel> GenerateRefreshTokenAsync(object user, string clientFingerPrint)
         {
             var refreshToken = CreateRefreshToken(user, clientFingerPrint);
 
@@ -50,7 +50,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             return BuildTokenModelByRefreshToken(refreshToken);
         }
 
-        public async Task<TUser> FindRefreshTokenUser(Guid refreshTokenValue, string clientFingerPrint)
+        public async Task<TUser> FindRefreshTokenUserAsync(Guid refreshTokenValue, string clientFingerPrint)
         {
             var token = await _dbContext
                 .Set<RefreshToken<TUser, TKey>>()
@@ -70,14 +70,14 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             return token.User;
         }
 
-        public async Task<bool> IsTokenAlreadyInvalidated(TKey userId, Guid refreshTokenValue)
+        public async Task<bool> IsTokenAlreadyInvalidatedAsync(TKey userId, Guid refreshTokenValue)
         {
             var token = await FindRefreshToken(userId, refreshTokenValue);
 
             return !token.IsActive;
         }
 
-        public async Task InvalidateRefreshToken(TKey userId, Guid refreshTokenValue)
+        public async Task InvalidateRefreshTokenAsync(TKey userId, Guid refreshTokenValue)
         {
             var token = await _dbContext
                 .Set<RefreshToken<TUser, TKey>>()
@@ -94,7 +94,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<bool> IsRefreshTokenStolen(TKey userId, Guid refreshTokenValue, int refreshConfidenceIntervalInSeconds)
+        public async Task<bool> IsRefreshTokenStolenAsync(TKey userId, Guid refreshTokenValue, int refreshConfidenceIntervalInSeconds)
         {
             var token = await FindRefreshToken(userId, refreshTokenValue);
 

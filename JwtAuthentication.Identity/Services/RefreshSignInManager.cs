@@ -71,7 +71,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             return new AuthResponseModel
             {
                 AccessToken = await GetBearerToken(appUser),
-                RefreshToken = await _refreshTokenManager.GenerateRefreshToken(appUser, clientFingerPrint),
+                RefreshToken = await _refreshTokenManager.GenerateRefreshTokenAsync(appUser, clientFingerPrint),
             };
         }
 

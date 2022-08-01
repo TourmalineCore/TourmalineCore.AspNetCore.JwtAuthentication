@@ -27,7 +27,7 @@ public class RefreshTokenManagerTests
     [Fact]
     public async Task CheckTokenOnPotentialTheft_TokenExpiredLongTimeAgo_ReturnTrue()
     {
-        var res = await _refreshTokenManager.IsRefreshTokenStolen("1", _guidForTokenWhichProbablyHasStolen, RefreshConfidenceIntervalInSeconds);
+        var res = await _refreshTokenManager.IsRefreshTokenStolenAsync("1", _guidForTokenWhichProbablyHasStolen, RefreshConfidenceIntervalInSeconds);
 
         Assert.True(res);
     }
@@ -35,7 +35,7 @@ public class RefreshTokenManagerTests
     [Fact]
     public async Task CheckTokenOnPotentialTheft_TokenExpiredRecently_ReturnFalse()
     {
-        var res = await _refreshTokenManager.IsRefreshTokenStolen("2", _guidForTokenWhichRecentlyExpired, RefreshConfidenceIntervalInSeconds);
+        var res = await _refreshTokenManager.IsRefreshTokenStolenAsync("2", _guidForTokenWhichRecentlyExpired, RefreshConfidenceIntervalInSeconds);
 
         Assert.False(res);
     }

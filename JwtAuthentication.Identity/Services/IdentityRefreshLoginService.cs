@@ -74,20 +74,20 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
                 ClientFingerPrint = clientFingerPrint,
             });
 
-            var user = await _refreshTokenManager.FindRefreshTokenUser(refreshTokenValue, clientFingerPrint);
+            var user = await _refreshTokenManager.FindRefreshTokenUserAsync(refreshTokenValue, clientFingerPrint);
             var userId = user.Id;
 
             if (TourmalineContextConfiguration.UseRefreshConfidenceInterval)
             {
-                var isTokenAlreadyInvalidated = await _refreshTokenManager.IsTokenAlreadyInvalidated(userId, refreshTokenValue);
+                var isTokenAlreadyInvalidated = await _refreshTokenManager.IsTokenAlreadyInvalidatedAsync(userId, refreshTokenValue);
 
                 if (!isTokenAlreadyInvalidated)
                 {
-                    await _refreshTokenManager.InvalidateRefreshToken(userId, refreshTokenValue);
+                    await _refreshTokenManager.InvalidateRefreshTokenAsync(userId, refreshTokenValue);
                     return await _signInManager.GenerateAuthTokens(user, clientFingerPrint);
                 }
 
-                var isRefreshTokenStolen = await _refreshTokenManager.IsRefreshTokenStolen(userId, refreshTokenValue, _refreshOptions.RefreshConfidenceIntervalInSeconds);
+                var isRefreshTokenStolen = await _refreshTokenManager.IsRefreshTokenStolenAsync(userId, refreshTokenValue, _refreshOptions.RefreshConfidenceIntervalInSeconds);
 
                 if (isRefreshTokenStolen)
                 {
@@ -97,7 +97,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
                 return await _signInManager.GenerateAuthTokens(user, clientFingerPrint);
             }
 
-            await _refreshTokenManager.InvalidateRefreshToken(user.Id, refreshTokenValue);
+            await _refreshTokenManager.InvalidateRefreshTokenAsync(user.Id, refreshTokenValue);
             return await _signInManager.GenerateAuthTokens(user, clientFingerPrint);
         }
     }

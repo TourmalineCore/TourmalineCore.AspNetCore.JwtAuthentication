@@ -8,14 +8,14 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services
         where TUser : class    
         where TKey : IEquatable<TKey>
     {
-        Task<TokenModel> GenerateRefreshToken(object user, string clientFingerPrint);
+        Task<TokenModel> GenerateRefreshTokenAsync(object user, string clientFingerPrint);
 
-        Task<TUser> FindRefreshTokenUser(Guid refreshTokenValue, string clientFingerPrint);
+        Task<TUser> FindRefreshTokenUserAsync(Guid refreshTokenValue, string clientFingerPrint);
 
-        Task InvalidateRefreshToken(TKey userId, Guid refreshTokenValue);
+        Task InvalidateRefreshTokenAsync(TKey userId, Guid refreshTokenValue);
 
-        Task<bool> IsTokenAlreadyInvalidated(TKey userId, Guid refreshTokenValue);
+        Task<bool> IsTokenAlreadyInvalidatedAsync(TKey userId, Guid refreshTokenValue);
 
-        Task<bool> IsRefreshTokenStolen(TKey userId, Guid refreshTokenValue, int refreshConfidenceIntervalInSeconds);
+        Task<bool> IsRefreshTokenStolenAsync(TKey userId, Guid refreshTokenValue, int refreshConfidenceIntervalInSeconds);
     }
 }
