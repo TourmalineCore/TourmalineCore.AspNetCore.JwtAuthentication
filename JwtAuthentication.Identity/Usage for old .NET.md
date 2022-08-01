@@ -421,8 +421,8 @@ sequenceDiagram
     end
 ```
 
-Yes, you can try to solve this problem on the client side, but we think this is the wrong way.  
-So how does the refresh confidence interval can help us?
+Yes, you can try to solve this problem on the client side. However, what if you can't do this or do not want to complicate the frontend?  
+So how can the refresh confidence interval can help us?
 
 The refresh confidence interval will allow you to correctly process refresh requests with potentially expired tokens if the interval between the current time and the token expiration time is less than the confidence interval time. 
 
