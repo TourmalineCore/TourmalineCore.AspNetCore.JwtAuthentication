@@ -10,7 +10,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services
     {
         Task<TokenModel> GenerateRefreshTokenAsync(object user, string clientFingerPrint);
 
-        Task<TUser> FindRefreshTokenUserAsync(Guid refreshTokenValue, string clientFingerPrint);
+        Task<TUser> GetRefreshTokenUserAsync(Guid refreshTokenValue, string clientFingerPrint);
 
         Task InvalidateRefreshTokenAsync(TKey userId, Guid refreshTokenValue);
 

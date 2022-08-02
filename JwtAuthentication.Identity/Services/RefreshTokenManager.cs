@@ -50,7 +50,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             return BuildTokenModelByRefreshToken(refreshToken);
         }
 
-        public async Task<TUser> FindRefreshTokenUserAsync(Guid refreshTokenValue, string clientFingerPrint)
+        public async Task<TUser> GetRefreshTokenUserAsync(Guid refreshTokenValue, string clientFingerPrint)
         {
             var token = await _dbContext
                 .Set<RefreshToken<TUser, TKey>>()
@@ -63,17 +63,12 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 
             ThrowExceptionIfTokenIsNull(token);
 
-            if (token.User == null)
-            {
-                throw new AuthenticationException(ErrorTypes.UserNotFound);
-            }
-
             return token.User;
         }
 
         public async Task<bool> IsTokenAlreadyInvalidatedAsync(TKey userId, Guid refreshTokenValue)
         {
-            var token = await FindRefreshToken(userId, refreshTokenValue);
+            var token = await GetRefreshTokenAsync(userId, refreshTokenValue);
 
             return !token.IsActive;
         }
@@ -97,12 +92,12 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 
         public async Task<bool> IsRefreshTokenSuspiciousAsync(TKey userId, Guid refreshTokenValue, int refreshConfidenceIntervalInMilliseconds)
         {
-            var token = await FindRefreshToken(userId, refreshTokenValue);
+            var token = await GetRefreshTokenAsync(userId, refreshTokenValue);
 
             return (DateTime.UtcNow - token.ExpiredAtUtc).TotalMilliseconds > refreshConfidenceIntervalInMilliseconds;
         }
 
-        private async Task<RefreshToken<TUser, TKey>> FindRefreshToken(TKey userId, Guid refreshTokenValue)
+        private async Task<RefreshToken<TUser, TKey>> GetRefreshTokenAsync(TKey userId, Guid refreshTokenValue)
         {
             var token = await _dbContext
                 .Set<RefreshToken<TUser, TKey>>()
