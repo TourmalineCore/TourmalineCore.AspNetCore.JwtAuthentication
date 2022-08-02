@@ -1,14 +1,23 @@
+using System;
+
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options
 {
     public class RefreshOptions
     {
-        private const int DefaultRefreshConfidenceIntervalInSeconds = 60;
-        private int _refreshConfidenceIntervalInSeconds;
+        private int _refreshConfidenceIntervalInMilliseconds;
 
-        public int RefreshConfidenceIntervalInSeconds
+        public int RefreshConfidenceIntervalInMilliseconds
         {
-            get => _refreshConfidenceIntervalInSeconds == default ? DefaultRefreshConfidenceIntervalInSeconds : _refreshConfidenceIntervalInSeconds;
-            set => _refreshConfidenceIntervalInSeconds = value;
+            get => _refreshConfidenceIntervalInMilliseconds;
+            set
+            {
+                if (value <= 0)
+                {
+                    throw new ArgumentException("Refresh confidence interval cannot be zero or negative");
+                }
+
+                _refreshConfidenceIntervalInMilliseconds = value;
+            }
         }
     }
 }

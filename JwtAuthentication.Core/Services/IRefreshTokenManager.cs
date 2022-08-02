@@ -16,6 +16,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services
 
         Task<bool> IsTokenAlreadyInvalidatedAsync(TKey userId, Guid refreshTokenValue);
 
-        Task<bool> IsRefreshTokenStolenAsync(TKey userId, Guid refreshTokenValue, int refreshConfidenceIntervalInSeconds);
+        Task<bool> IsRefreshTokenStolenAsync(TKey userId, Guid refreshTokenValue, int refreshConfidenceIntervalInMilliseconds);
     }
 }

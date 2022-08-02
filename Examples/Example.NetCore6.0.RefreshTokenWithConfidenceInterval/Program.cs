@@ -18,7 +18,7 @@ var configuration = builder.Configuration;
 var environment = builder.Environment;
 
 var refreshAuthenticationOptions = configuration.GetSection(nameof(AuthenticationOptions)).Get<RefreshAuthenticationOptions>();
-const int refreshConfidenceIntervalInSeconds = 300;
+const int refreshConfidenceIntervalInMilliseconds = 300_000;
 
 builder.Services
     .AddDbContext<AppDbContext>(options =>
@@ -28,7 +28,7 @@ builder.Services
 builder.Services
     .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
     .AddLoginWithRefresh(refreshAuthenticationOptions)
-    .AddRefreshConfidenceInterval(refreshConfidenceIntervalInSeconds)
+    .AddRefreshConfidenceInterval(refreshConfidenceIntervalInMilliseconds)
     .AddLogout()
     .AddRegistration();
 

@@ -87,7 +87,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
                     return await _signInManager.GenerateAuthTokens(user, clientFingerPrint);
                 }
 
-                var isRefreshTokenStolen = await _refreshTokenManager.IsRefreshTokenStolenAsync(userId, refreshTokenValue, _refreshOptions.RefreshConfidenceIntervalInSeconds);
+                var isRefreshTokenStolen = await _refreshTokenManager.IsRefreshTokenStolenAsync(userId, refreshTokenValue, _refreshOptions.RefreshConfidenceIntervalInMilliseconds);
 
                 if (isRefreshTokenStolen)
                 {

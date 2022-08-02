@@ -11,7 +11,7 @@ namespace Tests.Units;
 
 public class RefreshTokenManagerTests
 {
-    private const int RefreshConfidenceIntervalInSeconds = 300;
+    private const int RefreshConfidenceIntervalInMilliseconds = 300_000;
 
     private readonly RefreshTokenManager<CustomUser, string> _refreshTokenManager;
     private readonly Guid _guidForTokenWhichProbablyHasStolen = Guid.NewGuid();
@@ -27,7 +27,7 @@ public class RefreshTokenManagerTests
     [Fact]
     public async Task CheckTokenOnPotentialTheft_TokenExpiredLongTimeAgo_ReturnTrue()
     {
-        var res = await _refreshTokenManager.IsRefreshTokenStolenAsync("1", _guidForTokenWhichProbablyHasStolen, RefreshConfidenceIntervalInSeconds);
+        var res = await _refreshTokenManager.IsRefreshTokenStolenAsync("1", _guidForTokenWhichProbablyHasStolen, RefreshConfidenceIntervalInMilliseconds);
 
         Assert.True(res);
     }
@@ -35,7 +35,7 @@ public class RefreshTokenManagerTests
     [Fact]
     public async Task CheckTokenOnPotentialTheft_TokenExpiredRecently_ReturnFalse()
     {
-        var res = await _refreshTokenManager.IsRefreshTokenStolenAsync("2", _guidForTokenWhichRecentlyExpired, RefreshConfidenceIntervalInSeconds);
+        var res = await _refreshTokenManager.IsRefreshTokenStolenAsync("2", _guidForTokenWhichRecentlyExpired, RefreshConfidenceIntervalInMilliseconds);
 
         Assert.False(res);
     }

@@ -24,7 +24,7 @@ namespace Example.NetCore5._0.RefreshTokenWithConfidenceInterval
 
         public void ConfigureServices(IServiceCollection services)
         {
-            const int refreshConfidenceIntervalInSeconds = 300;
+            const int refreshConfidenceIntervalInMilliseconds = 300_000;
 
             services.AddDbContext<AppDbContext>(options =>
                     options.UseInMemoryDatabase("Database")
@@ -33,7 +33,7 @@ namespace Example.NetCore5._0.RefreshTokenWithConfidenceInterval
             services
                 .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
                 .AddLoginWithRefresh(_configuration.GetSection(nameof(AuthenticationOptions)).Get<RefreshAuthenticationOptions>())
-                .AddRefreshConfidenceInterval(refreshConfidenceIntervalInSeconds)
+                .AddRefreshConfidenceInterval(refreshConfidenceIntervalInMilliseconds)
                 .AddLogout()
                 .AddRegistration();
 

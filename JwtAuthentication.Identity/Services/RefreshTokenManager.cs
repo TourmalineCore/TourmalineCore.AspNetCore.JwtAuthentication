@@ -95,11 +95,11 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<bool> IsRefreshTokenStolenAsync(TKey userId, Guid refreshTokenValue, int refreshConfidenceIntervalInSeconds)
+        public async Task<bool> IsRefreshTokenStolenAsync(TKey userId, Guid refreshTokenValue, int refreshConfidenceIntervalInMilliseconds)
         {
             var token = await FindRefreshToken(userId, refreshTokenValue);
 
-            return (DateTime.UtcNow - token.ExpiredAtUtc).TotalSeconds > refreshConfidenceIntervalInSeconds;
+            return (DateTime.UtcNow - token.ExpiredAtUtc).TotalMilliseconds > refreshConfidenceIntervalInMilliseconds;
         }
 
         private async Task<RefreshToken<TUser, TKey>> FindRefreshToken(TKey userId, Guid refreshTokenValue)

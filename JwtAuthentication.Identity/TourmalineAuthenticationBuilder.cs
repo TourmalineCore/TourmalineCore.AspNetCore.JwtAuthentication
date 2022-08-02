@@ -30,6 +30,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         where TUser : IdentityUser<TKey>
         where TKey : IEquatable<TKey>
     {
+        private const int DefaultRefreshConfidenceIntervalInMilliseconds = 60_000;
+
         private static IServiceCollection Services { get; set; }
 
         private static IdentityBuilder IdentityBuilder { get; set; }
@@ -181,15 +183,18 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         /// <summary>
         /// Adds the ability to correctly handle refresh requests with potentially expired tokens if the interval between the current time and the token expiration time is less than the confidence interval
         /// </summary>
-        /// <param name="seconds"></param>
+        /// <param name="milliseconds">
+        /// The time in milliseconds at which we can trust the refresh token.
+        /// The default value is 60 000 milliseconds - you can be sure that multiple requests will be handled correctly, and it is not large enough to constantly use expired tokens.
+        /// </param>
         /// <returns></returns>
-        public TourmalineAuthenticationBuilder<TContext, TUser, TKey> AddRefreshConfidenceInterval(int seconds)
+        public TourmalineAuthenticationBuilder<TContext, TUser, TKey> AddRefreshConfidenceInterval(int milliseconds = DefaultRefreshConfidenceIntervalInMilliseconds)
         {
             TourmalineContextConfiguration.UseRefreshConfidenceInterval = true;
 
             Services.AddSingleton(new RefreshOptions
             {
-                RefreshConfidenceIntervalInSeconds = seconds,
+                RefreshConfidenceIntervalInMilliseconds = milliseconds,
             });
 
             return this;
