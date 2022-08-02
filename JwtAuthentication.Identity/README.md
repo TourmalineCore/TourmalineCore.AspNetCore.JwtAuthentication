@@ -418,18 +418,36 @@ sequenceDiagram
     end
 ```
 
-Usage example:
+Usage examples:
+
+You can set refresh confidence interval directly (in milliseconds)
 ```csharp
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 var refreshAuthenticationOptions = configuration.GetSection(nameof(AuthenticationOptions)).Get<RefreshAuthenticationOptions>();
-const int refreshConfidenceIntervalInSeconds = 300;
+const int refreshConfidenceIntervalInMilliseconds = 300_000;
 
 builder.Services
     .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
     .AddLoginWithRefresh(refreshAuthenticationOptions)
-    .AddRefreshConfidenceInterval(refreshConfidenceIntervalInSeconds);
+    .AddRefreshConfidenceInterval(refreshConfidenceIntervalInMilliseconds);
+```
+
+You can also choose not to set a refresh confidence interval.  
+In this case, the refresh confidence interval will be set to 60,000 milliseconds.  
+With this value you can be sure that multiple requests will be handled correctly and it is not large enough to constantly use expired tokens.
+
+```csharp
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
+
+var builder = WebApplication.CreateBuilder(args);
+var refreshAuthenticationOptions = configuration.GetSection(nameof(AuthenticationOptions)).Get<RefreshAuthenticationOptions>();
+
+builder.Services
+    .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
+    .AddLoginWithRefresh(refreshAuthenticationOptions)
+    .AddRefreshConfidenceInterval();
 ```
 
 # Logout
