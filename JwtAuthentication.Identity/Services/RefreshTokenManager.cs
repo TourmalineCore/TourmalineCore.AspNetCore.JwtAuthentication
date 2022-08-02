@@ -95,7 +95,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<bool> IsRefreshTokenStolenAsync(TKey userId, Guid refreshTokenValue, int refreshConfidenceIntervalInMilliseconds)
+        public async Task<bool> IsRefreshTokenSuspiciousAsync(TKey userId, Guid refreshTokenValue, int refreshConfidenceIntervalInMilliseconds)
         {
             var token = await FindRefreshToken(userId, refreshTokenValue);
 

@@ -25,17 +25,17 @@ public class RefreshTokenManagerTests
     }
 
     [Fact]
-    public async Task CheckTokenOnPotentialTheft_TokenExpiredLongTimeAgo_ReturnTrue()
+    public async Task CheckTokenWithRefreshConfidenceInterval_TokenExpiredLongTimeAgo_ReturnTrue()
     {
-        var res = await _refreshTokenManager.IsRefreshTokenStolenAsync("1", _guidForTokenWhichProbablyHasStolen, RefreshConfidenceIntervalInMilliseconds);
+        var res = await _refreshTokenManager.IsRefreshTokenSuspiciousAsync("1", _guidForTokenWhichProbablyHasStolen, RefreshConfidenceIntervalInMilliseconds);
 
         Assert.True(res);
     }
 
     [Fact]
-    public async Task CheckTokenOnPotentialTheft_TokenExpiredRecently_ReturnFalse()
+    public async Task CheckTokenWithRefreshConfidenceInterval_TokenExpiredRecently_ReturnFalse()
     {
-        var res = await _refreshTokenManager.IsRefreshTokenStolenAsync("2", _guidForTokenWhichRecentlyExpired, RefreshConfidenceIntervalInMilliseconds);
+        var res = await _refreshTokenManager.IsRefreshTokenSuspiciousAsync("2", _guidForTokenWhichRecentlyExpired, RefreshConfidenceIntervalInMilliseconds);
 
         Assert.False(res);
     }
@@ -50,6 +50,10 @@ public class RefreshTokenManagerTests
                 ExpiresIn = DateTime.UtcNow + TimeSpan.FromDays(7),
                 Value = _guidForTokenWhichProbablyHasStolen,
                 UserId = "1",
+                User = new CustomUser
+                {
+                    Id = "1",
+                },
             },
             new()
             {

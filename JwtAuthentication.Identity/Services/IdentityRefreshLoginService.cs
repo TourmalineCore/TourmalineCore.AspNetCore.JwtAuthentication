@@ -87,11 +87,11 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
                     return await _signInManager.GenerateAuthTokens(user, clientFingerPrint);
                 }
 
-                var isRefreshTokenStolen = await _refreshTokenManager.IsRefreshTokenStolenAsync(userId, refreshTokenValue, _refreshOptions.RefreshConfidenceIntervalInMilliseconds);
+                var isRefreshTokenStolen = await _refreshTokenManager.IsRefreshTokenSuspiciousAsync(userId, refreshTokenValue, _refreshOptions.RefreshConfidenceIntervalInMilliseconds);
 
                 if (isRefreshTokenStolen)
                 {
-                    throw new AuthenticationException(ErrorTypes.RefreshTokenIsStolen);
+                    throw new AuthenticationException(ErrorTypes.RefreshTokenIsSuspicious);
                 }
 
                 return await _signInManager.GenerateAuthTokens(user, clientFingerPrint);
