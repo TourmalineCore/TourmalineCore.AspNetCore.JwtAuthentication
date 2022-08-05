@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 
@@ -70,7 +69,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
         {
             return new AuthResponseModel
             {
-                AccessToken = await GetBearerToken(appUser),
+                AccessToken = await _accessTokenManager.GetAccessToken(appUser.NormalizedUserName),
                 RefreshToken = await _refreshTokenManager.GenerateRefreshTokenAsync(appUser, clientFingerPrint),
             };
         }
@@ -78,11 +77,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
         public override Task SignInWithClaimsAsync(TUser user, AuthenticationProperties authenticationProperties, IEnumerable<Claim> additionalClaims)
         {
             return Task.CompletedTask;
-        }
-
-        private async Task<TokenModel> GetBearerToken(TUser appUser)
-        {
-            return await _accessTokenManager.GetAccessToken(appUser.NormalizedUserName);
         }
     }
 }

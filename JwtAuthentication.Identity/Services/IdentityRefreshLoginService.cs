@@ -75,29 +75,33 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             });
 
             var user = await _refreshTokenManager.GetRefreshTokenUserAsync(refreshTokenValue, clientFingerPrint);
-            var userId = user.Id;
 
             if (TourmalineContextConfiguration.UseRefreshConfidenceInterval)
             {
-                var isTokenAlreadyInvalidated = await _refreshTokenManager.IsTokenAlreadyInvalidatedAsync(userId, refreshTokenValue);
-
-                if (!isTokenAlreadyInvalidated)
-                {
-                    await _refreshTokenManager.InvalidateRefreshTokenAsync(userId, refreshTokenValue);
-                    return await _signInManager.GenerateAuthTokens(user, clientFingerPrint);
-                }
-
-                var isRefreshTokenStolen = await _refreshTokenManager.IsRefreshTokenSuspiciousAsync(userId, refreshTokenValue, _refreshOptions.RefreshConfidenceIntervalInMilliseconds);
-
-                if (isRefreshTokenStolen)
-                {
-                    throw new AuthenticationException(ErrorTypes.RefreshTokenIsSuspicious);
-                }
-
-                return await _signInManager.GenerateAuthTokens(user, clientFingerPrint);
+                return await GenerateAuthTokensWhenRefreshConfidenceIntervalIsEnabledAsync(user, refreshTokenValue, clientFingerPrint);
             }
 
             await _refreshTokenManager.InvalidateRefreshTokenAsync(user.Id, refreshTokenValue);
+            return await _signInManager.GenerateAuthTokens(user, clientFingerPrint);
+        }
+
+        private async Task<AuthResponseModel> GenerateAuthTokensWhenRefreshConfidenceIntervalIsEnabledAsync(TUser user, Guid refreshTokenValue, string clientFingerPrint)
+        {
+            var isTokenAlreadyInvalidated = await _refreshTokenManager.IsTokenAlreadyInvalidatedAsync(user.Id, refreshTokenValue);
+
+            if (!isTokenAlreadyInvalidated)
+            {
+                await _refreshTokenManager.InvalidateRefreshTokenAsync(user.Id, refreshTokenValue);
+                return await _signInManager.GenerateAuthTokens(user, clientFingerPrint);
+            }
+
+            var isRefreshTokenSuspicious = await _refreshTokenManager.IsRefreshTokenSuspiciousAsync(user.Id, refreshTokenValue, _refreshOptions.RefreshConfidenceIntervalInMilliseconds);
+
+            if (isRefreshTokenSuspicious)
+            {
+                throw new AuthenticationException(ErrorTypes.RefreshTokenIsSuspicious);
+            }
+
             return await _signInManager.GenerateAuthTokens(user, clientFingerPrint);
         }
     }
