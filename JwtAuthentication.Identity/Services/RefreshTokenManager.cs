@@ -66,11 +66,11 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             return token.User;
         }
 
-        public async Task<bool> IsTokenAlreadyInvalidatedAsync(TKey userId, Guid refreshTokenValue)
+        public async Task<bool> IsTokenActiveAsync(TKey userId, Guid refreshTokenValue)
         {
             var token = await GetRefreshTokenAsync(userId, refreshTokenValue);
 
-            return !token.IsActive;
+            return token.IsActive;
         }
 
         public async Task InvalidateRefreshTokenAsync(TKey userId, Guid refreshTokenValue)
@@ -90,11 +90,11 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<bool> IsRefreshTokenSuspiciousAsync(TKey userId, Guid refreshTokenValue, int refreshConfidenceIntervalInMilliseconds)
+        public async Task<bool> IsRefreshTokenInConfidenceIntervalAsync(TKey userId, Guid refreshTokenValue, int refreshConfidenceIntervalInMilliseconds)
         {
             var token = await GetRefreshTokenAsync(userId, refreshTokenValue);
 
-            return (DateTime.UtcNow - token.ExpiredAtUtc).TotalMilliseconds > refreshConfidenceIntervalInMilliseconds;
+            return (DateTime.UtcNow - token.ExpiredAtUtc).TotalMilliseconds <= refreshConfidenceIntervalInMilliseconds;
         }
 
         private async Task<RefreshToken<TUser, TKey>> GetRefreshTokenAsync(TKey userId, Guid refreshTokenValue)

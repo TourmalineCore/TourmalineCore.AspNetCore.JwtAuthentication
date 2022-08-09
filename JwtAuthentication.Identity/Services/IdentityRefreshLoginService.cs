@@ -87,22 +87,22 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 
         private async Task<AuthResponseModel> GenerateAuthTokensWhenRefreshConfidenceIntervalIsEnabledAsync(TUser user, Guid refreshTokenValue, string clientFingerPrint)
         {
-            var isTokenAlreadyInvalidated = await _refreshTokenManager.IsTokenAlreadyInvalidatedAsync(user.Id, refreshTokenValue);
+            var isTokenActive = await _refreshTokenManager.IsTokenActiveAsync(user.Id, refreshTokenValue);
 
-            if (!isTokenAlreadyInvalidated)
+            if (isTokenActive)
             {
                 await _refreshTokenManager.InvalidateRefreshTokenAsync(user.Id, refreshTokenValue);
                 return await _signInManager.GenerateAuthTokens(user, clientFingerPrint);
             }
 
-            var isRefreshTokenSuspicious = await _refreshTokenManager.IsRefreshTokenSuspiciousAsync(user.Id, refreshTokenValue, _refreshOptions.RefreshConfidenceIntervalInMilliseconds);
+            var refreshTokenIsInConfidenceInterval = await _refreshTokenManager.IsRefreshTokenInConfidenceIntervalAsync(user.Id, refreshTokenValue, _refreshOptions.RefreshConfidenceIntervalInMilliseconds);
 
-            if (isRefreshTokenSuspicious)
+            if (refreshTokenIsInConfidenceInterval)
             {
-                throw new AuthenticationException(ErrorTypes.RefreshTokenIsSuspicious);
+                return await _signInManager.GenerateAuthTokens(user, clientFingerPrint);
             }
 
-            return await _signInManager.GenerateAuthTokens(user, clientFingerPrint);
+            throw new AuthenticationException(ErrorTypes.RefreshTokenIsNotInConfidenceInterval);
         }
     }
 }

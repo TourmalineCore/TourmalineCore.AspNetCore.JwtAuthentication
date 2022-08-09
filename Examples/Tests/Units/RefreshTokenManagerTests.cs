@@ -14,8 +14,8 @@ public class RefreshTokenManagerTests
     private const int RefreshConfidenceIntervalInMilliseconds = 300_000;
 
     private readonly RefreshTokenManager<CustomUser, string> _refreshTokenManager;
-    private readonly Guid _guidForTokenWhichProbablyHasStolen = Guid.NewGuid();
-    private readonly Guid _guidForTokenWhichRecentlyExpired = Guid.NewGuid();
+    private readonly Guid _refreshTokenGuid1 = Guid.NewGuid();
+    private readonly Guid _refreshTokenGuid2 = Guid.NewGuid();
 
     public RefreshTokenManagerTests()
     {
@@ -25,19 +25,19 @@ public class RefreshTokenManagerTests
     }
 
     [Fact]
-    public async Task CheckTokenWithRefreshConfidenceInterval_TokenExpiredLongTimeAgo_ReturnTrue()
+    public async Task IsRefreshTokenInConfidenceInterval_TokenExpirationTimeIsInConfidenceInterval_ReturnTrue()
     {
-        var res = await _refreshTokenManager.IsRefreshTokenSuspiciousAsync("1", _guidForTokenWhichProbablyHasStolen, RefreshConfidenceIntervalInMilliseconds);
+        var refreshTokenIsInConfidenceInterval = await _refreshTokenManager.IsRefreshTokenInConfidenceIntervalAsync("1", _refreshTokenGuid1, RefreshConfidenceIntervalInMilliseconds);
 
-        Assert.True(res);
+        Assert.True(refreshTokenIsInConfidenceInterval);
     }
 
     [Fact]
-    public async Task CheckTokenWithRefreshConfidenceInterval_TokenExpiredRecently_ReturnFalse()
+    public async Task IsRefreshTokenInConfidenceInterval_TokenExpirationTimeIsNotInConfidenceInterval_ReturnFalse()
     {
-        var res = await _refreshTokenManager.IsRefreshTokenSuspiciousAsync("2", _guidForTokenWhichRecentlyExpired, RefreshConfidenceIntervalInMilliseconds);
+        var refreshTokenIsInConfidenceInterval = await _refreshTokenManager.IsRefreshTokenInConfidenceIntervalAsync("2", _refreshTokenGuid2, RefreshConfidenceIntervalInMilliseconds);
 
-        Assert.False(res);
+        Assert.False(refreshTokenIsInConfidenceInterval);
     }
 
     private Mock<TourmalineDbContext<CustomUser>> GetDbContextMock()
@@ -46,9 +46,9 @@ public class RefreshTokenManagerTests
         {
             new()
             {
-                ExpiredAtUtc = new DateTime(2021, 01, 01),
+                ExpiredAtUtc = DateTime.UtcNow,
                 ExpiresIn = DateTime.UtcNow + TimeSpan.FromDays(7),
-                Value = _guidForTokenWhichProbablyHasStolen,
+                Value = _refreshTokenGuid1,
                 UserId = "1",
                 User = new CustomUser
                 {
@@ -57,9 +57,9 @@ public class RefreshTokenManagerTests
             },
             new()
             {
-                ExpiredAtUtc = DateTime.UtcNow,
+                ExpiredAtUtc = new DateTime(2021, 01, 01),
                 ExpiresIn = DateTime.UtcNow + TimeSpan.FromDays(7),
-                Value = _guidForTokenWhichRecentlyExpired,
+                Value = _refreshTokenGuid2,
                 UserId = "2",
                 User = new CustomUser
                 {
