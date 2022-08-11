@@ -30,6 +30,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         where TUser : IdentityUser<TKey>
         where TKey : IEquatable<TKey>
     {
+        private const int DefaultRefreshConfidenceIntervalInMilliseconds = 60_000;
+
         private static IServiceCollection Services { get; set; }
 
         private static IdentityBuilder IdentityBuilder { get; set; }
@@ -76,8 +78,10 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         public TourmalineAuthenticationBuilder<TContext, TUser, TKey> AddBaseLogin(AuthenticationOptions authenticationOptions = null)
         {
             AddJwt(Services, authenticationOptions);
+
             IdentityBuilder.AddSignInManager<SignInManager<TUser>>();
 
+            Services.AddSingleton(new RefreshOptions());
             Services.AddTransient<ITokenManager, TokenManager>();
             Services.AddTransient<ILoginService, IdentityLoginService<TUser, TKey>>();
             Services.AddTransient<IUserClaimsProvider, DefaultUserClaimsProvider>();
@@ -119,11 +123,14 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             Services.AddSingleton(authenticationOptions);
 
             TourmalineContextConfiguration.UseRefresh = true;
+            TourmalineContextConfiguration.UseRefreshConfidenceInterval = false;
+
             AddJwt(Services, authenticationOptions);
             IdentityBuilder.AddSignInManager<RefreshSignInManager<TUser, TKey>>();
 
+            Services.AddSingleton(new RefreshOptions());
             Services.AddTransient<ITokenManager, TokenManager>();
-            Services.AddTransient<IRefreshTokenManager, RefreshTokenManager<TUser, TKey>>();
+            Services.AddTransient<IRefreshTokenManager<TUser, TKey>, RefreshTokenManager<TUser, TKey>>();
             Services.AddTransient<ILoginService, IdentityRefreshLoginService<TUser, TKey>>();
             Services.AddTransient<IRefreshService, IdentityRefreshLoginService<TUser, TKey>>();
             Services.AddTransient<IUserClaimsProvider, DefaultUserClaimsProvider>();
@@ -168,7 +175,28 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         /// <returns></returns>
         public TourmalineAuthenticationBuilder<TContext, TUser, TKey> AddLogout()
         {
+            Services.AddTransient<IRefreshTokenManager<TUser, TKey>, RefreshTokenManager<TUser, TKey>>();
             Services.AddTransient<ILogoutService, IdentityLogoutService<TUser, TKey>>();
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the ability to correctly handle refresh requests with potentially expired tokens if the interval between the current time and the token expiration time is less than the confidence interval
+        /// </summary>
+        /// <param name="milliseconds">
+        /// The time in milliseconds at which we can trust the refresh token.
+        /// The default value is 60 000 milliseconds - you can be sure that multiple requests will be handled correctly, and it is not large enough to constantly use expired tokens.
+        /// </param>
+        /// <returns></returns>
+        public TourmalineAuthenticationBuilder<TContext, TUser, TKey> AddRefreshConfidenceInterval(int milliseconds = DefaultRefreshConfidenceIntervalInMilliseconds)
+        {
+            TourmalineContextConfiguration.UseRefreshConfidenceInterval = true;
+
+            Services.AddSingleton(new RefreshOptions
+            {
+                RefreshConfidenceIntervalInMilliseconds = milliseconds,
+            });
+
             return this;
         }
 

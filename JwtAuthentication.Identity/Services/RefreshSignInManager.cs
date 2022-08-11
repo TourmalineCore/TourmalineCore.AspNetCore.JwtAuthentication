@@ -1,19 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
-using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Models;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 {
@@ -26,27 +21,26 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
                                     ILogger<SignInManager<TUser>> logger,
                                     IAuthenticationSchemeProvider schemes,
                                     IUserConfirmation<TUser> confirmation,
-                                    IRefreshTokenManager refreshTokenManager,
-                                    ITokenManager accessTokenManager,
-                                    TourmalineDbContext<TUser, string> dbContext)
+                                    IRefreshTokenManager<TUser, string> refreshTokenManager,
+                                    ITokenManager accessTokenManager)
             : base(userManager, contextAccessor, claimsFactory,
                     optionsAccessor,
                     logger,
                     schemes,
                     confirmation,
                     refreshTokenManager,
-                    accessTokenManager,
-                    dbContext
+                    accessTokenManager
                 )
         {
         }
     }
 
-    internal class RefreshSignInManager<TUser, TKey> : SignInManager<TUser> where TUser : IdentityUser<TKey> where TKey : IEquatable<TKey>
+    internal class RefreshSignInManager<TUser, TKey> : SignInManager<TUser> 
+        where TUser : IdentityUser<TKey> 
+        where TKey : IEquatable<TKey>
     {
-        private readonly IRefreshTokenManager _refreshTokenManager;
+        private readonly IRefreshTokenManager<TUser, TKey> _refreshTokenManager;
         private readonly ITokenManager _accessTokenManager;
-        private readonly TourmalineDbContext<TUser, TKey> _dbContext;
 
         public RefreshSignInManager(
             UserManager<TUser> userManager,
@@ -56,9 +50,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             ILogger<SignInManager<TUser>> logger,
             IAuthenticationSchemeProvider schemes,
             IUserConfirmation<TUser> confirmation,
-            IRefreshTokenManager refreshTokenManager,
-            ITokenManager accessTokenManager,
-            TourmalineDbContext<TUser, TKey> dbContext)
+            IRefreshTokenManager<TUser, TKey> refreshTokenManager,
+            ITokenManager accessTokenManager)
             : base(userManager,
                     contextAccessor,
                     claimsFactory,
@@ -68,50 +61,22 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
                     confirmation
                 )
         {
-            _refreshTokenManager = refreshTokenManager;
             _accessTokenManager = accessTokenManager;
-            _dbContext = dbContext;
+            _refreshTokenManager = refreshTokenManager;
         }
 
-        public async Task<AuthResponseModel> GenerateAuthTokens(TUser appUser, string fingerPrint)
+        public async Task<AuthResponseModel> GenerateAuthTokens(TUser appUser, string clientFingerPrint)
         {
             return new AuthResponseModel
             {
-                AccessToken = await GetBearerToken(appUser),
-                RefreshToken = await _refreshTokenManager.GetRefreshToken(appUser, fingerPrint),
+                AccessToken = await _accessTokenManager.GetAccessToken(appUser.NormalizedUserName),
+                RefreshToken = await _refreshTokenManager.GenerateRefreshTokenAsync(appUser, clientFingerPrint),
             };
-        }
-
-        public async Task<TUser> InvalidateRefreshTokenForUser(Guid refreshTokenValue, string fingerPrint = null)
-        {
-            var token = await _dbContext
-                .Set<RefreshToken<TUser, TKey>>()
-                .AsQueryable()
-                .Include(x => x.User)
-                .Where(x => x.IsActive)
-                .Where(x => x.ExpiresIn > DateTime.UtcNow)
-                .Where(x => fingerPrint == null || x.ClientFingerPrint == fingerPrint)
-                .FirstOrDefaultAsync(x => x.Value == refreshTokenValue);
-
-            if (token == null)
-            {
-                throw new AuthenticationException(ErrorTypes.RefreshTokenOrFingerprintNotFound);
-            }
-
-            token.IsActive = false;
-            await _dbContext.SaveChangesAsync();
-
-            return token.User;
         }
 
         public override Task SignInWithClaimsAsync(TUser user, AuthenticationProperties authenticationProperties, IEnumerable<Claim> additionalClaims)
         {
             return Task.CompletedTask;
-        }
-
-        private async Task<TokenModel> GetBearerToken(TUser appUser)
-        {
-            return await _accessTokenManager.GetAccessToken(appUser.NormalizedUserName);
         }
     }
 }

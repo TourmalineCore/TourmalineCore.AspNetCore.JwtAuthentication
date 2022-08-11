@@ -11,5 +11,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling
         UserNotFound,
         ReCaptchaTokenIncorrect,
         RefreshTokenOrFingerprintNotFound,
+        RefreshTokenIsNotInConfidenceInterval,
     }
 }
