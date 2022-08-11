@@ -7,8 +7,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Models
     {
     }
 
-    public class RefreshToken<TUser, TKey> 
-        where TUser : IdentityUser<TKey> 
+    public class RefreshToken<TUser, TKey>
+        where TUser : IdentityUser<TKey>
         where TKey : IEquatable<TKey>
     {
         public long Id { get; set; }
@@ -24,5 +24,13 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Models
         public TKey UserId { get; set; }
 
         public TUser User { get; set; }
+
+        public DateTime ExpiredAtUtc { get; set; }
+
+        public void Expire()
+        {
+            IsActive = false;
+            ExpiredAtUtc = DateTime.UtcNow;
+        }
     }
 }

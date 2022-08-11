@@ -35,6 +35,7 @@ dotnet add package TourmalineCore.AspNetCore.JwtAuthentication.Identity
   * [Refresh Token Request](#refresh-token-request)
   * [Refresh Token Options](#refresh-token-options)
   * [Refresh Routing](#refresh-routing)
+  * [Refresh Confidence Interval](#refresh-confidence-interval)
 - [Logout](#logout)
   * [Logout request](#logout-request)
 - [Authorization](#authorization)
@@ -355,6 +356,98 @@ app
         RefreshEndpointRoute = "/test/refresh",
     });
 ...
+```
+
+## Refresh Confidence Interval
+
+Sometimes there may be situations when you send the same refresh requests which causes an unexpected user logout.  
+This usually happens in the following cases:
+1) You have opened several new tabs of your application almost at the same time
+2) You worked in your application in different tabs and updated them almost at the same time
+
+For example, you are working in your browser application, click on several links on a page that open other pages of the application in new tabs.  
+There may be a situation when you send the same refresh requests. What will happen in this case:
+
+1) The authentication package will receive a first refresh request, will expire refresh token and send a new pair of tokens
+2) The authentication package will receive a second refresh request, but this refresh token is already expired and you will receive an error message
+
+```mermaid
+sequenceDiagram
+    participant Client as Client app
+    participant Auth as Backend app with our JWT package
+    Client->>Auth: POST auth/refresh {refreshTokenValue: "eea079d2-89e1-4cc6-a82c-31ac37d7996d" }
+    note right of Auth: Expire refresh token "eea079d2-89e1-4cc6-a82c-31ac37d7996d"
+    Auth-->>Client: Response 200 OK {"accessToken" : "eyJhbGciO...", "refreshToken": "e3508352-ce99..." }
+    rect rgb(240,128,128)
+    Client->>Auth: POST auth/refresh {refreshTokenValue: "eea079d2-89e1-4cc6-a82c-31ac37d7996d" }
+    note right of Auth: Token already expired!
+    Auth-->>Client: Response 401 Unauthorized
+    end
+```
+
+Yes, you can try to solve this problem on the client side. However, what if you can't do this or do not want to complicate the frontend?  
+So how can the refresh confidence interval can help us?
+
+The refresh confidence interval will allow you to correctly process refresh requests with potentially expired tokens if the interval between the current time and the token expiration time is less than the confidence interval time. 
+
+So in this case the requests processing will look like this:
+1) The authentication package will receive a first refresh request, will expire refresh token and send a new pair of tokens
+2) The authentication package will receive a second refresh request.  
+If the token is already expired, we look at a refresh confidence interval.  
+We find the difference between the current application time and the token expiration time.  
+If this difference is greater than the confidence interval, you will receive an error message, if not, then we send a new pair of tokens.
+
+```mermaid
+sequenceDiagram
+    participant Client as Client app
+    participant Auth as Backend app with our JWT package
+    Client->>Auth: POST auth/refresh {refreshTokenValue: "eea079d2-89e1-4cc6-a82c-31ac37d7996d" }
+    note right of Auth: Expire refresh token "eea079d2-89e1-4cc6-a82c-31ac37d7996d"
+    Auth-->>Client: Response 200 OK {"accessToken" : "eyJhbGciO...", "refreshToken": "e3508352-ce99..." }
+    Client->>Auth: POST auth/refresh {refreshTokenValue: "eea079d2-89e1-4cc6-a82c-31ac37d7996d" }
+    note right of Auth: 1. Token already expired but refresh confidence interval is enabled!
+    note right of Auth: 2. Find the difference between the current backend application time and the token expiration time
+    alt difference < refresh confidence interval
+        rect rgb(0,128,0)
+        Auth-->>Client: Response 200 OK {"accessToken" : "eyJhbGciO...", "refreshToken": "c86b65f9-6381..." }
+        end
+    else difference > refresh confidence interval
+        rect rgb(240,128,128)
+        Auth-->>Client: Response 401 Unauthorized
+        end
+    end
+```
+
+Usage examples:
+
+You can set refresh confidence interval directly (in milliseconds)
+```csharp
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
+
+var builder = WebApplication.CreateBuilder(args);
+var refreshAuthenticationOptions = configuration.GetSection(nameof(AuthenticationOptions)).Get<RefreshAuthenticationOptions>();
+const int refreshConfidenceIntervalInMilliseconds = 300_000;
+
+builder.Services
+    .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
+    .AddLoginWithRefresh(refreshAuthenticationOptions)
+    .AddRefreshConfidenceInterval(refreshConfidenceIntervalInMilliseconds);
+```
+
+You can also choose not to set a refresh confidence interval.  
+In this case, the refresh confidence interval will be set to 60,000 milliseconds.  
+With this value you can be sure that multiple requests will be handled correctly and it is not large enough to constantly use expired tokens.
+
+```csharp
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
+
+var builder = WebApplication.CreateBuilder(args);
+var refreshAuthenticationOptions = configuration.GetSection(nameof(AuthenticationOptions)).Get<RefreshAuthenticationOptions>();
+
+builder.Services
+    .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
+    .AddLoginWithRefresh(refreshAuthenticationOptions)
+    .AddRefreshConfidenceInterval();
 ```
 
 # Logout

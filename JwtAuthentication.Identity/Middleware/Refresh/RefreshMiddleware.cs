@@ -55,7 +55,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Refres
                 };
 
                 await _onRefreshExecuting(contractRefreshModel);
-                result = await service.RefreshAsync(requestModel);
+                result = await service.RefreshAsync(contractRefreshModel.RefreshTokenValue, contractRefreshModel.ClientFingerPrint);
                 await _onRefreshExecuted(contractRefreshModel);
             }
             catch (AuthenticationException ex)

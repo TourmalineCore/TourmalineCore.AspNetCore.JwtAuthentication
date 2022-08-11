@@ -1,12 +1,14 @@
-using Example.NetCore6._0.AuthenticationUsingGenericIdentityUser.Models;
+using Example.NetCore5._0.RefreshTokenWithConfidenceInterval.Models;
 using Microsoft.EntityFrameworkCore;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 
-namespace Example.NetCore6._0.AuthenticationUsingGenericIdentityUser.Data;
-    public class AppDbContext : TourmalineDbContext<CustomUser, long>
+namespace Example.NetCore5._0.RefreshTokenWithConfidenceInterval.Data
+{
+    public class AppDbContext : TourmalineDbContext<CustomUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
         }
     }
+}
