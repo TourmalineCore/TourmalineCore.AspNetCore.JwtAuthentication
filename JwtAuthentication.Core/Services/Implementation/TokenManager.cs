@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Runtime.CompilerServices;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
@@ -25,9 +27,12 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementati
             _userClaimsProvider = userClaimsProvider;
         }
 
-        public async Task<TokenModel> GetAccessToken(string login)
+        public async Task<TokenModel> GenerateAccessTokenAsync(string login = null)
         {
-            var claims = await _userClaimsProvider.GetUserClaimsAsync(login);
+            var claims = login == null
+                ? new List<Claim>()
+                : await _userClaimsProvider.GetUserClaimsAsync(login);
+
             var privateKey = SigningHelper.GetPrivateKey(_options.PrivateSigningKey);
             var credentials = new SigningCredentials(privateKey, SecurityAlgorithms.RsaSha256);
             var expires = DateTime.UtcNow.AddMinutes(_options.AccessTokenExpireInMinutes);

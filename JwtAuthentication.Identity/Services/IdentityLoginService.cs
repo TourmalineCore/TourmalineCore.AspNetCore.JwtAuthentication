@@ -47,7 +47,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
                 throw new AuthenticationException(ErrorTypes.IncorrectLoginOrPassword);
             }
 
-            var token = await _tokenManager.GetAccessToken(
+            var token = await _tokenManager.GenerateAccessTokenAsync(
                     model.Login
                 );
 
