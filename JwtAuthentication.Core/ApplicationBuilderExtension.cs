@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Builder;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Login;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Login.Models;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Refresh;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Refresh.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
@@ -75,6 +77,20 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
                 .GetInstance()
                 .SetAppBuilder(applicationBuilder)
                 .OnLoginExecuted(callback);
+        }
+
+        /// <summary>
+        /// Adds middleware to handle incoming login and token refresh requests.
+        /// </summary>
+        /// <param name="applicationBuilder"></param>
+        /// <param name="endpointOptions"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseRefreshTokenMiddleware(this IApplicationBuilder applicationBuilder, RefreshEndpointOptions endpointOptions = null)
+        {
+            Func<RefreshModel, Task> defaultOnRefreshCallback = s => Task.CompletedTask;
+
+            return applicationBuilder
+                .UseMiddleware<RefreshMiddleware>(endpointOptions ?? new RefreshEndpointOptions(), defaultOnRefreshCallback, defaultOnRefreshCallback);
         }
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract.Implementation;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Filters;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementation;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Signing;
@@ -80,6 +81,19 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
             RequiresPermission.ClaimType = permissionClaimTypeKey;
 
             return services.AddTransient(typeof(IUserClaimsProvider), typeof(TUserClaimsProvider));
+        }
+
+        public static IServiceCollection AddLoginWithRefresh(
+            this IServiceCollection services,
+            RefreshTokenOptions refreshTokenOptions = null)
+        {
+            services.AddSingleton(refreshTokenOptions ?? new RefreshTokenOptions());
+
+            services.AddTransient<ILoginService, LoginWithRefreshService>();
+            services.AddTransient<IJwtTokenValidator, JwtTokenValidator>();
+            services.AddTransient<ICoreRefreshService, RefreshService>();
+
+            return services;
         }
 
         internal static void AddJwtBearer(

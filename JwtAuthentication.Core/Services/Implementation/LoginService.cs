@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
 
@@ -22,7 +21,17 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementati
             _userCredentialsValidator = userCredentialsValidator;
         }
 
-        public async Task<AuthResponseModel> LoginAsync(LoginRequestModel model)
+        public virtual async Task<AuthResponseModel> LoginAsync(LoginRequestModel model)
+        {
+            await ValidateCredentials(model);
+
+            return new AuthResponseModel
+            {
+                AccessToken = await _tokenManager.GenerateAccessTokenAsync(model.Login)
+            };
+        }
+
+        protected virtual async Task ValidateCredentials(LoginRequestModel model)
         {
             var isUserCredentialsValid = await _userCredentialsValidator.ValidateUserCredentials(model.Login, model.Password);
 
@@ -30,17 +39,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementati
             {
                 throw new AuthenticationException(ErrorTypes.IncorrectLoginOrPassword);
             }
-
-            var token = await _tokenManager.GenerateAccessTokenAsync(model.Login);
-
-            return new AuthResponseModel
-            {
-                AccessToken = new TokenModel
-                {
-                    Value = token.Value,
-                    ExpiresInUtc = token.ExpiresInUtc,
-                },
-            };
         }
     }
 }
