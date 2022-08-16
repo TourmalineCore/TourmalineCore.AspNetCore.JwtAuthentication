@@ -5,7 +5,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract
         public const string Refresh = "refresh";
         public const string Access = "access";
 
-        public static bool IsTokenType(string value)
+        public static bool IsAvailableTokenType(string value)
         {
             return value == Refresh || value == Access;
         }

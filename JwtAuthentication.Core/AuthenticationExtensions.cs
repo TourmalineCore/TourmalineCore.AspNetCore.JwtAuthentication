@@ -48,6 +48,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
             services.AddTransient<ILoginService, LoginService>();
             services.AddTransient<IUserCredentialsValidator, FakeUserCredentialValidator>();
             services.AddTransient<IUserClaimsProvider, DefaultUserClaimsProvider>();
+            services.AddTransient<IJwtTokenCreator, JwtTokenCreator>();
 
             services.AddJwtBearer(authenticationOptions);
 
