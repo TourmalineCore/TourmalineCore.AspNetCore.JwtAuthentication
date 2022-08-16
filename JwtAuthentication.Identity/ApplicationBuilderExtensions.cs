@@ -92,19 +92,19 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
                 .UseAuthorization();
         }
 
-        /// <summary>
-        /// Adds middleware to handle incoming login and token refresh requests.
-        /// </summary>
-        /// <param name="applicationBuilder"></param>
-        /// <param name="endpointOptions"></param>
-        /// <returns></returns>
-        public static IApplicationBuilder UseRefreshTokenMiddleware(this IApplicationBuilder applicationBuilder, RefreshEndpointOptions endpointOptions = null)
-        {
-            Func<RefreshModel, Task> defaultOnRefreshCallback = s => Task.CompletedTask;
+        ///// <summary>
+        ///// Adds middleware to handle incoming login and token refresh requests.
+        ///// </summary>
+        ///// <param name="applicationBuilder"></param>
+        ///// <param name="endpointOptions"></param>
+        ///// <returns></returns>
+        //public static IApplicationBuilder UseRefreshTokenMiddleware(this IApplicationBuilder applicationBuilder, RefreshEndpointOptions endpointOptions = null)
+        //{
+        //    Func<RefreshModel, Task> defaultOnRefreshCallback = s => Task.CompletedTask;
 
-            return applicationBuilder
-                .UseMiddleware<RefreshMiddleware>(endpointOptions ?? new RefreshEndpointOptions(), defaultOnRefreshCallback, defaultOnRefreshCallback);
-        }
+        //    return applicationBuilder
+        //        .UseMiddleware<RefreshMiddleware>(endpointOptions ?? new RefreshEndpointOptions(), defaultOnRefreshCallback, defaultOnRefreshCallback);
+        //}
 
         /// <summary>
         /// Adds middleware to handle incoming user registration requests. It requires a function to map model received from client
