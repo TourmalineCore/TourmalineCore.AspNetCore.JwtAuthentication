@@ -5,9 +5,9 @@ using System.Security.Claims;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract
 {
-    internal interface IJwtTokenCreator
+    internal interface IJwtTokenGenerator
     {
-        string Create(
+        string Generate(
             string issuer, 
             string audience, 
             List<Claim> claims, 

@@ -6,9 +6,9 @@ using System.Security.Claims;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract
 {
-    public class JwtTokenCreator : IJwtTokenCreator
+    public class JwtTokenGenerator : IJwtTokenGenerator
     {
-        public string Create(string issuer, string audience, List<Claim> claims, DateTime expires, SigningCredentials credentials, string tokenType)
+        public string Generate(string issuer, string audience, List<Claim> claims, DateTime expires, SigningCredentials credentials, string tokenType)
         {
             if (!TokenType.IsTokenType(tokenType))
             {
