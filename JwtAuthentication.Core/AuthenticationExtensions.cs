@@ -92,6 +92,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
 
             services.AddTransient<ILoginService, LoginWithRefreshService>();
             services.AddTransient<IJwtTokenValidator, JwtTokenValidator>();
+            services.AddTransient<ICoreRefreshTokenManager, CoreRefreshTokenManager>();
             services.AddTransient<ICoreRefreshService, RefreshService>();
 
             return services;

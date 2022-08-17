@@ -5,6 +5,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services
 {
     internal interface ICoreRefreshTokenManager
     {
-        Task<TokenModel> GenerateRefreshTokenAsync(string login = null);
+        Task<TokenModel> GenerateRefreshTokenAsync();
     }
 }
