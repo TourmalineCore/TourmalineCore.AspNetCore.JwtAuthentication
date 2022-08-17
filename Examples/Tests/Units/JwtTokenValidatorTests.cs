@@ -23,16 +23,16 @@ public class JwtTokenValidatorTests
     }
 
     [Fact]
-    public void ValidateJwtToken_TokenIsValid_NoExceptions()
+    public async Task ValidateJwtToken_TokenIsValid_NoExceptions()
     {
-        var exception = Record.Exception(() => _jwtTokenValidator.Validate(ValidJwtToken));
+        var exception = await Record.ExceptionAsync(() => _jwtTokenValidator.ValidateTokenAsync(ValidJwtToken));
         Assert.Null(exception);
     }
 
     [Fact]
-    public void ValidateJwtToken_TokenIsInvalid_CatchExceptions()
+    public async Task ValidateJwtToken_TokenIsInvalid_CatchExceptions()
     {
-        var exception = Record.Exception(() => _jwtTokenValidator.Validate(InvalidJwtToken));
+        var exception = await Record.ExceptionAsync(() => _jwtTokenValidator.ValidateTokenAsync(InvalidJwtToken));
         Assert.NotNull(exception);
     }
 }
