@@ -33,10 +33,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementati
                 ? new List<Claim>()
                 : await _userClaimsProvider.GetUserClaimsAsync(login);
 
-            return await _jwtTokenCreator.CreateAsync(
-                TokenType.Access, 
-                claims,
-                DateTime.UtcNow.AddMinutes(_options.AccessTokenExpireInMinutes));
+            return await _jwtTokenCreator.CreateAsync(TokenType.Access, _options.AccessTokenExpireInMinutes, claims);
         }
     }
 }

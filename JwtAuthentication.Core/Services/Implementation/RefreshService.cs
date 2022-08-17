@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
@@ -30,9 +28,9 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementati
             try
             {
                 await _jwtTokenValidator.ValidateTokenAsync(tokenValue);
-                await _jwtTokenValidator.ValidateTokenTypeAsync(tokenValue, TokenType.Refresh);               
+                await _jwtTokenValidator.ValidateTokenTypeAsync(tokenValue, TokenType.Refresh);
 
-                return await _jwtTokenCreator.CreateAsync(TokenType.Refresh, new List<Claim>(), DateTime.UtcNow.AddMinutes(_refreshTokenOptions.RefreshTokenExpireInMinutes));
+                return await _jwtTokenCreator.CreateAsync(TokenType.Refresh, _refreshTokenOptions.RefreshTokenExpireInMinutes);
             } 
             catch (Exception)
             {

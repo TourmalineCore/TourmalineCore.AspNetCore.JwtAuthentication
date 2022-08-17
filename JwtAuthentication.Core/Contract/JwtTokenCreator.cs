@@ -19,14 +19,26 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract
             _authenticationOptions = authenticationOptions;
         }
 
-        public async Task<TokenModel> CreateAsync(string tokenType, List<Claim> claims, DateTime tokenExpiresIn)
+        public async Task<TokenModel> CreateAsync(string tokenType, int tokenLifetimeInMinutes, List<Claim> claims = null)
         {
             if (!TokenType.IsAvailableTokenType(tokenType))
             {
                 throw new ArgumentException("Invalid token type value");
             }
 
+            if (tokenLifetimeInMinutes <= 0)
+            {
+                throw new ArgumentException("Token lifetime cannot be negative or zero");
+            }
+
+            if (claims == null)
+            {
+                claims = new List<Claim>();
+            }
+
             AddTokenTypeClaim(claims, tokenType);
+
+            var tokenExpiresIn = DateTime.UtcNow.AddMinutes(tokenLifetimeInMinutes);
 
             var token = new JwtSecurityToken(
                 _authenticationOptions.Issuer,
@@ -35,11 +47,9 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract
                 expires: tokenExpiresIn,
                 signingCredentials: GetCredentials());
 
-            var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
-
             return await Task.FromResult(new TokenModel
             {
-                Value = tokenValue,
+                Value = new JwtSecurityTokenHandler().WriteToken(token),
                 ExpiresInUtc = tokenExpiresIn.ToUniversalTime(),
             });
         }
