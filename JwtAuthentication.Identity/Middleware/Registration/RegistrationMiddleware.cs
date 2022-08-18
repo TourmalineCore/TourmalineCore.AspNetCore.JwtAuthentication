@@ -83,6 +83,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Regist
             {
                 context.Response.StatusCode = StatusCodes.Status409Conflict;
                 _logger.LogError(ex.ToString());
+                throw new Exception(ex.Message);
             }
 
             return result;

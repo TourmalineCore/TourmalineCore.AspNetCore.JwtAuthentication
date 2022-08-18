@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -55,28 +56,41 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
 
         protected async Task InvokeAsyncBase(HttpContext context, TService service, string endpointRoute)
         {
-            if (context.Request.Method == HttpMethods.Post)
+            try
             {
-                var endpoint = context.Request.Path.Value;
-
-                if (endpoint.EndsWith(endpointRoute))
+                if (context.Request.Method == HttpMethods.Post)
                 {
-                    var requestModel = await DeserializeModel<TRequestModel>(context.Request);
+                    var endpoint = context.Request.Path.Value;
 
-                    var result = await ExecuteServiceMethod(requestModel, service, context);
-
-                    if (result != null)
+                    if (endpoint.EndsWith(endpointRoute))
                     {
-                        await Response(context, result);
-                        return;
+                        var requestModel = await DeserializeModel<TRequestModel>(context.Request);
+
+                        var result = await ExecuteServiceMethod(requestModel, service, context);
+
+                        if (result != null)
+                        {
+                            await Response(context, result);
+                            return;
+                        }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                var errorModelExample = new
+                {
+                    ErrorMessage = ex.Message,
+                };
+
+                await Response(context, errorModelExample);
+                return;
+            }            
 
             await _next(context);
         }
 
-        private async Task Response(HttpContext context, TResponseModel result)
+        private async Task Response<T>(HttpContext context, T result)
         {
             context.Response.ContentType = "application/json; charset=UTF-8";
 #if NETCOREAPP3_0 || NETCOREAPP3_1

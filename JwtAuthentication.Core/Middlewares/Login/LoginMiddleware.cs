@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Login.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
@@ -50,9 +49,10 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Login
                 result = await service.LoginAsync(requestModel);
                 await _onLoginExecuted(contractLoginModel);
             }
-            catch (AuthenticationException)
+            catch (Exception ex)
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                throw new Exception(ex.Message);
             }
 
             return result;

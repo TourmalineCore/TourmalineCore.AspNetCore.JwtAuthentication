@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
@@ -51,9 +52,10 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
                         );
                 }
             }
-            catch (AuthenticationException)
+            catch (Exception ex)
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                throw new Exception(ex.Message);
             }
 
             return new AuthResponseModel();

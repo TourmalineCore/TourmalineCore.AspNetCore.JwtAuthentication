@@ -15,7 +15,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Validators
         {
             if (model == null || model.RefreshTokenValue == default)
             {
-                throw new AuthenticationException(ErrorTypes.RefreshTokenOrFingerprintNotFound);
+                throw new RefreshTokenOrFingerprintNotFoundException();
             }
         }
     }

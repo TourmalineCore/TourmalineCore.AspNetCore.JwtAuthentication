@@ -140,7 +140,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
         {
             if (token == null)
             {
-                throw new AuthenticationException(ErrorTypes.RefreshTokenNotFound);
+                throw new RefreshTokenNotFoundException();
             }
         }
     }

@@ -58,7 +58,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Refres
                 result = await service.RefreshAsync(contractRefreshModel.RefreshTokenValue, contractRefreshModel.ClientFingerPrint);
                 await _onRefreshExecuted(contractRefreshModel);
             }
-            catch (AuthenticationException ex)
+            catch (Exception ex)
             {
                 context.Response.StatusCode = StatusCodes.Status409Conflict;
                 _logger.LogError(ex.ToString());

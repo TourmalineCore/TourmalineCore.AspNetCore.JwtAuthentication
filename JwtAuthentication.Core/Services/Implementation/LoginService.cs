@@ -37,7 +37,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementati
 
             if (!isUserCredentialsValid)
             {
-                throw new AuthenticationException(ErrorTypes.IncorrectLoginOrPassword);
+                throw new IncorrectLoginOrPasswordException();
             }
         }
     }

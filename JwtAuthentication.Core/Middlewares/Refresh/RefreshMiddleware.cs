@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Refresh.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
@@ -56,10 +55,11 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Refresh
                 result = await service.RefreshAsync(contractRefreshModel.RefreshTokenValue);
                 await _onRefreshExecuted(contractRefreshModel);
             }
-            catch (AuthenticationException ex)
+            catch (Exception ex)
             {
                 context.Response.StatusCode = StatusCodes.Status409Conflict;
                 _logger.LogError(ex.ToString());
+                throw new Exception(ex.Message);      
             }
 
             return result;

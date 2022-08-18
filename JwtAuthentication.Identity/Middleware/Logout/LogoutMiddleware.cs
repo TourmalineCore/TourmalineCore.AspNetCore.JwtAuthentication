@@ -1,5 +1,4 @@
 using System;
-using System.Security.Authentication;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -55,7 +54,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Logout
                 await service.LogoutAsync(requestModel);
                 await _onLogoutExecuted(contractLogoutModel);
             }
-            catch (AuthenticationException ex)
+            catch (Exception ex)
             {
                 context.Response.StatusCode = StatusCodes.Status409Conflict;
                 _logger.LogError(ex.ToString());

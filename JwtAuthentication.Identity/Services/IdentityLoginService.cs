@@ -37,14 +37,14 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 
             if (user is null)
             {
-                throw new AuthenticationException(ErrorTypes.IncorrectLoginOrPassword);
+                throw new IncorrectLoginOrPasswordException();
             }
 
             var passwordIsCorrect = await _signInManager.UserManager.CheckPasswordAsync(user, model.Password);
 
             if (passwordIsCorrect == false)
             {
-                throw new AuthenticationException(ErrorTypes.IncorrectLoginOrPassword);
+                throw new IncorrectLoginOrPasswordException();
             }
 
             var token = await _tokenManager.GenerateAccessTokenAsync(

@@ -34,7 +34,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementati
             } 
             catch (Exception)
             {
-                throw new AuthenticationException(ErrorTypes.InvalidJwtToken);
+                throw new InvalidJwtTokenException();
             }
         }
     }

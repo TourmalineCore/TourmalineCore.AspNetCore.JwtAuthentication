@@ -59,7 +59,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 
             if (signInResult == false)
             {
-                throw new AuthenticationException(ErrorTypes.IncorrectLoginOrPassword);
+                throw new IncorrectLoginOrPasswordException();
             }
 
             var user = await _signInManager.UserManager.FindByNameAsync(model.Login);
@@ -102,7 +102,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
                 return await _signInManager.GenerateAuthTokens(user, clientFingerPrint);
             }
 
-            throw new AuthenticationException(ErrorTypes.RefreshTokenIsNotInConfidenceInterval);
+            throw new RefreshTokenIsNotInConfidenceIntervalException();
         }
     }
 }
