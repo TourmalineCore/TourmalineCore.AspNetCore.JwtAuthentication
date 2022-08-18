@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Refresh.Models;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Middlewares.Refresh.Models;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Options;
 
-namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Refresh
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.Middlewares.Refresh
 {
     public interface IRefreshMiddlewareBuilder
     {

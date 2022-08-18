@@ -60,7 +60,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore6.0.RefreshT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore5.0.RefreshTokenWithConfidenceInterval", "Examples\Example.NetCore5.0.RefreshTokenWithConfidenceInterval\Example.NetCore5.0.RefreshTokenWithConfidenceInterval.csproj", "{F0E28B79-7957-444F-B437-D2EEC072A6DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore3.1.AuthenticationWithRefreshToken", "Examples\Example.NetCore3.1.AuthenticationWithRefreshToken\Example.NetCore3.1.AuthenticationWithRefreshToken.csproj", "{63E8464D-8489-4423-ADCD-1107DC5D9336}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore3.1.AuthenticationWithRefreshToken", "Examples\Example.NetCore3.1.AuthenticationWithRefreshToken\Example.NetCore3.1.AuthenticationWithRefreshToken.csproj", "{63E8464D-8489-4423-ADCD-1107DC5D9336}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JwtAuthentication.Shared", "JwtAuthentication.Shared\JwtAuthentication.Shared.csproj", "{E1952561-A7CD-45C3-B9D0-AC9B92A194CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -160,6 +162,10 @@ Global
 		{63E8464D-8489-4423-ADCD-1107DC5D9336}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63E8464D-8489-4423-ADCD-1107DC5D9336}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63E8464D-8489-4423-ADCD-1107DC5D9336}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1952561-A7CD-45C3-B9D0-AC9B92A194CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1952561-A7CD-45C3-B9D0-AC9B92A194CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1952561-A7CD-45C3-B9D0-AC9B92A194CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1952561-A7CD-45C3-B9D0-AC9B92A194CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

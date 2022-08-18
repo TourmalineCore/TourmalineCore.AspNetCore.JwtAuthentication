@@ -92,5 +92,33 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
             return applicationBuilder
                 .UseMiddleware<RefreshMiddleware>(endpointOptions ?? new RefreshEndpointOptions(), defaultOnRefreshCallback, defaultOnRefreshCallback);
         }
+
+        /// <summary>
+        /// Registering a callback function to perform actions when  when the refresh starts.
+        /// </summary>
+        /// <param name="applicationBuilder"></param>
+        /// <param name="callback"></param>
+        /// <returns></returns>
+        public static IRefreshMiddlewareBuilder OnRefreshExecuting(this IApplicationBuilder applicationBuilder, Func<RefreshModel, Task> callback)
+        {
+            return RefreshMiddlewareBuilder
+                .GetInstance()
+                .SetAppBuilder(applicationBuilder)
+                .OnRefreshExecuting(callback);
+        }
+
+        /// <summary>
+        /// Registering a callback function to perform actions when the refresh ends.
+        /// </summary>
+        /// <param name="applicationBuilder"></param>
+        /// <param name="callback"></param>
+        /// <returns></returns>
+        public static IRefreshMiddlewareBuilder OnRefreshExecuted(this IApplicationBuilder applicationBuilder, Func<RefreshModel, Task> callback)
+        {
+            return RefreshMiddlewareBuilder
+                .GetInstance()
+                .SetAppBuilder(applicationBuilder)
+                .OnRefreshExecuted(callback);
+        }
     }
 }

@@ -2,9 +2,9 @@ using Example.NetCore6._0.AuthenticationWithRefreshToken.Data;
 using Example.NetCore6._0.AuthenticationWithRefreshToken.Models;
 using Microsoft.EntityFrameworkCore;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Refresh.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Logout.Models;
-using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Refresh.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 
 var builder = WebApplication.CreateBuilder(args);

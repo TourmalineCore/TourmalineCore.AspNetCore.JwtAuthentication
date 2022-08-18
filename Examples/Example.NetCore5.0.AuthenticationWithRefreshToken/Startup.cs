@@ -8,9 +8,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Refresh.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Logout.Models;
-using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Refresh.Models;
+//using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Refresh.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 
 namespace Example.NetCore5._0.AuthenticationWithRefreshToken
