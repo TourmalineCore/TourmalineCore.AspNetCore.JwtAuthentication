@@ -1,11 +1,11 @@
 using System.Net;
-using Example.NetCore3._0.BaseAuthentication;
+using Example.NetCore3._1.BaseAuthentication;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 
-namespace Tests.NetCore3._0
+namespace Tests.NetCore3._1
 {
-    [Collection(nameof(Example.NetCore3._0.BaseAuthentication))]
+    [Collection(nameof(Example.NetCore3._1.BaseAuthentication))]
     public class BasicAuthTests
         : AuthTestsBase<Startup>
     {

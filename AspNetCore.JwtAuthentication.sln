@@ -18,8 +18,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore5.0.Permissi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore5.0.WithCredentialsValidator", "Examples\Example.NetCore5.0.WithCredentialsValidator\Example.NetCore5.0.WithCredentialsValidator.csproj", "{E2BC2C97-161E-41E4-B224-DFC62AD56768}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore3.0.BaseAuthentication", "Examples\Example.NetCore3.0.BaseAuthentication\Example.NetCore3.0.BaseAuthentication.csproj", "{6AB1E6C4-563A-4447-8024-6C31C9A45141}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore3.1.BaseAuthentication", "Examples\Example.NetCore3.1.BaseAuthentication\Example.NetCore3.1.BaseAuthentication.csproj", "{43D3813D-CD36-46A7-86EF-CD6CF0A9A9BC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore5.0.CookiesBasedAuthentication", "Examples\Example.NetCore5.0.CookiesBasedAuthentication\Example.NetCore5.0.CookiesBasedAuthentication.csproj", "{32E74378-AAF5-4CA6-8633-30997453E58A}"
@@ -62,7 +60,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore5.0.RefreshT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore3.1.AuthenticationWithRefreshToken", "Examples\Example.NetCore3.1.AuthenticationWithRefreshToken\Example.NetCore3.1.AuthenticationWithRefreshToken.csproj", "{63E8464D-8489-4423-ADCD-1107DC5D9336}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JwtAuthentication.Shared", "JwtAuthentication.Shared\JwtAuthentication.Shared.csproj", "{E1952561-A7CD-45C3-B9D0-AC9B92A194CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JwtAuthentication.Shared", "JwtAuthentication.Shared\JwtAuthentication.Shared.csproj", "{E1952561-A7CD-45C3-B9D0-AC9B92A194CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -86,10 +84,6 @@ Global
 		{E2BC2C97-161E-41E4-B224-DFC62AD56768}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2BC2C97-161E-41E4-B224-DFC62AD56768}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2BC2C97-161E-41E4-B224-DFC62AD56768}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6AB1E6C4-563A-4447-8024-6C31C9A45141}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6AB1E6C4-563A-4447-8024-6C31C9A45141}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6AB1E6C4-563A-4447-8024-6C31C9A45141}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6AB1E6C4-563A-4447-8024-6C31C9A45141}.Release|Any CPU.Build.0 = Release|Any CPU
 		{43D3813D-CD36-46A7-86EF-CD6CF0A9A9BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{43D3813D-CD36-46A7-86EF-CD6CF0A9A9BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43D3813D-CD36-46A7-86EF-CD6CF0A9A9BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -174,7 +168,6 @@ Global
 		{36F676C3-2C5F-4727-8BE2-8F759C2A3FBE} = {7A925031-2656-4CEB-821A-D76739E0E5A2}
 		{51E0C282-0942-4367-95EB-F248E80A5D6F} = {7A925031-2656-4CEB-821A-D76739E0E5A2}
 		{E2BC2C97-161E-41E4-B224-DFC62AD56768} = {7A925031-2656-4CEB-821A-D76739E0E5A2}
-		{6AB1E6C4-563A-4447-8024-6C31C9A45141} = {614DB4C6-A4BE-4BBF-B385-C34985CA1FC3}
 		{43D3813D-CD36-46A7-86EF-CD6CF0A9A9BC} = {614DB4C6-A4BE-4BBF-B385-C34985CA1FC3}
 		{32E74378-AAF5-4CA6-8633-30997453E58A} = {7A925031-2656-4CEB-821A-D76739E0E5A2}
 		{1DF1D001-0194-4CD8-82DD-40AF57FC1432} = {7A925031-2656-4CEB-821A-D76739E0E5A2}
