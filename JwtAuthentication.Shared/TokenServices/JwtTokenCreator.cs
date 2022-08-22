@@ -11,7 +11,7 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices.Contracts
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices
 {
-    internal class JwtTokenCreator : IJwtTokenCreator
+    public class JwtTokenCreator : IJwtTokenCreator
     {
         private readonly AuthenticationOptions _authenticationOptions;
 

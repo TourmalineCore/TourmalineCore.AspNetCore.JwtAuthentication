@@ -14,7 +14,7 @@ using System.Text.Json.Serialization;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.Middlewares
 {
-    internal abstract class RequestMiddlewareBase<TService, TRequestModel, TResponseModel>
+    public abstract class RequestMiddlewareBase<TService, TRequestModel, TResponseModel>
     {
         private readonly RequestDelegate _next;
 #if NETCOREAPP3_0 || NETCOREAPP3_1

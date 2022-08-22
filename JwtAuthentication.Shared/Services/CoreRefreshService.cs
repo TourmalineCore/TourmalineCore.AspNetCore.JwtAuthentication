@@ -8,7 +8,7 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices.Contracts
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services
 {
-    internal class CoreRefreshService : ICoreRefreshService
+    public class CoreRefreshService : ICoreRefreshService
     {
         private readonly IJwtTokenValidator _jwtTokenValidator;
         private readonly IJwtTokenCreator _jwtTokenCreator;

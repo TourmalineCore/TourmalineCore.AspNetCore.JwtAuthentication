@@ -10,7 +10,7 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices.Contracts
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices
 {
-    internal class JwtTokenValidator : IJwtTokenValidator
+    public class JwtTokenValidator : IJwtTokenValidator
     {
         private readonly AuthenticationOptions _authenticationOptions;
 

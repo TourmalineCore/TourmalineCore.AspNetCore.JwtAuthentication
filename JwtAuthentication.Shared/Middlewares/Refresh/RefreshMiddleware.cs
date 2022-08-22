@@ -10,7 +10,7 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services.Contracts;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.Middlewares.Refresh
 {
-    internal class RefreshMiddleware : RequestMiddlewareBase<ICoreRefreshService, CoreRefreshTokenRequest, TokenModel>
+    public class RefreshMiddleware : RequestMiddlewareBase<ICoreRefreshService, CoreRefreshTokenRequest, TokenModel>
     {
         private readonly RefreshEndpointOptions _endpointOptions;
         private readonly ILogger<RefreshMiddleware> _logger;
