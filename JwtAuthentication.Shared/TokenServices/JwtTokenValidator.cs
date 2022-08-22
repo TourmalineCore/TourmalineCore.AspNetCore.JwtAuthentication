@@ -12,9 +12,9 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices
 {
     public class JwtTokenValidator : IJwtTokenValidator
     {
-        private readonly AuthenticationOptions _authenticationOptions;
+        private readonly SharedAuthenticationOptions _authenticationOptions;
 
-        public JwtTokenValidator(AuthenticationOptions options)
+        public JwtTokenValidator(SharedAuthenticationOptions options)
         {
             _authenticationOptions = options;
         }

@@ -1,5 +1,7 @@
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Options;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices;
 using Xunit;
 
 namespace Tests.Units;
@@ -14,7 +16,7 @@ public class JwtTokenValidatorTests
 
     public JwtTokenValidatorTests()
     {
-        var authenticationOptions = new AuthenticationOptions()
+        var authenticationOptions = new SharedAuthenticationOptions()
         {
             PublicSigningKey = PublicSigningKey
         };

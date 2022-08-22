@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services
 {

@@ -13,9 +13,9 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices
 {
     public class JwtTokenCreator : IJwtTokenCreator
     {
-        private readonly AuthenticationOptions _authenticationOptions;
+        private readonly SharedAuthenticationOptions _authenticationOptions;
 
-        public JwtTokenCreator(AuthenticationOptions authenticationOptions)
+        public JwtTokenCreator(SharedAuthenticationOptions authenticationOptions)
         {
             _authenticationOptions = authenticationOptions;
         }

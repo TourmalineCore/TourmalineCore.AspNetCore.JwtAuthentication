@@ -11,8 +11,10 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Filters;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementation;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Signing;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.TokenHandlers;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Signing;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices.Contracts;
 using AuthenticationOptions = TourmalineCore.AspNetCore.JwtAuthentication.Core.Options.AuthenticationOptions;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core

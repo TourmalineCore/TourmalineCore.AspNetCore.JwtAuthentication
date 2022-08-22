@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices.Contracts;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementation
 {

@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models;
 
 [assembly: InternalsVisibleTo("TourmalineCore.AspNetCore.JwtAuthentication.Identity")]
 [assembly: InternalsVisibleTo("Tests")]

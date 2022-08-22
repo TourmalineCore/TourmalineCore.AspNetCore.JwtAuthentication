@@ -48,4 +48,8 @@
     <Folder Include="Middlewares\Login\Models\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\JwtAuthentication.Shared\JwtAuthentication.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

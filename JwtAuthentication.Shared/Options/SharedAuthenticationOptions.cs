@@ -1,6 +1,6 @@
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.Options
 {
-    public class AuthenticationOptions
+    public class SharedAuthenticationOptions
     {
         private int _accessTokenExpireInMinutes;
 

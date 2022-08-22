@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models;
 
 [assembly: InternalsVisibleTo("Tests")]
 
