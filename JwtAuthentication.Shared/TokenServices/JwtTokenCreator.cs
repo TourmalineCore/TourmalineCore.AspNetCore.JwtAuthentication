@@ -13,14 +13,14 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices
 {
     public class JwtTokenCreator : IJwtTokenCreator
     {
-        private readonly SharedAuthenticationOptions _authenticationOptions;
+        private readonly BaseAuthenticationOptions _authenticationOptions;
 
-        public JwtTokenCreator(SharedAuthenticationOptions authenticationOptions)
+        public JwtTokenCreator(BaseAuthenticationOptions authenticationOptions)
         {
             _authenticationOptions = authenticationOptions;
         }
 
-        public async Task<TokenModel> CreateAsync(string tokenType, int tokenLifetimeInMinutes, List<Claim> claims = null)
+        public async Task<BaseTokenModel> CreateAsync(string tokenType, int tokenLifetimeInMinutes, List<Claim> claims = null)
         {
             if (!TokenType.IsAvailableTokenType(tokenType))
             {
@@ -48,7 +48,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices
                 expires: tokenExpiresIn,
                 signingCredentials: GetCredentials());
 
-            return await Task.FromResult(new TokenModel
+            return await Task.FromResult(new BaseTokenModel
             {
                 Value = new JwtSecurityTokenHandler().WriteToken(token),
                 ExpiresInUtc = tokenExpiresIn.ToUniversalTime(),

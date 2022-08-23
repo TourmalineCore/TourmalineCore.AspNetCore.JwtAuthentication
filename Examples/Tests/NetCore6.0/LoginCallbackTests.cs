@@ -2,13 +2,13 @@ using System.Text;
 using Microsoft.AspNetCore.Http;
 using Moq;
 using Newtonsoft.Json;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract.Implementation;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Login;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Login.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementation;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices;
 using Xunit;
 
 namespace Tests.NetCore6._0

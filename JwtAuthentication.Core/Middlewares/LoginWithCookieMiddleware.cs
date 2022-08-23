@@ -1,11 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models.Requests;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models.Responses;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services.Contracts;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
 {

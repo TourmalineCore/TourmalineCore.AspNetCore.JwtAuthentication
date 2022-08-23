@@ -8,7 +8,7 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Filters;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementation;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Validators;

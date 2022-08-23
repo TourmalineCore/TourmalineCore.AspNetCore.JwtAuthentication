@@ -16,7 +16,7 @@ public class JwtTokenValidatorTests
 
     public JwtTokenValidatorTests()
     {
-        var authenticationOptions = new SharedAuthenticationOptions()
+        var authenticationOptions = new BaseAuthenticationOptions()
         {
             PublicSigningKey = PublicSigningKey
         };

@@ -39,7 +39,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             _options = options;
         }
 
-        public async Task<TokenModel> GenerateRefreshTokenAsync(object user, string clientFingerPrint)
+        public async Task<BaseTokenModel> GenerateRefreshTokenAsync(object user, string clientFingerPrint)
         {
             var refreshToken = CreateRefreshToken(user, clientFingerPrint);
 
@@ -127,9 +127,9 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             return newToken;
         }
 
-        private static TokenModel BuildTokenModelByRefreshToken(RefreshToken<TUser, TKey> refreshToken)
+        private static BaseTokenModel BuildTokenModelByRefreshToken(RefreshToken<TUser, TKey> refreshToken)
         {
-            return new TokenModel
+            return new BaseTokenModel
             {
                 Value = refreshToken.Value.ToString(),
                 ExpiresInUtc = refreshToken.ExpiresIn.ToUniversalTime(),

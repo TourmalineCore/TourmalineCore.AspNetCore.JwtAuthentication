@@ -5,17 +5,19 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract.Implementation;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Filters;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementation;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.TokenHandlers;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Signing;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices.Contracts;
 using AuthenticationOptions = TourmalineCore.AspNetCore.JwtAuthentication.Core.Options.AuthenticationOptions;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services.Contracts;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.UserServices.Contracts;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.UserServices;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Contracts;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
 {
@@ -95,7 +97,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
             services.AddTransient<ILoginService, LoginWithRefreshService>();
             services.AddTransient<IJwtTokenValidator, JwtTokenValidator>();
             services.AddTransient<ICoreRefreshTokenManager, CoreRefreshTokenManager>();
-            services.AddTransient<ICoreRefreshService, RefreshService>();
+            services.AddTransient<ICoreRefreshService, CoreRefreshService>();
 
             return services;
         }

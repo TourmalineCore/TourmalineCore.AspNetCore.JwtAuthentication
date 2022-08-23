@@ -7,6 +7,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices.Contr
 {
     public interface IJwtTokenCreator
     {
-        Task<TokenModel> CreateAsync(string tokenType, int tokenLifetimeInMinutes, List<Claim> claims = null);
+        Task<BaseTokenModel> CreateAsync(string tokenType, int tokenLifetimeInMinutes, List<Claim> claims = null);
     }
 }

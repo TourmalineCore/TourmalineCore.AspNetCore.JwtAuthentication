@@ -8,7 +8,7 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Login;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Login.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementation;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services;
 using Xunit;
 
 namespace Tests.NetCore5._0
