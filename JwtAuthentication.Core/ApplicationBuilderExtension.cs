@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Login.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Refresh;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Refresh.Models;
@@ -31,8 +30,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         /// <param name="loginEndpointOptions"></param>
         /// <returns></returns>
         public static IApplicationBuilder UseDefaultLoginMiddleware(this IApplicationBuilder applicationBuilder, LoginEndpointOptions loginEndpointOptions = null)
-        {            
-            return Shared.ApplicationBuilderExtension.UseDefaultLoginMiddleware(applicationBuilder, loginEndpointOptions);
+        {
+            return Shared.ApplicationBuilderExtensions.UseDefaultLoginMiddleware(applicationBuilder, loginEndpointOptions ?? new LoginEndpointOptions());
         }
 
         /// <summary>
@@ -41,11 +40,9 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         /// <param name="applicationBuilder"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseCookieLoginMiddleware(this IApplicationBuilder applicationBuilder, CookieAuthOptions options, LoginEndpointOptions loginEndpointOptions = null)
+        public static IApplicationBuilder UseCookieLoginMiddleware(this IApplicationBuilder applicationBuilder, CookieAuthOptions cookieAuthOptions, LoginEndpointOptions loginEndpointOptions = null)
         {
-            return applicationBuilder
-                .UseMiddleware<LoginWithCookieMiddleware>(options, loginEndpointOptions ?? new LoginEndpointOptions())
-                .UseMiddleware<TokenExtractionFromCookieMiddleware>(options);
+            return Shared.ApplicationBuilderExtensions.RegisterCookieLoginMiddleware(applicationBuilder, cookieAuthOptions, loginEndpointOptions ?? new LoginEndpointOptions());
         }
 
         /// <summary>
@@ -58,7 +55,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         {
             Func<BasicLoginModel, Task> loginExecutingCallback = basicLoginModel => callback(LoginModel.MapFrom(basicLoginModel));
 
-            return Shared.ApplicationBuilderExtension.OnLoginExecuting(applicationBuilder, loginExecutingCallback);
+            return Shared.ApplicationBuilderExtensions.OnLoginExecuting(applicationBuilder, loginExecutingCallback);
         }
 
         /// <summary>
@@ -71,7 +68,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         {
             Func<BasicLoginModel, Task> loginExecutedCallback = basicLoginModel => callback(LoginModel.MapFrom(basicLoginModel));
 
-            return Shared.ApplicationBuilderExtension.OnLoginExecuted(applicationBuilder, loginExecutedCallback);
+            return Shared.ApplicationBuilderExtensions.OnLoginExecuted(applicationBuilder, loginExecutedCallback);
         }
 
         /// <summary>

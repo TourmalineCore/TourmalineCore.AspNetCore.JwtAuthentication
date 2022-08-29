@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Middlewares.Login.Models;
-using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Options;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Options.Contracts;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.Middlewares.Login
 {
@@ -11,7 +11,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.Middlewares.Login
     {
         private static Func<BasicLoginModel, Task> _onLoginExecutingCallback = null;
         private static Func<BasicLoginModel, Task> _onLoginExecutedCallback = null;
-        private static BaseLoginEndpointOptions _loginEndpointOptions = new BaseLoginEndpointOptions();
 
         private static bool _loginMiddlewareIsRegistered = false;
         private static bool _executingCallbackIsRegistered = false;
@@ -43,16 +42,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.Middlewares.Login
             return this;
         }
 
-        internal DefaultLoginMiddlewareBuilder SetLoginEndpointOptions(BaseLoginEndpointOptions loginEndpointOptions = null)
-        {
-            if (loginEndpointOptions != null)
-            {
-                _loginEndpointOptions = loginEndpointOptions;
-            }
-
-            return this;
-        }
-
         /// <summary>
         /// Registering a callback function to perform actions when  when the authentication starts.
         /// </summary>
@@ -68,7 +57,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.Middlewares.Login
                 return _applicationBuilder;
             }
 
-            return _applicationBuilder.UseMiddleware<LoginMiddlewareWithExecutingCallback>(_loginEndpointOptions, _onLoginExecutingCallback);
+            return _applicationBuilder.UseMiddleware<LoginMiddlewareWithExecutingCallback>(_onLoginExecutingCallback);
         }
 
         /// <summary>
@@ -86,7 +75,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.Middlewares.Login
                 return _applicationBuilder;
             }
 
-            return _applicationBuilder.UseMiddleware<LoginMiddlewareWithExecutedCallback>(_loginEndpointOptions, _onLoginExecutedCallback);
+            return _applicationBuilder.UseMiddleware<LoginMiddlewareWithExecutedCallback>(_onLoginExecutedCallback);
         }
 
         /// <summary>
@@ -94,15 +83,15 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.Middlewares.Login
         /// </summary>
         /// <param name="loginEndpointOptions"></param>
         /// <returns></returns>
-        public IApplicationBuilder UseDefaultLoginMiddleware()
+        public IApplicationBuilder UseDefaultLoginMiddleware(ILoginEndpointOptions loginEndpointOptions)
         {            
-            RegisterDefaultLoginMiddleware();
+            RegisterDefaultLoginMiddleware(loginEndpointOptions);
             return _applicationBuilder;
         }
 
-        private void RegisterDefaultLoginMiddleware()
+        private void RegisterDefaultLoginMiddleware(ILoginEndpointOptions loginEndpointOptions)
         {
-            var middlewareArguments = new List<object>() { _loginEndpointOptions };
+            var middlewareArguments = new List<object>() { loginEndpointOptions };
 
             if (_executingCallbackIsRegistered)
             {

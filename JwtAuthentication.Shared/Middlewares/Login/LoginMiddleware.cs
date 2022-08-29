@@ -4,18 +4,18 @@ using Microsoft.AspNetCore.Http;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Middlewares.Login.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models.Requests;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models.Responses;
-using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Options;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Options.Contracts;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services.Contracts;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.Middlewares.Login
 {
     internal class LoginMiddleware : RequestMiddlewareBase<ILoginService, LoginRequestModel, AuthResponseModel>
     {
-        protected static BaseLoginEndpointOptions _loginEndpointOptions;
+        protected static ILoginEndpointOptions _loginEndpointOptions;
         protected static Func<BasicLoginModel, Task> _onLoginExecuting = null;
         protected static Func<BasicLoginModel, Task> _onLoginExecuted = null;
 
-        public LoginMiddleware(RequestDelegate next, BaseLoginEndpointOptions loginEndpointOptions, Func<BasicLoginModel, Task> onLoginExecuting = null, Func<BasicLoginModel, Task> onLoginExecuted = null)
+        public LoginMiddleware(RequestDelegate next, ILoginEndpointOptions loginEndpointOptions, Func<BasicLoginModel, Task> onLoginExecuting = null, Func<BasicLoginModel, Task> onLoginExecuted = null)
             : base(next)
         {
             _loginEndpointOptions = loginEndpointOptions;

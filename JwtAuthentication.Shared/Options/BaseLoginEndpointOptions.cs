@@ -1,6 +1,8 @@
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Options.Contracts;
+
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.Options
 {
-    public class BaseLoginEndpointOptions
+    public class BaseLoginEndpointOptions : ILoginEndpointOptions
     {
         private string _loginEndpointRoute;
 

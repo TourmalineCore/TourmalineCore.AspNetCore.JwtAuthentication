@@ -1,15 +1,15 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Options.Contracts;
 
-namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.Middlewares.CookieLogin
 {
     public class TokenExtractionFromCookieMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly CookieAuthOptions _options;
+        private readonly ICookieAuthOptions _options;
 
-        public TokenExtractionFromCookieMiddleware(RequestDelegate next, CookieAuthOptions options)
+        public TokenExtractionFromCookieMiddleware(RequestDelegate next, ICookieAuthOptions options)
         {
             _next = next;
             _options = options;

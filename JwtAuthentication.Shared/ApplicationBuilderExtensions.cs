@@ -1,13 +1,14 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Middlewares.CookieLogin;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Middlewares.Login;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Middlewares.Login.Models;
-using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Options;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Options.Contracts;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared
 {
-    public static class ApplicationBuilderExtension
+    public static class ApplicationBuilderExtensions
     {
         /// <summary>
         /// Adds Authentication and Authorization to the app.
@@ -27,32 +28,27 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared
         /// <param name="applicationBuilder"></param>
         /// <param name="loginEndpointOptions"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseDefaultLoginMiddleware(this IApplicationBuilder applicationBuilder, BaseLoginEndpointOptions loginEndpointOptions = null)
+        public static IApplicationBuilder UseDefaultLoginMiddleware(this IApplicationBuilder applicationBuilder, ILoginEndpointOptions loginEndpointOptions)
         {
             return DefaultLoginMiddlewareBuilder
                 .GetInstance()
                 .SetAppBuilder(applicationBuilder)
-                .SetLoginEndpointOptions(loginEndpointOptions)
-                .UseDefaultLoginMiddleware();
-
-            //Func<BasicLoginModel, Task> defaultOnLoginCallback = s => Task.CompletedTask;
-
-            //return applicationBuilder
-            //    .UseMiddleware<LoginMiddleware>(loginEndpointOptions ?? new BaseLoginEndpointOptions(), defaultOnLoginCallback, defaultOnLoginCallback);
+                .UseDefaultLoginMiddleware(loginEndpointOptions);
         }
 
-        ///// <summary>
-        ///// Adds middleware to handle incoming login requests using cookies to store auth token.
-        ///// </summary>
-        ///// <param name="applicationBuilder"></param>
-        ///// <param name="options"></param>
-        ///// <returns></returns>
-        //public static IApplicationBuilder UseCookieLoginMiddleware(this IApplicationBuilder applicationBuilder, CookieAuthOptions options, LoginEndpointOptions loginEndpointOptions = null)
-        //{
-        //    return applicationBuilder
-        //        .UseMiddleware<LoginWithCookieMiddleware>(options, loginEndpointOptions ?? new LoginEndpointOptions())
-        //        .UseMiddleware<TokenExtractionFromCookieMiddleware>(options);
-        //}
+        /// <summary>
+        /// Adds middleware to handle incoming login requests using cookies to store auth token.
+        /// </summary>
+        /// <param name="applicationBuilder"></param>
+        /// <param name="cookieAuthOptions"></param>
+        /// <param name="loginEndpointOptions"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder RegisterCookieLoginMiddleware(this IApplicationBuilder applicationBuilder, ICookieAuthOptions cookieAuthOptions, ILoginEndpointOptions loginEndpointOptions)
+        {
+            return applicationBuilder
+                .UseMiddleware<LoginWithCookieMiddleware>(cookieAuthOptions, loginEndpointOptions)
+                .UseMiddleware<TokenExtractionFromCookieMiddleware>(cookieAuthOptions);
+        }
 
         /// <summary>
         /// Registering a callback function to perform actions when  when the authentication starts.

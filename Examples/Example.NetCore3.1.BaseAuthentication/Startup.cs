@@ -37,11 +37,11 @@ namespace Example.NetCore3._1.BaseAuthentication
 
             app.UseRouting();
 
-            app
-                .OnLoginExecuting(OnLoginExecuting)
-                .OnLoginExecuted(OnLoginExecuted)
-                .UseDefaultLoginMiddleware()
-                .UseJwtAuthentication();
+            //app
+            //    .OnLoginExecuting(OnLoginExecuting)
+            //    .OnLoginExecuted(OnLoginExecuted)
+            //    .UseDefaultLoginMiddleware()
+            //    .UseJwtAuthentication();
 
             //app
             //    .UseDefaultLoginMiddleware()
@@ -73,6 +73,11 @@ namespace Example.NetCore3._1.BaseAuthentication
             //app
             //    .UseDefaultLoginMiddleware()
             //    .UseJwtAuthentication();
+
+            app.UseCookieLoginMiddleware(new CookieAuthOptions
+            {
+                Key = "ExampleCookieName",
+            });
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

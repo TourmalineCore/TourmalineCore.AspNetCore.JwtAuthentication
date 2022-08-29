@@ -1,22 +1,22 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models.Requests;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models.Responses;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Options.Contracts;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services.Contracts;
 
-namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.Middlewares.CookieLogin
 {
     internal class LoginWithCookieMiddleware : RequestMiddlewareBase<ILoginService, LoginRequestModel, AuthResponseModel>
     {
-        private readonly CookieAuthOptions _cookieOptions;
-        private readonly LoginEndpointOptions _loginEndpointOptions;
+        private readonly ICookieAuthOptions _cookieOptions;
+        private readonly ILoginEndpointOptions _loginEndpointOptions;
 
         public LoginWithCookieMiddleware(
             RequestDelegate next,
-            CookieAuthOptions cookieOptions,
-            LoginEndpointOptions loginEndpointOptions)
+            ICookieAuthOptions cookieOptions,
+            ILoginEndpointOptions loginEndpointOptions)
             : base(next)
         {
             _cookieOptions = cookieOptions;
