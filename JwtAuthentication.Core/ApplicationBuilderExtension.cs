@@ -2,11 +2,11 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Login;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Login.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Refresh;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Refresh.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Middlewares.Login.Models;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
 {
@@ -31,11 +31,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         /// <param name="loginEndpointOptions"></param>
         /// <returns></returns>
         public static IApplicationBuilder UseDefaultLoginMiddleware(this IApplicationBuilder applicationBuilder, LoginEndpointOptions loginEndpointOptions = null)
-        {
-            Func<LoginModel, Task> defaultOnLoginCallback = s => Task.CompletedTask;
-
-            return applicationBuilder
-                .UseMiddleware<LoginMiddleware>(loginEndpointOptions ?? new LoginEndpointOptions(), defaultOnLoginCallback, defaultOnLoginCallback);
+        {            
+            return Shared.ApplicationBuilderExtension.UseDefaultLoginMiddleware(applicationBuilder, loginEndpointOptions);
         }
 
         /// <summary>
@@ -57,12 +54,11 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         /// <param name="applicationBuilder"></param>
         /// <param name="callback"></param>
         /// <returns></returns>
-        public static IDefaultLoginMiddlewareBuilder OnLoginExecuting(this IApplicationBuilder applicationBuilder, Func<LoginModel, Task> callback)
+        public static IApplicationBuilder OnLoginExecuting(this IApplicationBuilder applicationBuilder, Func<LoginModel, Task> callback)
         {
-            return DefaultLoginMiddlewareBuilder
-                .GetInstance()
-                .SetAppBuilder(applicationBuilder)
-                .OnLoginExecuting(callback);
+            Func<BasicLoginModel, Task> loginExecutingCallback = basicLoginModel => callback(LoginModel.MapFrom(basicLoginModel));
+
+            return Shared.ApplicationBuilderExtension.OnLoginExecuting(applicationBuilder, loginExecutingCallback);
         }
 
         /// <summary>
@@ -71,12 +67,11 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         /// <param name="applicationBuilder"></param>
         /// <param name="callback"></param>
         /// <returns></returns>
-        public static IDefaultLoginMiddlewareBuilder OnLoginExecuted(this IApplicationBuilder applicationBuilder, Func<LoginModel, Task> callback)
+        public static IApplicationBuilder OnLoginExecuted(this IApplicationBuilder applicationBuilder, Func<LoginModel, Task> callback)
         {
-            return DefaultLoginMiddlewareBuilder
-                .GetInstance()
-                .SetAppBuilder(applicationBuilder)
-                .OnLoginExecuted(callback);
+            Func<BasicLoginModel, Task> loginExecutedCallback = basicLoginModel => callback(LoginModel.MapFrom(basicLoginModel));
+
+            return Shared.ApplicationBuilderExtension.OnLoginExecuted(applicationBuilder, loginExecutedCallback);
         }
 
         /// <summary>

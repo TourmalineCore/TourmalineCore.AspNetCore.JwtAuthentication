@@ -4,11 +4,11 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Errors;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services.Contracts;
 
 [assembly: InternalsVisibleTo("Tests")]
 

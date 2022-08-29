@@ -16,7 +16,6 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices.Contracts
 using AuthenticationOptions = TourmalineCore.AspNetCore.JwtAuthentication.Core.Options.AuthenticationOptions;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services.Contracts;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.UserServices.Contracts;
-using TourmalineCore.AspNetCore.JwtAuthentication.Shared.UserServices;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Contracts;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
@@ -48,15 +47,17 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
             this IServiceCollection services,
             AuthenticationOptions authenticationOptions)
         {
-            services.AddTransient<ITokenManager, TokenManager>();
-            services.AddTransient<ILoginService, LoginService>();
-            services.AddTransient<IUserCredentialsValidator, FakeUserCredentialValidator>();
-            services.AddTransient<IUserClaimsProvider, DefaultUserClaimsProvider>();
-            services.AddTransient<IJwtTokenCreator, JwtTokenCreator>();
+            return Shared.AuthenticationExtensions.AddJwtAuthentication(services, authenticationOptions);
 
-            services.AddJwtBearer(authenticationOptions);
+            //services.AddTransient<ITokenManager, TokenManager>();
+            //services.AddTransient<ILoginService, LoginService>();
+            //services.AddTransient<IUserCredentialsValidator, FakeUserCredentialValidator>();
+            //services.AddTransient<IUserClaimsProvider, DefaultUserClaimsProvider>();
+            //services.AddTransient<IJwtTokenCreator, JwtTokenCreator>();
 
-            return services;
+            //services.AddJwtBearer(authenticationOptions);
+
+            //return services;
         }
 
         /// <summary>

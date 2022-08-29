@@ -27,11 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\JwtAuthentication.Core\JwtAuthentication.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Middleware\Registration\Models\" />
+    <ProjectReference Include="..\JwtAuthentication.Shared\JwtAuthentication.Shared.csproj" />
   </ItemGroup>
 
 </Project>

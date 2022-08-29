@@ -2,9 +2,9 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Registration.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models.Requests;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Registration
 {

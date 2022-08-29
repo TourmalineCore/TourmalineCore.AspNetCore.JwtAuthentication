@@ -1,27 +1,34 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Login.Models;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Middlewares.Login.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models.Requests;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models.Responses;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services.Contracts;
 
-namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Login
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.Middlewares.Login
 {
     internal class LoginMiddleware : RequestMiddlewareBase<ILoginService, LoginRequestModel, AuthResponseModel>
     {
-        private readonly LoginEndpointOptions _loginEndpointOptions;
+        protected static BaseLoginEndpointOptions _loginEndpointOptions;
+        protected static Func<BasicLoginModel, Task> _onLoginExecuting = null;
+        protected static Func<BasicLoginModel, Task> _onLoginExecuted = null;
 
-        private readonly Func<LoginModel, Task> _onLoginExecuting;
-        private readonly Func<LoginModel, Task> _onLoginExecuted;
-
-        public LoginMiddleware(RequestDelegate next, LoginEndpointOptions loginEndpointOptions, Func<LoginModel, Task> onLoginExecuting, Func<LoginModel, Task> onLoginExecuted)
+        public LoginMiddleware(RequestDelegate next, BaseLoginEndpointOptions loginEndpointOptions, Func<BasicLoginModel, Task> onLoginExecuting = null, Func<BasicLoginModel, Task> onLoginExecuted = null)
             : base(next)
         {
             _loginEndpointOptions = loginEndpointOptions;
-            _onLoginExecuting = onLoginExecuting;
-            _onLoginExecuted = onLoginExecuted;
+            
+            if (onLoginExecuting != null)
+            {
+                _onLoginExecuting = onLoginExecuting;
+            }
+
+            if (onLoginExecuted != null)
+            {
+                _onLoginExecuted = onLoginExecuted;
+            }
         }
 
         public async Task InvokeAsync(HttpContext context, ILoginService loginService)
@@ -38,16 +45,24 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Login
 
             try
             {
-                var contractLoginModel = new LoginModel
+                var contractLoginModel = new BasicLoginModel
                 {
                     Login = requestModel.Login,
                     Password = requestModel.Password,
                     ClientFingerPrint = requestModel.ClientFingerPrint,
                 };
 
-                await _onLoginExecuting(contractLoginModel);
+                if (_onLoginExecuting != null)
+                {
+                    await _onLoginExecuting(contractLoginModel);
+                }
+
                 result = await service.LoginAsync(requestModel);
-                await _onLoginExecuted(contractLoginModel);
+
+                if (_onLoginExecuted != null)
+                {
+                    await _onLoginExecuted(contractLoginModel);
+                }                
             }
             catch (Exception ex)
             {

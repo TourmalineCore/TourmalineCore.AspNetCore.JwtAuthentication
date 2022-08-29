@@ -1,10 +1,10 @@
-﻿{
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:52216",
-      "sslPort": 44377
+      "applicationUrl": "http://localhost:51742/",
+      "sslPort": 44384
     }
   },
   "profiles": {
@@ -17,12 +17,12 @@
     },
     "Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity": {
       "commandName": "Project",
-      "dotnetRunMessages": "true",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "dotnetRunMessages": "true"
     }
   }
 }

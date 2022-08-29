@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models.Responses;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services.Contracts;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 {

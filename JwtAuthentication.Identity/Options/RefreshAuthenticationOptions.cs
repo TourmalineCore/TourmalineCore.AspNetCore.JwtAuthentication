@@ -1,5 +1,3 @@
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
-
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options
 {
     public class RefreshAuthenticationOptions : AuthenticationOptions

@@ -1,12 +1,11 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Errors;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models.Requests;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models.Responses;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services.Contracts;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 {
@@ -54,7 +53,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 
             return new AuthResponseModel
             {
-                AccessToken = new TokenModel
+                AccessToken = new BaseTokenModel
                 {
                     Value = token.Value,
                     ExpiresInUtc = token.ExpiresInUtc,

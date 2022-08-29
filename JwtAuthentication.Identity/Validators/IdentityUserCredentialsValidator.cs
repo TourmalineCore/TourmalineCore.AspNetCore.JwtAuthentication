@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.UserServices.Contracts;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Validators
 {

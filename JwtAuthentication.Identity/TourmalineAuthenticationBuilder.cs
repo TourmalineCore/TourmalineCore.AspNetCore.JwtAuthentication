@@ -1,17 +1,15 @@
 using System;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract.Implementation;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Filters;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Validators;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services.Contracts;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.UserServices.Contracts;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.UserServices;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models.Requests;
+using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Filters;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
 {
@@ -205,7 +203,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             AuthenticationOptions authenticationOptions = null)
         {
             var options = authenticationOptions ?? new RefreshAuthenticationOptions();
-            services.AddJwtBearer(options);
+            Shared.AuthenticationExtensions.AddJwtBearer(services, options);
         }
     }
 }

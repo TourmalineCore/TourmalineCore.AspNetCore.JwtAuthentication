@@ -2,5 +2,5 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Options;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options
 {
-    public class RefreshEndpointOptions : BaseRefreshEndpointOptions { }
+    public class AuthenticationOptions : BaseAuthenticationOptions { }
 }

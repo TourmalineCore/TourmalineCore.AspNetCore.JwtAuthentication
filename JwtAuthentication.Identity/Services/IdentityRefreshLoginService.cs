@@ -1,13 +1,13 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Validators;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Errors;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models.Requests;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models.Responses;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services.Contracts;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.UserServices.Contracts;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
 {
