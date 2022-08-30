@@ -4,7 +4,7 @@ using System.Security.Claims;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.Extensions
 {
-    internal static class ClaimsPrincipalExtensions
+    public static class ClaimsPrincipalExtensions
     {
         public static bool HasPermission(this ClaimsPrincipal claimsPrincipal, string permissionType, string permissionName)
         {

@@ -17,6 +17,7 @@ using AuthenticationOptions = TourmalineCore.AspNetCore.JwtAuthentication.Core.O
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services.Contracts;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.UserServices.Contracts;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Contracts;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contracts;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
 {
@@ -32,9 +33,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
             this IServiceCollection services,
             AuthenticationOptions authenticationOptions)
         {
-            services.AddJwtBearer(authenticationOptions);
-
-            return services;
+            return Shared.AuthenticationExtensions.AddJwtValidation(services, authenticationOptions);
         }
 
         /// <summary>
@@ -48,16 +47,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
             AuthenticationOptions authenticationOptions)
         {
             return Shared.AuthenticationExtensions.AddJwtAuthentication(services, authenticationOptions);
-
-            //services.AddTransient<ITokenManager, TokenManager>();
-            //services.AddTransient<ILoginService, LoginService>();
-            //services.AddTransient<IUserCredentialsValidator, FakeUserCredentialValidator>();
-            //services.AddTransient<IUserClaimsProvider, DefaultUserClaimsProvider>();
-            //services.AddTransient<IJwtTokenCreator, JwtTokenCreator>();
-
-            //services.AddJwtBearer(authenticationOptions);
-
-            //return services;
         }
 
         /// <summary>
@@ -69,7 +58,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         public static IServiceCollection AddUserCredentialValidator<TUserCredentialsValidator>(this IServiceCollection services)
             where TUserCredentialsValidator : IUserCredentialsValidator
         {
-            return services.AddTransient(typeof(IUserCredentialsValidator), typeof(TUserCredentialsValidator));
+            return Shared.AuthenticationExtensions.AddUserCredentialValidator<TUserCredentialsValidator>(services);
         }
 
         /// <summary>
@@ -82,11 +71,10 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         public static IServiceCollection WithUserClaimsProvider<TUserClaimsProvider>(
             this IServiceCollection services,
             string permissionClaimTypeKey = "Permission")
-            where TUserClaimsProvider : IUserClaimsProvider
+            where TUserClaimsProvider : UserClaimsProvider
         {
             RequiresPermission.ClaimType = permissionClaimTypeKey;
-
-            return services.AddTransient(typeof(IUserClaimsProvider), typeof(TUserClaimsProvider));
+            return Shared.AuthenticationExtensions.WithUserClaimsProvider<TUserClaimsProvider>(services);
         }
 
         public static IServiceCollection AddLoginWithRefresh(

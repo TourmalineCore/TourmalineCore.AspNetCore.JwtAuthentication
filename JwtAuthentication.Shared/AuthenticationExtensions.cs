@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Middlewares.Login.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services.Contracts;
@@ -20,6 +19,21 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared
 {
     public static class AuthenticationExtensions
     {
+        /// <summary>
+        /// Adds the ability to validate JWT
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="authenticationOptions"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddJwtValidation(
+            IServiceCollection services,
+            BaseAuthenticationOptions authenticationOptions)
+        {
+            services.AddJwtBearer(authenticationOptions);
+
+            return services;
+        }
+
         /// <summary>
         /// Adds the ability to use the basic functionality of JWT
         /// </summary>
@@ -39,6 +53,31 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared
             services.AddJwtBearer(authenticationOptions);
 
             return services;
+        }
+
+        /// <summary>
+        /// Allows to implement custom logic for checking the username and password
+        /// </summary>
+        /// <typeparam name="TUserCredentialsValidator"></typeparam>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddUserCredentialValidator<TUserCredentialsValidator>(IServiceCollection services)
+            where TUserCredentialsValidator : IUserCredentialsValidator
+        {
+            return services.AddTransient(typeof(IUserCredentialsValidator), typeof(TUserCredentialsValidator));
+        }
+
+        /// <summary>
+        /// Adds the ability to implement functionality for retrieving user claims
+        /// </summary>
+        /// <typeparam name="TUserClaimsProvider"></typeparam>
+        /// <param name="services"></param>
+        /// <param name="permissionClaimTypeKey"></param>
+        /// <returns></returns>
+        public static IServiceCollection WithUserClaimsProvider<TUserClaimsProvider>(IServiceCollection services)
+            where TUserClaimsProvider : IUserClaimsProvider
+        {
+            return services.AddTransient(typeof(IUserClaimsProvider), typeof(TUserClaimsProvider));
         }
 
         public static void AddJwtBearer(

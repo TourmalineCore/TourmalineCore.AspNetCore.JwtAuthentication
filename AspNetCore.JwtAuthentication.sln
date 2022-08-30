@@ -62,6 +62,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore3.1.Authenti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JwtAuthentication.Shared", "JwtAuthentication.Shared\JwtAuthentication.Shared.csproj", "{E1952561-A7CD-45C3-B9D0-AC9B92A194CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore3.1.PermissionBasedAuthentication", "Examples\Example.NetCore3.1.PermissionBasedAuthentication\Example.NetCore3.1.PermissionBasedAuthentication.csproj", "{7397D805-384D-4E60-A7BC-E650664231D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -160,6 +162,10 @@ Global
 		{E1952561-A7CD-45C3-B9D0-AC9B92A194CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1952561-A7CD-45C3-B9D0-AC9B92A194CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1952561-A7CD-45C3-B9D0-AC9B92A194CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7397D805-384D-4E60-A7BC-E650664231D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7397D805-384D-4E60-A7BC-E650664231D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7397D805-384D-4E60-A7BC-E650664231D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7397D805-384D-4E60-A7BC-E650664231D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -188,6 +194,7 @@ Global
 		{ABDD94F3-DF9E-47B2-813F-935C54C8DEA7} = {4FF83CB3-A634-4D07-BEE0-B5391B86F071}
 		{F0E28B79-7957-444F-B437-D2EEC072A6DE} = {7A925031-2656-4CEB-821A-D76739E0E5A2}
 		{63E8464D-8489-4423-ADCD-1107DC5D9336} = {614DB4C6-A4BE-4BBF-B385-C34985CA1FC3}
+		{7397D805-384D-4E60-A7BC-E650664231D0} = {614DB4C6-A4BE-4BBF-B385-C34985CA1FC3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C2026BF9-DACC-4EA4-AF04-B8A590EA38BF}
