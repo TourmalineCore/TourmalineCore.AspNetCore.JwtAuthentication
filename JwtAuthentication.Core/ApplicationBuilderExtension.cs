@@ -18,9 +18,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         /// <returns></returns>
         public static IApplicationBuilder UseJwtAuthentication(this IApplicationBuilder applicationBuilder)
         {
-            return applicationBuilder
-                .UseAuthentication()
-                .UseAuthorization();
+            return Shared.ApplicationBuilderExtensions.UseJwtAuthentication(applicationBuilder);
         }
 
         /// <summary>
@@ -86,7 +84,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         }
 
         /// <summary>
-        /// Registering a callback function to perform actions when  when the refresh starts.
+        /// Registering a callback function to perform actions when the refresh starts.
         /// </summary>
         /// <param name="applicationBuilder"></param>
         /// <param name="callback"></param>

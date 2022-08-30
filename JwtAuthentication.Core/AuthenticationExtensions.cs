@@ -1,16 +1,8 @@
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Filters;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.TokenHandlers;
-using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Signing;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices.Contracts;
 using AuthenticationOptions = TourmalineCore.AspNetCore.JwtAuthentication.Core.Options.AuthenticationOptions;
@@ -56,7 +48,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         /// <param name="services"></param>
         /// <returns></returns>
         public static IServiceCollection AddUserCredentialValidator<TUserCredentialsValidator>(this IServiceCollection services)
-            where TUserCredentialsValidator : IUserCredentialsValidator
+            where TUserCredentialsValidator : UserCredentialsValidator
         {
             return Shared.AuthenticationExtensions.AddUserCredentialValidator<TUserCredentialsValidator>(services);
         }
@@ -89,53 +81,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
             services.AddTransient<ICoreRefreshService, CoreRefreshService>();
 
             return services;
-        }
-
-        internal static void AddJwtBearer(
-            this IServiceCollection services,
-            AuthenticationOptions authenticationOptions)
-        {
-            services.AddSingleton(authenticationOptions);
-
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-
-            Func<HttpContext, string> schemeSelector = context => null;
-
-            var authBuilder = services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
-
-            if (authenticationOptions.IsDebugTokenEnabled)
-            {
-                authBuilder.AddScheme<AuthenticationSchemeOptions, DebugTokenHandler>(DebugTokenHandler.Schema,
-                        options => { }
-                    );
-
-                schemeSelector = context =>
-                {
-                    string debugHeader = context.Request.Headers[DebugTokenHandler.HeaderName];
-
-                    return string.IsNullOrWhiteSpace(debugHeader) == false
-                        ? DebugTokenHandler.Schema
-                        : null;
-                };
-            }
-
-            authBuilder
-                .AddJwtBearer(
-                        options =>
-                        {
-                            options.TokenValidationParameters = new TokenValidationParameters
-                            {
-                                ValidateLifetime = true,
-                                ValidateIssuer = false,
-                                ValidateAudience = false,
-                                ValidateIssuerSigningKey = true,
-                                IssuerSigningKey = SigningHelper.GetPublicKey(authenticationOptions.PublicSigningKey),
-                                ClockSkew = TimeSpan.Zero,
-                            };
-
-                            options.ForwardDefaultSelector = schemeSelector;
-                        }
-                    );
-        }
+        }        
     }
 }
