@@ -6,6 +6,7 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Refresh.Model
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Requests;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Contracts;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Middlewares;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Refresh
