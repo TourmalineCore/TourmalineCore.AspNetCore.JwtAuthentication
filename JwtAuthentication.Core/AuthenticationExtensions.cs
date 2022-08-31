@@ -1,18 +1,13 @@
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract.Implementation;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Filters;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementation;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Signing;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.TokenHandlers;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices.Contracts;
 using AuthenticationOptions = TourmalineCore.AspNetCore.JwtAuthentication.Core.Options.AuthenticationOptions;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services.Contracts;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contracts;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Internal.Services;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Internal.Services.Contracts;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
 {
@@ -28,9 +23,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
             this IServiceCollection services,
             AuthenticationOptions authenticationOptions)
         {
-            services.AddJwtBearer(authenticationOptions);
-
-            return services;
+            return Shared.AuthenticationExtensions.AddJwtValidation(services, authenticationOptions);
         }
 
         /// <summary>
@@ -43,14 +36,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
             this IServiceCollection services,
             AuthenticationOptions authenticationOptions)
         {
-            services.AddTransient<ITokenManager, TokenManager>();
-            services.AddTransient<ILoginService, LoginService>();
-            services.AddTransient<IUserCredentialsValidator, FakeUserCredentialValidator>();
-            services.AddTransient<IUserClaimsProvider, DefaultUserClaimsProvider>();
-
-            services.AddJwtBearer(authenticationOptions);
-
-            return services;
+            return Shared.AuthenticationExtensions.AddJwtAuthentication(services, authenticationOptions);
         }
 
         /// <summary>
@@ -60,9 +46,9 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         /// <param name="services"></param>
         /// <returns></returns>
         public static IServiceCollection AddUserCredentialValidator<TUserCredentialsValidator>(this IServiceCollection services)
-            where TUserCredentialsValidator : IUserCredentialsValidator
+            where TUserCredentialsValidator : UserCredentialsValidator
         {
-            return services.AddTransient(typeof(IUserCredentialsValidator), typeof(TUserCredentialsValidator));
+            return Shared.AuthenticationExtensions.AddUserCredentialValidator<TUserCredentialsValidator>(services);
         }
 
         /// <summary>
@@ -75,58 +61,24 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         public static IServiceCollection WithUserClaimsProvider<TUserClaimsProvider>(
             this IServiceCollection services,
             string permissionClaimTypeKey = "Permission")
-            where TUserClaimsProvider : IUserClaimsProvider
+            where TUserClaimsProvider : UserClaimsProvider
         {
             RequiresPermission.ClaimType = permissionClaimTypeKey;
-
-            return services.AddTransient(typeof(IUserClaimsProvider), typeof(TUserClaimsProvider));
+            return Shared.AuthenticationExtensions.WithUserClaimsProvider<TUserClaimsProvider>(services);
         }
 
-        internal static void AddJwtBearer(
+        public static IServiceCollection AddLoginWithRefresh(
             this IServiceCollection services,
-            AuthenticationOptions authenticationOptions)
+            RefreshTokenOptions refreshTokenOptions = null)
         {
-            services.AddSingleton(authenticationOptions);
+            services.AddSingleton(refreshTokenOptions ?? new RefreshTokenOptions());
 
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            services.AddTransient<ILoginService, LoginWithRefreshService>();
+            services.AddTransient<IJwtTokenValidator, JwtTokenValidator>();
+            services.AddTransient<ICoreRefreshTokenManager, CoreRefreshTokenManager>();
+            services.AddTransient<ICoreRefreshService, CoreRefreshService>();
 
-            Func<HttpContext, string> schemeSelector = context => null;
-
-            var authBuilder = services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
-
-            if (authenticationOptions.IsDebugTokenEnabled)
-            {
-                authBuilder.AddScheme<AuthenticationSchemeOptions, DebugTokenHandler>(DebugTokenHandler.Schema,
-                        options => { }
-                    );
-
-                schemeSelector = context =>
-                {
-                    string debugHeader = context.Request.Headers[DebugTokenHandler.HeaderName];
-
-                    return string.IsNullOrWhiteSpace(debugHeader) == false
-                        ? DebugTokenHandler.Schema
-                        : null;
-                };
-            }
-
-            authBuilder
-                .AddJwtBearer(
-                        options =>
-                        {
-                            options.TokenValidationParameters = new TokenValidationParameters
-                            {
-                                ValidateLifetime = true,
-                                ValidateIssuer = false,
-                                ValidateAudience = false,
-                                ValidateIssuerSigningKey = true,
-                                IssuerSigningKey = SigningHelper.GetPublicKey(authenticationOptions.PublicSigningKey),
-                                ClockSkew = TimeSpan.Zero,
-                            };
-
-                            options.ForwardDefaultSelector = schemeSelector;
-                        }
-                    );
-        }
+            return services;
+        }        
     }
 }

@@ -3,16 +3,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Logout;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Logout.Models;
-using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Refresh;
-using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Refresh.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Registration;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Registration.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
-using IRefreshMiddlewareBuilder = TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Refresh.IRefreshMiddlewareBuilder;
-using RefreshMiddlewareBuilder = TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Refresh.RefreshMiddlewareBuilder;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models.Requests;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
 {
@@ -90,20 +86,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             return applicationBuilder
                 .UseAuthentication()
                 .UseAuthorization();
-        }
-
-        /// <summary>
-        /// Adds middleware to handle incoming login and token refresh requests.
-        /// </summary>
-        /// <param name="applicationBuilder"></param>
-        /// <param name="endpointOptions"></param>
-        /// <returns></returns>
-        public static IApplicationBuilder UseRefreshTokenMiddleware(this IApplicationBuilder applicationBuilder, RefreshEndpointOptions endpointOptions = null)
-        {
-            Func<RefreshModel, Task> defaultOnRefreshCallback = s => Task.CompletedTask;
-
-            return applicationBuilder
-                .UseMiddleware<RefreshMiddleware>(endpointOptions ?? new RefreshEndpointOptions(), defaultOnRefreshCallback, defaultOnRefreshCallback);
         }
 
         /// <summary>
@@ -246,34 +228,6 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
                 .GetInstance()
                 .SetAppBuilder(applicationBuilder)
                 .OnLogoutExecuted(callback);
-        }
-
-        /// <summary>
-        /// Registering a callback function to perform actions when  when the refresh starts.
-        /// </summary>
-        /// <param name="applicationBuilder"></param>
-        /// <param name="callback"></param>
-        /// <returns></returns>
-        public static IRefreshMiddlewareBuilder OnRefreshExecuting(this IApplicationBuilder applicationBuilder, Func<RefreshModel, Task> callback)
-        {
-            return RefreshMiddlewareBuilder
-                .GetInstance()
-                .SetAppBuilder(applicationBuilder)
-                .OnRefreshExecuting(callback);
-        }
-
-        /// <summary>
-        /// Registering a callback function to perform actions when the refresh ends.
-        /// </summary>
-        /// <param name="applicationBuilder"></param>
-        /// <param name="callback"></param>
-        /// <returns></returns>
-        public static IRefreshMiddlewareBuilder OnRefreshExecuted(this IApplicationBuilder applicationBuilder, Func<RefreshModel, Task> callback)
-        {
-            return RefreshMiddlewareBuilder
-                .GetInstance()
-                .SetAppBuilder(applicationBuilder)
-                .OnRefreshExecuted(callback);
         }
 
         /// <summary>

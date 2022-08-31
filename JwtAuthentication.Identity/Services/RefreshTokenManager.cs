@@ -4,11 +4,11 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Errors;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services.Contracts;
 
 [assembly: InternalsVisibleTo("Tests")]
 
@@ -39,7 +39,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             _options = options;
         }
 
-        public async Task<TokenModel> GenerateRefreshTokenAsync(object user, string clientFingerPrint)
+        public async Task<BaseTokenModel> GenerateRefreshTokenAsync(object user, string clientFingerPrint)
         {
             var refreshToken = CreateRefreshToken(user, clientFingerPrint);
 
@@ -127,9 +127,9 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             return newToken;
         }
 
-        private static TokenModel BuildTokenModelByRefreshToken(RefreshToken<TUser, TKey> refreshToken)
+        private static BaseTokenModel BuildTokenModelByRefreshToken(RefreshToken<TUser, TKey> refreshToken)
         {
-            return new TokenModel
+            return new BaseTokenModel
             {
                 Value = refreshToken.Value.ToString(),
                 ExpiresInUtc = refreshToken.ExpiresIn.ToUniversalTime(),
@@ -140,7 +140,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
         {
             if (token == null)
             {
-                throw new AuthenticationException(ErrorTypes.RefreshTokenNotFound);
+                throw new RefreshTokenNotFoundException();
             }
         }
     }

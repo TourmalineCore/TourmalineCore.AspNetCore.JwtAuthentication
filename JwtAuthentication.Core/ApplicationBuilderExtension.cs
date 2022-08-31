@@ -1,10 +1,12 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Login;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Internal.Middlewares.Refresh;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Login.Models;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Refresh;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Refresh.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Middlewares.Login.Models;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
 {
@@ -17,9 +19,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         /// <returns></returns>
         public static IApplicationBuilder UseJwtAuthentication(this IApplicationBuilder applicationBuilder)
         {
-            return applicationBuilder
-                .UseAuthentication()
-                .UseAuthorization();
+            return Shared.ApplicationBuilderExtensions.UseJwtAuthentication(applicationBuilder);
         }
 
         /// <summary>
@@ -30,10 +30,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         /// <returns></returns>
         public static IApplicationBuilder UseDefaultLoginMiddleware(this IApplicationBuilder applicationBuilder, LoginEndpointOptions loginEndpointOptions = null)
         {
-            Func<LoginModel, Task> defaultOnLoginCallback = s => Task.CompletedTask;
-
-            return applicationBuilder
-                .UseMiddleware<LoginMiddleware>(loginEndpointOptions ?? new LoginEndpointOptions(), defaultOnLoginCallback, defaultOnLoginCallback);
+            return Shared.ApplicationBuilderExtensions.UseDefaultLoginMiddleware(applicationBuilder, loginEndpointOptions ?? new LoginEndpointOptions());
         }
 
         /// <summary>
@@ -42,11 +39,9 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         /// <param name="applicationBuilder"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseCookieLoginMiddleware(this IApplicationBuilder applicationBuilder, CookieAuthOptions options, LoginEndpointOptions loginEndpointOptions = null)
+        public static IApplicationBuilder UseCookieLoginMiddleware(this IApplicationBuilder applicationBuilder, CookieAuthOptions cookieAuthOptions, LoginEndpointOptions loginEndpointOptions = null)
         {
-            return applicationBuilder
-                .UseMiddleware<LoginWithCookieMiddleware>(options, loginEndpointOptions ?? new LoginEndpointOptions())
-                .UseMiddleware<TokenExtractionFromCookieMiddleware>(options);
+            return Shared.ApplicationBuilderExtensions.RegisterCookieLoginMiddleware(applicationBuilder, cookieAuthOptions, loginEndpointOptions ?? new LoginEndpointOptions());
         }
 
         /// <summary>
@@ -55,12 +50,11 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         /// <param name="applicationBuilder"></param>
         /// <param name="callback"></param>
         /// <returns></returns>
-        public static IDefaultLoginMiddlewareBuilder OnLoginExecuting(this IApplicationBuilder applicationBuilder, Func<LoginModel, Task> callback)
+        public static IApplicationBuilder OnLoginExecuting(this IApplicationBuilder applicationBuilder, Func<LoginModel, Task> callback)
         {
-            return DefaultLoginMiddlewareBuilder
-                .GetInstance()
-                .SetAppBuilder(applicationBuilder)
-                .OnLoginExecuting(callback);
+            Func<BasicLoginModel, Task> loginExecutingCallback = basicLoginModel => callback(LoginModel.MapFrom(basicLoginModel));
+
+            return Shared.ApplicationBuilderExtensions.OnLoginExecuting(applicationBuilder, loginExecutingCallback);
         }
 
         /// <summary>
@@ -69,12 +63,53 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
         /// <param name="applicationBuilder"></param>
         /// <param name="callback"></param>
         /// <returns></returns>
-        public static IDefaultLoginMiddlewareBuilder OnLoginExecuted(this IApplicationBuilder applicationBuilder, Func<LoginModel, Task> callback)
+        public static IApplicationBuilder OnLoginExecuted(this IApplicationBuilder applicationBuilder, Func<LoginModel, Task> callback)
         {
-            return DefaultLoginMiddlewareBuilder
+            Func<BasicLoginModel, Task> loginExecutedCallback = basicLoginModel => callback(LoginModel.MapFrom(basicLoginModel));
+
+            return Shared.ApplicationBuilderExtensions.OnLoginExecuted(applicationBuilder, loginExecutedCallback);
+        }
+
+        /// <summary>
+        /// Adds middleware to handle incoming login and token refresh requests.
+        /// </summary>
+        /// <param name="applicationBuilder"></param>
+        /// <param name="endpointOptions"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseRefreshTokenMiddleware(this IApplicationBuilder applicationBuilder, RefreshEndpointOptions endpointOptions = null)
+        {
+            Func<RefreshModel, Task> defaultOnRefreshCallback = s => Task.CompletedTask;
+
+            return applicationBuilder
+                .UseMiddleware<RefreshMiddleware>(endpointOptions ?? new RefreshEndpointOptions(), defaultOnRefreshCallback, defaultOnRefreshCallback);
+        }
+
+        /// <summary>
+        /// Registering a callback function to perform actions when the refresh starts.
+        /// </summary>
+        /// <param name="applicationBuilder"></param>
+        /// <param name="callback"></param>
+        /// <returns></returns>
+        public static IRefreshMiddlewareBuilder OnRefreshExecuting(this IApplicationBuilder applicationBuilder, Func<RefreshModel, Task> callback)
+        {
+            return RefreshMiddlewareBuilder
                 .GetInstance()
                 .SetAppBuilder(applicationBuilder)
-                .OnLoginExecuted(callback);
+                .OnRefreshExecuting(callback);
+        }
+
+        /// <summary>
+        /// Registering a callback function to perform actions when the refresh ends.
+        /// </summary>
+        /// <param name="applicationBuilder"></param>
+        /// <param name="callback"></param>
+        /// <returns></returns>
+        public static IRefreshMiddlewareBuilder OnRefreshExecuted(this IApplicationBuilder applicationBuilder, Func<RefreshModel, Task> callback)
+        {
+            return RefreshMiddlewareBuilder
+                .GetInstance()
+                .SetAppBuilder(applicationBuilder)
+                .OnRefreshExecuted(callback);
         }
     }
 }

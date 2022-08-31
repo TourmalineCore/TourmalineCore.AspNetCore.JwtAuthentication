@@ -1,6 +1,8 @@
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Options.Contracts;
+
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options
 {
-    public class RefreshEndpointOptions
+    public class RefreshEndpointOptions : IRefreshEndpointOptions
     {
         private string _refreshEndpointRoute;
 

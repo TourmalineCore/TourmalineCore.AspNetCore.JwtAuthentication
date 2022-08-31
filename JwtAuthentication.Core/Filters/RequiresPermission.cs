@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Utils;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Extensions;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Filters
 {
     public class RequiresPermission : Attribute, IAuthorizationFilter
     {
-        internal static string ClaimType;
+        public static string ClaimType;
 
         private readonly List<string> _permissions;
 

@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.ErrorHandling;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Errors;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models.Requests;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Validators
 {
@@ -15,7 +15,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Validators
         {
             if (model == null || model.RefreshTokenValue == default)
             {
-                throw new AuthenticationException(ErrorTypes.RefreshTokenOrFingerprintNotFound);
+                throw new RefreshTokenOrFingerprintNotFoundException();
             }
         }
     }

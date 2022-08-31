@@ -24,7 +24,7 @@
   </ItemGroup>
 
 	<ItemGroup>
-    <ProjectReference Include="..\Example.NetCore3.0.BaseAuthentication\Example.NetCore3.0.BaseAuthentication.csproj" />
+    <ProjectReference Include="..\Example.NetCore3.1.BaseAuthentication\Example.NetCore3.1.BaseAuthentication.csproj" />
     <ProjectReference Include="..\Example.NetCore5.0.CookiesBasedAuthentication\Example.NetCore5.0.CookiesBasedAuthentication.csproj" />
     <ProjectReference Include="..\Example.NetCore5.0.RefreshTokenAuthAndRegistrationUsingIdentity\Example.NetCore5.0.RefreshTokenAuthAndRegistrationUsingIdentity.csproj" />
     <ProjectReference Include="..\..\JwtAuthentication.Core\JwtAuthentication.Core.csproj" />
@@ -35,10 +35,6 @@
     <ProjectReference Include="..\Example.NetCore6.0.RefreshTokenAuthAndRegistrationUsingIdentity\Example.NetCore6.0.RefreshTokenAuthAndRegistrationUsingIdentity.csproj" />
     <ProjectReference Include="..\Example.NetCore6.0.RefreshTokenWithConfidenceInterval\Example.NetCore6.0.RefreshTokenWithConfidenceInterval.csproj" />
   </ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Units\" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<None Update="xunit.runner.json">
