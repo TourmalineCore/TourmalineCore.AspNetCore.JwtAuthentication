@@ -16,7 +16,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services
 
         public CoreRefreshService(
             IJwtTokenValidator jwtTokenValidator,
-            IJwtTokenCreator jwtTokenCreator, 
+            IJwtTokenCreator jwtTokenCreator,
             RefreshTokenOptions refreshTokenOptions)
         {
             _jwtTokenValidator = jwtTokenValidator;
