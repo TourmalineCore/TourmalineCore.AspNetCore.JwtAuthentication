@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Internal.Middlewares.Refresh;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Login.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Refresh;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Refresh.Models;

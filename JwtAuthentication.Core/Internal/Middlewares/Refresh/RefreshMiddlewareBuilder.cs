@@ -1,12 +1,13 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Refresh;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Refresh.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 
-namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Refresh
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Internal.Middlewares.Refresh
 {
-    public class RefreshMiddlewareBuilder : IRefreshMiddlewareBuilder
+    internal class RefreshMiddlewareBuilder : IRefreshMiddlewareBuilder
     {
         private static Func<RefreshModel, Task> _onRefreshExecutingCallback = s => Task.CompletedTask;
         private static Func<RefreshModel, Task> _onRefreshExecutedCallback = s => Task.CompletedTask;

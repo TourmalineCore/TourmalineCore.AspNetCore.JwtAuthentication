@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Internal.Services.Contracts;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Contracts;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices.Contracts;
 
-namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Internal.Services
 {
     internal class CoreRefreshTokenManager : ICoreRefreshTokenManager
     {

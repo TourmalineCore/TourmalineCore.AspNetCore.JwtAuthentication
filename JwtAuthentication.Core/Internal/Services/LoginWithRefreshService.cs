@@ -1,12 +1,12 @@
 using System.Threading.Tasks;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Contracts;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Internal.Services.Contracts;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models.Requests;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models.Responses;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services.Contracts;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.UserServices.Contracts;
 
-namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Internal.Services
 {
     internal class LoginWithRefreshService : LoginService
     {

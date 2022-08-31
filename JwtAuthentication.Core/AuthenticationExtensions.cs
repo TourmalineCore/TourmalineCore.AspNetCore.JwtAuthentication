@@ -1,15 +1,13 @@
 using Microsoft.Extensions.DependencyInjection;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Filters;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services;
-using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices.Contracts;
 using AuthenticationOptions = TourmalineCore.AspNetCore.JwtAuthentication.Core.Options.AuthenticationOptions;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services.Contracts;
-using TourmalineCore.AspNetCore.JwtAuthentication.Shared.UserServices.Contracts;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Contracts;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contracts;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Internal.Services;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Internal.Services.Contracts;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core
 {

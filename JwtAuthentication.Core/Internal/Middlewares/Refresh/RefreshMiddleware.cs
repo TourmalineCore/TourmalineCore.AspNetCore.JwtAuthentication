@@ -2,14 +2,14 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Internal.Models.Requests;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Internal.Services.Contracts;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Refresh.Models;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Requests;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
-using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Contracts;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Middlewares;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models;
 
-namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Refresh
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Internal.Middlewares.Refresh
 {
     internal class RefreshMiddleware : RequestMiddlewareBase<ICoreRefreshService, CoreRefreshTokenRequestModel, BaseTokenModel>
     {
