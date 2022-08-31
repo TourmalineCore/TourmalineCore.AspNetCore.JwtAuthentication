@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Options;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Options.Contracts;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services.Contracts;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Signing;
@@ -27,7 +27,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared
         /// <returns></returns>
         public static IServiceCollection AddJwtValidation(
             IServiceCollection services,
-            BaseAuthenticationOptions authenticationOptions)
+            IAuthenticationOptions authenticationOptions)
         {
             services.AddJwtBearer(authenticationOptions);
 
@@ -42,7 +42,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared
         /// <returns></returns>
         public static IServiceCollection AddJwtAuthentication(
             this IServiceCollection services,
-            BaseAuthenticationOptions authenticationOptions)
+            IAuthenticationOptions authenticationOptions)
         {
             services.AddTransient<ITokenManager, TokenManager>();
             services.AddTransient<ILoginService, LoginService>();
@@ -82,7 +82,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared
 
         public static void AddJwtBearer(
             this IServiceCollection services,
-            BaseAuthenticationOptions authenticationOptions)
+            IAuthenticationOptions authenticationOptions)
         {
             services.AddSingleton(authenticationOptions);
 

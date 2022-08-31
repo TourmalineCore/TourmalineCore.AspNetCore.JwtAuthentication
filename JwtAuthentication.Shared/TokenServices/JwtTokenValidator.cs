@@ -4,7 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models;
-using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Options;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Options.Contracts;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Signing;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices.Contracts;
 
@@ -12,9 +12,9 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices
 {
     public class JwtTokenValidator : IJwtTokenValidator
     {
-        private readonly BaseAuthenticationOptions _authenticationOptions;
+        private readonly IAuthenticationOptions _authenticationOptions;
 
-        public JwtTokenValidator(BaseAuthenticationOptions options)
+        public JwtTokenValidator(IAuthenticationOptions options)
         {
             _authenticationOptions = options;
         }

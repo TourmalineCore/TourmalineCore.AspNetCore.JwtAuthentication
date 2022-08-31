@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Models;
-using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Options;
+using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Options.Contracts;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services.Contracts;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.TokenServices.Contracts;
 using TourmalineCore.AspNetCore.JwtAuthentication.Shared.UserServices.Contracts;
@@ -14,12 +14,12 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Shared.Services
 {
     public class TokenManager : ITokenManager
     {
-        private readonly BaseAuthenticationOptions _options;
+        private readonly IAuthenticationOptions _options;
         private readonly IUserClaimsProvider _userClaimsProvider;
         private readonly IJwtTokenCreator _jwtTokenCreator;
 
         public TokenManager(
-            BaseAuthenticationOptions options,
+            IAuthenticationOptions options,
             IUserClaimsProvider userClaimsProvider,
             IJwtTokenCreator jwtTokenCreator)
         {
