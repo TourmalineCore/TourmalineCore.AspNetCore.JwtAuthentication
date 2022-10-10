@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.0;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
     <PackageId>TourmalineCore.AspNetCore.JwtAuthentication.Identity</PackageId>
-    <Version>0.1.1-alpha.1</Version>
+    <Version>0.1.1</Version>
     <Authors>Koval Maxim, Nikita Medvedev</Authors>
     <Company>Tourmaline Core</Company>
     <Product>JwtAuthentication</Product>
@@ -20,6 +20,7 @@
     <RootNamespace>TourmalineCore.AspNetCore.JwtAuthentication.Identity</RootNamespace>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <ProjectUrl>https://github.com/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication</ProjectUrl>
+    <PackageIcon>logo.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
