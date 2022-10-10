@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Example.NetCore.AuthenticationWithOwnCredentialsValidation.Controllers
+namespace Controllers
 {
     [ApiController]
     [Route("[controller]")]

@@ -2,7 +2,7 @@ using System;
 using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
 
-namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Signing
+namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Signing
 {
     public static class SigningHelper
     {
