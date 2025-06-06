@@ -35,4 +35,8 @@
     <Folder Include="Middleware\Registration\Models\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="Assets\logo.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
 </Project>
