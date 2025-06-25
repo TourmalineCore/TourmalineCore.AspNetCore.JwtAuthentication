@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.0;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.0;netcoreapp3.1;net5.0;net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
     <PackageId>TourmalineCore.AspNetCore.JwtAuthentication.Core</PackageId>
     <Version>0.3.4</Version>
     <Authors>Koval Maxim, Nikita Medvedev, Aleksandr Shinkarev</Authors>
@@ -34,8 +34,6 @@
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
-    <!-- Accepts any version 5.0.0 and above.
-     Will resolve to the smallest acceptable stable version.-->
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.0" />
 	<PackageReference Include="TourmalineCore.AspNetCore.JwtAuthentication.ConfigurationAnalyzers" Version="0.1.0-alpha.1" />
   </ItemGroup>
@@ -43,6 +41,21 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0" />
 	<PackageReference Include="TourmalineCore.AspNetCore.JwtAuthentication.ConfigurationAnalyzers" Version="0.1.0-alpha.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net7.0' ">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.0" />
+	<PackageReference Include="TourmalineCore.AspNetCore.JwtAuthentication.ConfigurationAnalyzers" Version="0.1.0-alpha.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net8.0' ">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
+	<PackageReference Include="TourmalineCore.AspNetCore.JwtAuthentication.ConfigurationAnalyzers" Version="0.1.0-alpha.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net9.0' ">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.6" />
+    <PackageReference Include="TourmalineCore.AspNetCore.JwtAuthentication.ConfigurationAnalyzers" Version="0.1.0-alpha.1" />
   </ItemGroup>
 
   <ItemGroup>
