@@ -1,9 +1,9 @@
 # TourmalineCore.AspNetCore.JwtAuthentication.Core
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication/.NET?label=tests%20and%20build)
 
-The library can be used for all projects based on .NET Core 3.0 - .NET Core 6.0.
+The library can be used for all projects based on .NET Core 3.0 - .NET 9.0.
 
-Readme for usage on [.NET Core 6.0](README.md).
+Readme for usage on [.NET Core 6.0](README.md) or newer.
 
 We are using Microsoft.AspNetCore.Authentication.JwtBearer with RSA for signing the keys.
 This library contains middleware and authentication extensions.
@@ -41,7 +41,7 @@ In this case, the default options will be used.
 
 Then, the token will be required in the request header of every authorized endpoint, like this: `Authorization: Bearer {token}`.
 
-```csharp
+```cs
 ...
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
 
@@ -76,7 +76,7 @@ public class Startup
 
 This package also allows you to store the received token in a cookie. To do that you need to use Cookie login middleware instead of default login. After successful login the token will be added to a cookie, that user will receive in a response. Then they can use this cookie for the authentication instead of writing the token to the Authentication header of every request. 
 
-```csharp
+```cs
 ...
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
 
@@ -121,7 +121,7 @@ To use package you need to pass AuthenticationOptions to the AddJwtAuthenticatio
 | IsDebugTokenEnabled | bool | false | no | If true, user credentials will not be checked during authentication |
 
 
-```csharp
+```cs
 ...
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 ...
@@ -135,7 +135,7 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 
-Minimum appsettings.json configuration:
+Minimum `appsettings.json` configuration:
 ```json
 {
 	"AuthenticationOptions": {
@@ -145,7 +145,7 @@ Minimum appsettings.json configuration:
 }
 ```
 
-For generate pair RSA keys, use https://mkjwk.org/.
+For generate pair RSA keys, use [mkjwk](https://mkjwk.org/).
 Here we can generate key pair in RSA521 algorithm and 2048 key size. In package we use X.509 PEM Format.
 
 ## Routing
@@ -153,7 +153,7 @@ Here we can generate key pair in RSA521 algorithm and 2048 key size. In package 
 The default route to the login endpoint is `/auth/login`.
 You can change it by passing in a LoginEndpointOptions object to the UseDefaultLoginMiddleware extension. Like this:
 
-```csharp
+```cs
 public async void Configure(IApplicationBuilder app, IHostingEnvironment env) 
 {
     ...
@@ -164,7 +164,7 @@ public async void Configure(IApplicationBuilder app, IHostingEnvironment env)
 ```
 **OR** like this if you are using cookie middleware:
 
-```csharp
+```cs
 public async void Configure(IApplicationBuilder app, IHostingEnvironment env) 
 {
     ...
@@ -202,7 +202,7 @@ As a successful result it will return **Access Token Model** json:
 By default, login will be valid only for `Login="Admin"` and `Password="Admin"`.
 You can provide your own implementation of the IUserCredentialsValidator interface, in which implement your own logic for validation of the login and password.
 
-```csharp
+```cs
 ...
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
@@ -236,7 +236,7 @@ public class Startup
 To enable token validation, you must add the `[Authorize]` attribute before the controller or method, for example:
 
 For methods:
-```csharp
+```cs
 [Authorize]
 [HttpGet]
 public IEnumerable<object> Get()
@@ -246,7 +246,7 @@ public IEnumerable<object> Get()
 ```
 
 For controllers:
-```csharp
+```cs
 [Authorize]
 [ApiController]
 [Route("[controller]")]
@@ -261,7 +261,7 @@ public class ExampleController : ControllerBase
 This library implements claims-based authorization. With this, claims are added to the token payload and verified upon request. In order to use this mechanism, you need:
 
 1. Create a class that implements the IUserClaimsProvider interface that will return a list of the claims that you need. For example:
-```csharp
+```cs
 ...
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
 
@@ -284,9 +284,9 @@ public class UserClaimsProvider : IUserClaimsProvider
 }
 ```
 
-2. Connect this provider in the Startup.cs.
+2. Connect this provider in the `Startup.cs`.
    You can pass the name of the claim type you want to use as a parameter. `Default claim type = "Permission"`.
-```csharp
+```cs
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
 
 public void ConfigureServices(IServiceCollection services) 
@@ -310,7 +310,7 @@ The claims in the token will look like this:
 ```
 
 3. To enable checking of permissions, you must add the `RequiresPermission` attribute before the controller or method and pass as a parameter all permissions that are needed , for example:
-```csharp
+```cs
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Filters;
 
 [Authorize]
@@ -323,7 +323,7 @@ public IEnumerable<object> Get()
 ```
 
 For controllers:
-```csharp
+```cs
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Filters;
 
 [ApiController]
@@ -348,7 +348,7 @@ To use callbacks for authentication, follow these steps:
 
 1. Create a function that will take `LoginModel` as a parameter and return a result of the Task type. For example:
 
-```csharp
+```cs
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Middlewares.Login.Models;
 
 private Task OnLoginExecuting(LoginModel data)
@@ -359,7 +359,7 @@ private Task OnLoginExecuting(LoginModel data)
 
 2. In the `Startup` class in the `Configure` method use
 
-```charp
+```cs
 app
     .OnLoginExecuting(OnLoginExecuting)
     .OnLoginExecuted(OnLoginExecuted)
