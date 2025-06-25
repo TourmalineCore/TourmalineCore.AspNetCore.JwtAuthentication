@@ -5,7 +5,7 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Contract;
 
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Validators
 {
-    internal class IdentityUserCredentialsValidator<TUser> : IdentityUserCredentialsValidator<TUser, string> 
+    internal class IdentityUserCredentialsValidator<TUser> : IdentityUserCredentialsValidator<TUser, string>
         where TUser : IdentityUser
     {
         public IdentityUserCredentialsValidator(SignInManager<TUser> signInManager)
@@ -14,8 +14,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Validators
         }
     }
 
-    internal class IdentityUserCredentialsValidator<TUser, TKey> : IUserCredentialsValidator 
-        where TUser : IdentityUser<TKey> 
+    internal class IdentityUserCredentialsValidator<TUser, TKey> : IUserCredentialsValidator
+        where TUser : IdentityUser<TKey>
         where TKey : IEquatable<TKey>
     {
         private readonly SignInManager<TUser> _signInManager;

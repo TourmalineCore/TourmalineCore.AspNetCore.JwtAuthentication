@@ -53,10 +53,10 @@ namespace Tests.NetCore7._0
             var client = _factory.CreateClient();
 
             var body = JsonContent.Create(new RegistrationRequestModel
-                    {
-                        Login = login,
-                        Password = password,
-                    }
+            {
+                Login = login,
+                Password = password,
+            }
                 );
 
             var response = await client.PostAsync(RegisterUrl, body);

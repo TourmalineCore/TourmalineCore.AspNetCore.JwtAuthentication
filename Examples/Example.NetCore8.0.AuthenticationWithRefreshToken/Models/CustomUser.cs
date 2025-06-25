@@ -7,4 +7,3 @@ namespace Example.NetCore8._0.AuthenticationWithRefreshToken.Models
         public string Name { get; set; }
     }
 }
-

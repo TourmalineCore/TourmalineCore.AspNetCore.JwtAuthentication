@@ -6,4 +6,3 @@ public class CustomUser : IdentityUser
 {
     public string Name { get; set; }
 }
-

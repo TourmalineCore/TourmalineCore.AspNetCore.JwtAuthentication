@@ -46,5 +46,3 @@ Task OnLoginExecuted(LoginModel data)
     Console.WriteLine(data.Login);
     return Task.FromResult(data);
 }
-
-

@@ -23,7 +23,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Middleware.Logout
             RequestDelegate next,
             LogoutEndpointOptions endpointOptions,
             ILogger<LogoutMiddleware> logger,
-            Func<LogoutModel, Task> onLogoutExecuting, 
+            Func<LogoutModel, Task> onLogoutExecuting,
             Func<LogoutModel, Task> onLogoutExecuted)
             : base(next)
         {

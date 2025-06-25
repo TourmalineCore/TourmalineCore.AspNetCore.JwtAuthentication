@@ -57,10 +57,10 @@ namespace Example.NetCore5._0.RefreshTokenWithConfidenceInterval
             app.UseRefreshTokenLogoutMiddleware();
 
             app.UseRegistration(x => new CustomUser
-                        {
-                            UserName = x.Login,
-                            NormalizedUserName = x.Login,
-                        }
+            {
+                UserName = x.Login,
+                NormalizedUserName = x.Login,
+            }
                     );
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

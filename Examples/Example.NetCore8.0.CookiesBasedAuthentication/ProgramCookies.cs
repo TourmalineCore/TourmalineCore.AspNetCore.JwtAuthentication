@@ -25,9 +25,9 @@ if (environment.IsDevelopment())
 app.UseRouting();
 
 app.UseCookieLoginMiddleware(new CookieAuthOptions
-        {
-            Key = "ExampleCookieName",
-        }
+{
+    Key = "ExampleCookieName",
+}
     );
 
 app.UseJwtAuthentication();
@@ -41,4 +41,3 @@ app.MapControllers();
 app.Run();
 
 public partial class ProgramCookies { }
-

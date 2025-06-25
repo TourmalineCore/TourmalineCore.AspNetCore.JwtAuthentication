@@ -42,10 +42,10 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementati
             var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
 
             return await Task.FromResult(new TokenModel
-                    {
-                        Value = tokenValue,
-                        ExpiresInUtc = expires.ToUniversalTime(),
-                    }
+            {
+                Value = tokenValue,
+                ExpiresInUtc = expires.ToUniversalTime(),
+            }
                 );
         }
     }

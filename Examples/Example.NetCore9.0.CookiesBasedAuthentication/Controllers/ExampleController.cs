@@ -30,4 +30,3 @@ namespace Example.NetCore9._0.CookiesBasedAuthentication.Controllers
         }
     }
 }
-

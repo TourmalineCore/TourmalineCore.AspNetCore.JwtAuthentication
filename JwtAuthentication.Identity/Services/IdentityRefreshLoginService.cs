@@ -14,14 +14,14 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
     internal class IdentityRefreshLoginService<TUser> : IdentityRefreshLoginService<TUser, string> where TUser : IdentityUser
     {
         public IdentityRefreshLoginService(
-            RefreshSignInManager<TUser, string> signInManager, 
-            IValidator<RefreshTokenRequestModel> refreshTokenValidator, 
+            RefreshSignInManager<TUser, string> signInManager,
+            IValidator<RefreshTokenRequestModel> refreshTokenValidator,
             IUserCredentialsValidator userCredentialsValidator,
             IRefreshTokenManager<TUser, string> refreshTokenManager,
             RefreshOptions refreshOptions)
             : base(
-                signInManager, 
-                refreshTokenValidator, 
+                signInManager,
+                refreshTokenValidator,
                 userCredentialsValidator,
                 refreshTokenManager,
                 refreshOptions)
@@ -30,7 +30,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
     }
 
     internal class IdentityRefreshLoginService<TUser, TKey> : ILoginService, IRefreshService
-        where TUser : IdentityUser<TKey> 
+        where TUser : IdentityUser<TKey>
         where TKey : IEquatable<TKey>
     {
         private readonly RefreshSignInManager<TUser, TKey> _signInManager;
@@ -43,7 +43,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             RefreshSignInManager<TUser, TKey> signInManager,
             IValidator<RefreshTokenRequestModel> refreshTokenValidator,
             IUserCredentialsValidator userCredentialsValidator,
-            IRefreshTokenManager<TUser, TKey> refreshTokenManager, 
+            IRefreshTokenManager<TUser, TKey> refreshTokenManager,
             RefreshOptions refreshOptions)
         {
             _signInManager = signInManager;

@@ -7,4 +7,3 @@ namespace Example.NetCore9._0.AuthenticationUsingIdentityUser.Models
         public string Name { get; set; }
     }
 }
-

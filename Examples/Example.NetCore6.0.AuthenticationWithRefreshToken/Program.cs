@@ -73,4 +73,3 @@ Task OnRefreshExecuting(RefreshModel data)
 {
     return Task.CompletedTask;
 }
-

@@ -35,4 +35,3 @@ app
     .UseJwtAuthentication();
 
 app.Run();
-

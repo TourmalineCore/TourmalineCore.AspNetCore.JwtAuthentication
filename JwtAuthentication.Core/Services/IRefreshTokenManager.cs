@@ -5,7 +5,7 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models;
 namespace TourmalineCore.AspNetCore.JwtAuthentication.Core.Services
 {
     internal interface IRefreshTokenManager<TUser, in TKey>
-        where TUser : class    
+        where TUser : class
         where TKey : IEquatable<TKey>
     {
         Task<TokenModel> GenerateRefreshTokenAsync(object user, string clientFingerPrint);

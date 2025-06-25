@@ -42,11 +42,11 @@ namespace Tests
             var client = _factory.CreateClient();
 
             var body = JsonContent.Create(new LoginRequestModel
-                    {
-                        Login = login,
-                        Password = password,
-                        ClientFingerPrint = clientFingerPrint,
-                    }
+            {
+                Login = login,
+                Password = password,
+                ClientFingerPrint = clientFingerPrint,
+            }
                 );
 
             var response = await client.PostAsync(LoginUrl, body);
@@ -61,10 +61,10 @@ namespace Tests
             var client = _factory.CreateClient();
 
             var body = JsonContent.Create(new RefreshTokenRequestModel
-                    {
-                        RefreshTokenValue = Guid.Parse(authResponseModel.RefreshToken.Value),
-                        ClientFingerPrint = fingerprint,
-                    }
+            {
+                RefreshTokenValue = Guid.Parse(authResponseModel.RefreshToken.Value),
+                ClientFingerPrint = fingerprint,
+            }
                 );
 
             var response = await client.PostAsync(RefreshUrl, body);

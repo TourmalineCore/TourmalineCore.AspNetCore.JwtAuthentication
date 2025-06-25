@@ -29,4 +29,3 @@ public class ExampleController : ControllerBase
         return Summaries;
     }
 }
-

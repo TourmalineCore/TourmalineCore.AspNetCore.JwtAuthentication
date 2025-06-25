@@ -63,4 +63,3 @@ app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 app.Run();
 
 public abstract class ProgramWithConfidenceInterval { }
-

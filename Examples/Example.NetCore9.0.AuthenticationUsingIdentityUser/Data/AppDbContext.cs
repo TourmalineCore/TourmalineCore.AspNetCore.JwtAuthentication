@@ -12,4 +12,3 @@ namespace Example.NetCore9._0.AuthenticationUsingIdentityUser.Data
         }
     }
 }
-

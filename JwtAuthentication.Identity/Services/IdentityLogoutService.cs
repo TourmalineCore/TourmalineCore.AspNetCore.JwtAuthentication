@@ -14,8 +14,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
         }
     }
 
-    internal class IdentityLogoutService<TUser, TKey> : ILogoutService 
-        where TUser : IdentityUser<TKey> 
+    internal class IdentityLogoutService<TUser, TKey> : ILogoutService
+        where TUser : IdentityUser<TKey>
         where TKey : IEquatable<TKey>
     {
         private readonly IRefreshTokenManager<TUser, TKey> _refreshTokenManager;

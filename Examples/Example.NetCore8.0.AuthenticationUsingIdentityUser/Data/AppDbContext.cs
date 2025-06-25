@@ -12,4 +12,3 @@ namespace Example.NetCore8._0.AuthenticationUsingIdentityUser.Data
         }
     }
 }
-

@@ -13,4 +13,3 @@ namespace Example.NetCore8._0.WithCredentialsValidator
         }
     }
 }
-

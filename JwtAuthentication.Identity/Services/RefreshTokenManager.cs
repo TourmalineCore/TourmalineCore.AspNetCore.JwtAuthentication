@@ -19,7 +19,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
         public RefreshTokenManager(
             TourmalineDbContext<TUser, string> dbContext,
             RefreshAuthenticationOptions options)
-        :base(dbContext, options)
+        : base(dbContext, options)
         {
         }
     }
@@ -57,7 +57,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
                 .AsQueryable()
                 .AsNoTracking()
                 .Include(x => x.User)
-                .FirstOrDefaultAsync(x => x.Value == refreshTokenValue 
+                .FirstOrDefaultAsync(x => x.Value == refreshTokenValue
                                            && x.ExpiresIn > DateTime.UtcNow
                                            && (clientFingerPrint == null || x.ClientFingerPrint == clientFingerPrint));
 

@@ -53,10 +53,10 @@ app.UseRefreshTokenMiddleware();
 app.UseRefreshTokenLogoutMiddleware();
 
 app.UseRegistration<CustomUser, long>(x => new CustomUser
-        {
-            UserName = x.Login,
-            NormalizedUserName = x.Login,
-        }
+{
+    UserName = x.Login,
+    NormalizedUserName = x.Login,
+}
     );
 
 app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
@@ -64,4 +64,3 @@ app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 app.Run();
 
 public partial class ProgramGeneric { }
-

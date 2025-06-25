@@ -75,9 +75,9 @@ namespace Tests.NetCore6._0
             var client = _factory.CreateClient();
 
             var body = JsonContent.Create(new RefreshTokenRequestModel
-                    {
-                        RefreshTokenValue = Guid.Parse(refreshResult.authModel.RefreshToken.Value),
-                    }
+            {
+                RefreshTokenValue = Guid.Parse(refreshResult.authModel.RefreshToken.Value),
+            }
                 );
 
             var logoutResult = await client.PostAsync(LogoutUrl, body);

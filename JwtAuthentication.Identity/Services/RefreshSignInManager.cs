@@ -35,8 +35,8 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
         }
     }
 
-    internal class RefreshSignInManager<TUser, TKey> : SignInManager<TUser> 
-        where TUser : IdentityUser<TKey> 
+    internal class RefreshSignInManager<TUser, TKey> : SignInManager<TUser>
+        where TUser : IdentityUser<TKey>
         where TKey : IEquatable<TKey>
     {
         private readonly IRefreshTokenManager<TUser, TKey> _refreshTokenManager;
