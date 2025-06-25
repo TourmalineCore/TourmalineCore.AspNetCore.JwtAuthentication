@@ -15,7 +15,7 @@ namespace Tests.NetCore5._0
     {
         private const string RegisterUrl = "/auth/register";
 
-        private const string Login = "test";
+        private const string Login = "test_net5";
         private const string Password = "Test1234.";
 
         public RegistrationTests(WebApplicationFactory<Startup> factory)

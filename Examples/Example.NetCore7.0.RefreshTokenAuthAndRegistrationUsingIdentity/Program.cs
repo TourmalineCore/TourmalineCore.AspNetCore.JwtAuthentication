@@ -23,7 +23,7 @@ var accessTokenExpireInMinutes = refreshAuthenticationOptions.AccessTokenExpireI
 
 builder.Services
     .AddDbContext<AppDbContext>(options =>
-        options.UseInMemoryDatabase("Database")
+        options.UseInMemoryDatabase("TestDb_Net7")
     );
 
 builder.Services

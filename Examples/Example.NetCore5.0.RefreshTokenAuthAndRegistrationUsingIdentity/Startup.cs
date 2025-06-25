@@ -29,7 +29,7 @@ namespace Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity
             var a = opt.AccessTokenExpireInMinutes;
 
             services.AddDbContext<AppDbContext>(options =>
-                    options.UseInMemoryDatabase("Database")
+                    options.UseInMemoryDatabase("TestDb_Net5")
                 );
 
             services
