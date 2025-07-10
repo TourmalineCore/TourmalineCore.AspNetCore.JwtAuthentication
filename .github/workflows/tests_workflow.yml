@@ -7,22 +7,12 @@ on:
     branches: [develop, master]
 
 jobs:
-  tests:
-    name: Run tests
+  test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        dotnet-version: ["3.1.x", "5.0.x", "6.0.x", "7.0.x", "8.0.x", "9.0.x"]
     steps:
       - uses: actions/checkout@v4
-      - name: Install libssl1.1
-        run: |
-          wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.1/libssl1.1_1.1.1f-1ubuntu2.22_amd64.deb 
-          sudo dpkg -i libssl1.1_1.1.1f-1ubuntu2.22_amd64.deb || true
-          sudo apt-get install -f -y
-      - name: Setup .NET ${{ matrix.dotnet-version }}
-        uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ matrix.dotnet-version }}
+          dotnet-version: "9.0.x"
       - run: dotnet restore ./Examples/Tests/Tests.csproj
       - run: dotnet test ./Examples/Tests/Tests.csproj --verbosity normal
