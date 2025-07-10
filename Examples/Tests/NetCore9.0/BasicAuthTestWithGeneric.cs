@@ -8,7 +8,7 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
 using Xunit;
 
-namespace Tests.NetCore9._0
+namespace Tests.Net9._0
 {
     public class BasicAuthTestWithGeneric :
     IClassFixture<WebApplicationFactory<ProgramGeneric>>

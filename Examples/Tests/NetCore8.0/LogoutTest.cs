@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using Xunit;
 
-namespace Tests.NetCore8._0
+namespace Tests.Net8._0
 {
     public class LogoutTest
         : AuthTestsBase<Program>

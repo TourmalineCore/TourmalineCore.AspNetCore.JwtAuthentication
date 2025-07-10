@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 
-namespace Tests.NetCore5._0
+namespace Tests.Net5._0
 {
-    [Collection(nameof(Example.NetCore5._0.RefreshTokenWithConfidenceInterval))]
+    [Collection(nameof(Example.Net5._0.RefreshTokenWithConfidenceInterval))]
     public class RefreshTestsWithConfidenceInterval
         : AuthTestsBase<ProgramWithConfidenceInterval>
     {

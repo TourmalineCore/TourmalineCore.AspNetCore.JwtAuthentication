@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 
-namespace Tests.NetCore9._0
+namespace Tests.Net9._0
 {
     public class RefreshTestsWithConfidenceInterval
         : AuthTestsBase<ProgramWithConfidenceInterval>

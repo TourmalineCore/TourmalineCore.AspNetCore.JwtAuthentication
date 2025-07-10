@@ -7,7 +7,7 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 using Xunit;
 
-namespace Tests.NetCore8._0
+namespace Tests.Net8._0
 {
     public class RefreshTests
         : AuthTestsBase<Program>

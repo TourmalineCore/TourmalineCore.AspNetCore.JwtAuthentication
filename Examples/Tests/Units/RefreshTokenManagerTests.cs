@@ -1,4 +1,4 @@
-using Example.NetCore6._0.RefreshTokenAuthAndRegistrationUsingIdentity.Models;
+using Example.Net6._0.RefreshTokenAuthAndRegistrationUsingIdentity.Models;
 using MockQueryable.Moq;
 using Moq;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;

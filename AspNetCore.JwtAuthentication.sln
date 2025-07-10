@@ -1,4 +1,3 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31919.166
@@ -12,113 +11,113 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{ADBF0A06-FF69-40A6-8F32-2F188AE1B6A4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore5.0.BaseAuthentication", "Examples\Example.NetCore5.0.BaseAuthentication\Example.NetCore5.0.BaseAuthentication.csproj", "{36F676C3-2C5F-4727-8BE2-8F759C2A3FBE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Net5.0.BaseAuthentication", "Examples\Example.Net5.0.BaseAuthentication\Example.Net5.0.BaseAuthentication.csproj", "{36F676C3-2C5F-4727-8BE2-8F759C2A3FBE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore5.0.PermissionBasedAuthorization", "Examples\Example.NetCore5.0.PermissionBasedAuthorization\Example.NetCore5.0.PermissionBasedAuthorization.csproj", "{51E0C282-0942-4367-95EB-F248E80A5D6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Net5.0.PermissionBasedAuthorization", "Examples\Example.Net5.0.PermissionBasedAuthorization\Example.Net5.0.PermissionBasedAuthorization.csproj", "{51E0C282-0942-4367-95EB-F248E80A5D6F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore5.0.WithCredentialsValidator", "Examples\Example.NetCore5.0.WithCredentialsValidator\Example.NetCore5.0.WithCredentialsValidator.csproj", "{E2BC2C97-161E-41E4-B224-DFC62AD56768}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Net5.0.WithCredentialsValidator", "Examples\Example.Net5.0.WithCredentialsValidator\Example.Net5.0.WithCredentialsValidator.csproj", "{E2BC2C97-161E-41E4-B224-DFC62AD56768}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore3.0.BaseAuthentication", "Examples\Example.NetCore3.0.BaseAuthentication\Example.NetCore3.0.BaseAuthentication.csproj", "{6AB1E6C4-563A-4447-8024-6C31C9A45141}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore3.1.BaseAuthentication", "Examples\Example.NetCore3.1.BaseAuthentication\Example.NetCore3.1.BaseAuthentication.csproj", "{43D3813D-CD36-46A7-86EF-CD6CF0A9A9BC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore5.0.CookiesBasedAuthentication", "Examples\Example.NetCore5.0.CookiesBasedAuthentication\Example.NetCore5.0.CookiesBasedAuthentication.csproj", "{32E74378-AAF5-4CA6-8633-30997453E58A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Net5.0.CookiesBasedAuthentication", "Examples\Example.Net5.0.CookiesBasedAuthentication\Example.Net5.0.CookiesBasedAuthentication.csproj", "{32E74378-AAF5-4CA6-8633-30997453E58A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JwtAuthentication.Identity", "JwtAuthentication.Identity\JwtAuthentication.Identity.csproj", "{60A8C4FC-D6DC-4C5B-9FA9-6F81F55F3667}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore5.0.AuthenticationUsingIdentityUser", "Examples\Example.NetCore5.0.AuthenticationUsingIdentityUser\Example.NetCore5.0.AuthenticationUsingIdentityUser.csproj", "{1DF1D001-0194-4CD8-82DD-40AF57FC1432}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Net5.0.AuthenticationUsingIdentityUser", "Examples\Example.Net5.0.AuthenticationUsingIdentityUser\Example.Net5.0.AuthenticationUsingIdentityUser.csproj", "{1DF1D001-0194-4CD8-82DD-40AF57FC1432}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore5.0.AuthenticationWithRefreshToken", "Examples\Example.NetCore5.0.AuthenticationWithRefreshToken\Example.NetCore5.0.AuthenticationWithRefreshToken.csproj", "{12915347-991A-4EA0-983D-03121E1C527B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Net5.0.AuthenticationWithRefreshToken", "Examples\Example.Net5.0.AuthenticationWithRefreshToken\Example.Net5.0.AuthenticationWithRefreshToken.csproj", "{12915347-991A-4EA0-983D-03121E1C527B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore5.0.RefreshTokenAuthAndRegistrationUsingIdentity", "Examples\Example.NetCore5.0.RefreshTokenAuthAndRegistrationUsingIdentity\Example.NetCore5.0.RefreshTokenAuthAndRegistrationUsingIdentity.csproj", "{8BF217FB-7AB4-4056-8186-2BDE9F3C99EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Net5.0.RefreshTokenAuthAndRegistrationUsingIdentity", "Examples\Example.Net5.0.RefreshTokenAuthAndRegistrationUsingIdentity\Example.Net5.0.RefreshTokenAuthAndRegistrationUsingIdentity.csproj", "{8BF217FB-7AB4-4056-8186-2BDE9F3C99EC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Examples\Tests\Tests.csproj", "{EF8EF2D5-9483-400E-B938-ADDB467BF300}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore6.0.BaseAuthentication", "Examples\Example.NetCore6.0.BaseAuthentication\Example.NetCore6.0.BaseAuthentication.csproj", "{DDA26737-950C-4B23-B66A-1733FB482A29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Net6.0.BaseAuthentication", "Examples\Example.Net6.0.BaseAuthentication\Example.Net6.0.BaseAuthentication.csproj", "{DDA26737-950C-4B23-B66A-1733FB482A29}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetCore5.0", "NetCore5.0", "{7A925031-2656-4CEB-821A-D76739E0E5A2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Net5.0", "Net5.0", "{7A925031-2656-4CEB-821A-D76739E0E5A2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetCore3.", "NetCore3.", "{614DB4C6-A4BE-4BBF-B385-C34985CA1FC3}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetCore6.0", "NetCore6.0", "{4FF83CB3-A634-4D07-BEE0-B5391B86F071}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Net6.0", "Net6.0", "{4FF83CB3-A634-4D07-BEE0-B5391B86F071}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore6.0.AuthenticationUsingIdentityUser", "Examples\Example.NetCore6.0.AuthenticationUsingIdentityUser\Example.NetCore6.0.AuthenticationUsingIdentityUser.csproj", "{28707296-5273-471B-89FB-FA3D6C62CA67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Net6.0.AuthenticationUsingIdentityUser", "Examples\Example.Net6.0.AuthenticationUsingIdentityUser\Example.Net6.0.AuthenticationUsingIdentityUser.csproj", "{28707296-5273-471B-89FB-FA3D6C62CA67}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore6.0.AuthenticationWithRefreshToken", "Examples\Example.NetCore6.0.AuthenticationWithRefreshToken\Example.NetCore6.0.AuthenticationWithRefreshToken.csproj", "{5AE1CC8C-80A2-46AF-A02E-BE129080F489}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Net6.0.AuthenticationWithRefreshToken", "Examples\Example.Net6.0.AuthenticationWithRefreshToken\Example.Net6.0.AuthenticationWithRefreshToken.csproj", "{5AE1CC8C-80A2-46AF-A02E-BE129080F489}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore6.0.CookiesBasedAuthentication", "Examples\Example.NetCore6.0.CookiesBasedAuthentication\Example.NetCore6.0.CookiesBasedAuthentication.csproj", "{E3C800A0-012F-4440-BD78-813FE51F4830}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Net6.0.CookiesBasedAuthentication", "Examples\Example.Net6.0.CookiesBasedAuthentication\Example.Net6.0.CookiesBasedAuthentication.csproj", "{E3C800A0-012F-4440-BD78-813FE51F4830}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore6.0.PermissionBasedAuthorization", "Examples\Example.NetCore6.0.PermissionBasedAuthorization\Example.NetCore6.0.PermissionBasedAuthorization.csproj", "{421DEC55-2DF8-4DCB-B53D-ED59C15062A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Net6.0.PermissionBasedAuthorization", "Examples\Example.Net6.0.PermissionBasedAuthorization\Example.Net6.0.PermissionBasedAuthorization.csproj", "{421DEC55-2DF8-4DCB-B53D-ED59C15062A2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore6.0.RefreshTokenAuthAndRegistrationUsingIdentity", "Examples\Example.NetCore6.0.RefreshTokenAuthAndRegistrationUsingIdentity\Example.NetCore6.0.RefreshTokenAuthAndRegistrationUsingIdentity.csproj", "{C7F24A8E-C454-4EB7-9F33-5ABCAD04AE24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Net6.0.RefreshTokenAuthAndRegistrationUsingIdentity", "Examples\Example.Net6.0.RefreshTokenAuthAndRegistrationUsingIdentity\Example.Net6.0.RefreshTokenAuthAndRegistrationUsingIdentity.csproj", "{C7F24A8E-C454-4EB7-9F33-5ABCAD04AE24}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore6.0.WithCredentialsValidator", "Examples\Example.NetCore6.0.WithCredentialsValidator\Example.NetCore6.0.WithCredentialsValidator.csproj", "{2652FCF8-3604-435E-8963-92A4A365FA33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Net6.0.WithCredentialsValidator", "Examples\Example.Net6.0.WithCredentialsValidator\Example.Net6.0.WithCredentialsValidator.csproj", "{2652FCF8-3604-435E-8963-92A4A365FA33}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore6.0.AuthenticationUsingGenericIdentityUser", "Examples\Example.NetCore6.0.AuthenticationUsingGenericIdentityUser\Example.NetCore6.0.AuthenticationUsingGenericIdentityUser.csproj", "{C617F7DD-6E7E-4B5D-8766-C82C37EFFF6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Net6.0.AuthenticationUsingGenericIdentityUser", "Examples\Example.Net6.0.AuthenticationUsingGenericIdentityUser\Example.Net6.0.AuthenticationUsingGenericIdentityUser.csproj", "{C617F7DD-6E7E-4B5D-8766-C82C37EFFF6E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore6.0.RefreshTokenWithConfidenceInterval", "Examples\Example.NetCore6.0.RefreshTokenWithConfidenceInterval\Example.NetCore6.0.RefreshTokenWithConfidenceInterval.csproj", "{ABDD94F3-DF9E-47B2-813F-935C54C8DEA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Net6.0.RefreshTokenWithConfidenceInterval", "Examples\Example.Net6.0.RefreshTokenWithConfidenceInterval\Example.Net6.0.RefreshTokenWithConfidenceInterval.csproj", "{ABDD94F3-DF9E-47B2-813F-935C54C8DEA7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.NetCore5.0.RefreshTokenWithConfidenceInterval", "Examples\Example.NetCore5.0.RefreshTokenWithConfidenceInterval\Example.NetCore5.0.RefreshTokenWithConfidenceInterval.csproj", "{F0E28B79-7957-444F-B437-D2EEC072A6DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Net5.0.RefreshTokenWithConfidenceInterval", "Examples\Example.Net5.0.RefreshTokenWithConfidenceInterval\Example.Net5.0.RefreshTokenWithConfidenceInterval.csproj", "{F0E28B79-7957-444F-B437-D2EEC072A6DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore7.0.BaseAuthentication", "Examples\Example.NetCore7.0.BaseAuthentication\Example.NetCore7.0.BaseAuthentication.csproj", "{69AE34C5-23F5-4E25-9E37-1FC1C8ABFE0D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net7.0.BaseAuthentication", "Examples\Example.Net7.0.BaseAuthentication\Example.Net7.0.BaseAuthentication.csproj", "{69AE34C5-23F5-4E25-9E37-1FC1C8ABFE0D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetCore7.0", "NetCore7.0", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Net7.0", "Net7.0", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore7.0.AuthenticationUsingGenericIdentityUser", "Examples\Example.NetCore7.0.AuthenticationUsingGenericIdentityUser\Example.NetCore7.0.AuthenticationUsingGenericIdentityUser.csproj", "{E85F73B6-5C37-4745-AFB3-16DA11F23882}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net7.0.AuthenticationUsingGenericIdentityUser", "Examples\Example.Net7.0.AuthenticationUsingGenericIdentityUser\Example.Net7.0.AuthenticationUsingGenericIdentityUser.csproj", "{E85F73B6-5C37-4745-AFB3-16DA11F23882}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore7.0.AuthenticationUsingIdentityUser", "Examples\Example.NetCore7.0.AuthenticationUsingIdentityUser\Example.NetCore7.0.AuthenticationUsingIdentityUser.csproj", "{BC726B57-2164-4C73-9DF3-32DE785F04FB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net7.0.AuthenticationUsingIdentityUser", "Examples\Example.Net7.0.AuthenticationUsingIdentityUser\Example.Net7.0.AuthenticationUsingIdentityUser.csproj", "{BC726B57-2164-4C73-9DF3-32DE785F04FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore7.0.AuthenticationWithRefreshToken", "Examples\Example.NetCore7.0.AuthenticationWithRefreshToken\Example.NetCore7.0.AuthenticationWithRefreshToken.csproj", "{54F6E533-537E-47D3-A829-6DB7CBD1D948}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net7.0.AuthenticationWithRefreshToken", "Examples\Example.Net7.0.AuthenticationWithRefreshToken\Example.Net7.0.AuthenticationWithRefreshToken.csproj", "{54F6E533-537E-47D3-A829-6DB7CBD1D948}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore7.0.CookiesBasedAuthentication", "Examples\Example.NetCore7.0.CookiesBasedAuthentication\Example.NetCore7.0.CookiesBasedAuthentication.csproj", "{2AA6D3CA-6CAA-40D9-9C33-75C0B1FBF0EE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net7.0.CookiesBasedAuthentication", "Examples\Example.Net7.0.CookiesBasedAuthentication\Example.Net7.0.CookiesBasedAuthentication.csproj", "{2AA6D3CA-6CAA-40D9-9C33-75C0B1FBF0EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore7.0.PermissionBasedAuthorization", "Examples\Example.NetCore7.0.PermissionBasedAuthorization\Example.NetCore7.0.PermissionBasedAuthorization.csproj", "{E7250382-AA91-44BA-BAD2-6E888195D628}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net7.0.PermissionBasedAuthorization", "Examples\Example.Net7.0.PermissionBasedAuthorization\Example.Net7.0.PermissionBasedAuthorization.csproj", "{E7250382-AA91-44BA-BAD2-6E888195D628}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore7.0.RefreshTokenAuthAndRegistrationUsingIdentity", "Examples\Example.NetCore7.0.RefreshTokenAuthAndRegistrationUsingIdentity\Example.NetCore7.0.RefreshTokenAuthAndRegistrationUsingIdentity.csproj", "{0B46B59D-395F-44C6-B68D-A6967DCEFA10}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net7.0.RefreshTokenAuthAndRegistrationUsingIdentity", "Examples\Example.Net7.0.RefreshTokenAuthAndRegistrationUsingIdentity\Example.Net7.0.RefreshTokenAuthAndRegistrationUsingIdentity.csproj", "{0B46B59D-395F-44C6-B68D-A6967DCEFA10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore7.0.RefreshTokenWithConfidenceInterval", "Examples\Example.NetCore7.0.RefreshTokenWithConfidenceInterval\Example.NetCore7.0.RefreshTokenWithConfidenceInterval.csproj", "{EAF21201-CD79-444C-A27C-B53B016C042C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net7.0.RefreshTokenWithConfidenceInterval", "Examples\Example.Net7.0.RefreshTokenWithConfidenceInterval\Example.Net7.0.RefreshTokenWithConfidenceInterval.csproj", "{EAF21201-CD79-444C-A27C-B53B016C042C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore7.0.WithCredentialsValidator", "Examples\Example.NetCore7.0.WithCredentialsValidator\Example.NetCore7.0.WithCredentialsValidator.csproj", "{6AE10A59-1374-4000-B8BB-047DAAE30779}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net7.0.WithCredentialsValidator", "Examples\Example.Net7.0.WithCredentialsValidator\Example.Net7.0.WithCredentialsValidator.csproj", "{6AE10A59-1374-4000-B8BB-047DAAE30779}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore8.0.AuthenticationUsingGenericIdentityUser", "Examples\Example.NetCore8.0.AuthenticationUsingGenericIdentityUser\Example.NetCore8.0.AuthenticationUsingGenericIdentityUser.csproj", "{A4EC68DA-C87B-4A66-9EE4-0056DC657D56}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net8.0.AuthenticationUsingGenericIdentityUser", "Examples\Example.Net8.0.AuthenticationUsingGenericIdentityUser\Example.Net8.0.AuthenticationUsingGenericIdentityUser.csproj", "{A4EC68DA-C87B-4A66-9EE4-0056DC657D56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore8.0.AuthenticationUsingIdentityUser", "Examples\Example.NetCore8.0.AuthenticationUsingIdentityUser\Example.NetCore8.0.AuthenticationUsingIdentityUser.csproj", "{B41EE46C-6E57-4D72-8E5A-86E019C5E565}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net8.0.AuthenticationUsingIdentityUser", "Examples\Example.Net8.0.AuthenticationUsingIdentityUser\Example.Net8.0.AuthenticationUsingIdentityUser.csproj", "{B41EE46C-6E57-4D72-8E5A-86E019C5E565}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore8.0.AuthenticationWithRefreshToken", "Examples\Example.NetCore8.0.AuthenticationWithRefreshToken\Example.NetCore8.0.AuthenticationWithRefreshToken.csproj", "{A97DF002-5BD5-45C5-87F6-FF5BF5AA205E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net8.0.AuthenticationWithRefreshToken", "Examples\Example.Net8.0.AuthenticationWithRefreshToken\Example.Net8.0.AuthenticationWithRefreshToken.csproj", "{A97DF002-5BD5-45C5-87F6-FF5BF5AA205E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore8.0.BaseAuthentication", "Examples\Example.NetCore8.0.BaseAuthentication\Example.NetCore8.0.BaseAuthentication.csproj", "{F58F3A0E-0763-4236-B903-377EE58F79AC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net8.0.BaseAuthentication", "Examples\Example.Net8.0.BaseAuthentication\Example.Net8.0.BaseAuthentication.csproj", "{F58F3A0E-0763-4236-B903-377EE58F79AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore8.0.CookiesBasedAuthentication", "Examples\Example.NetCore8.0.CookiesBasedAuthentication\Example.NetCore8.0.CookiesBasedAuthentication.csproj", "{6190BFE8-8B0E-4AEA-BAE7-4688BEBD50D5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net8.0.CookiesBasedAuthentication", "Examples\Example.Net8.0.CookiesBasedAuthentication\Example.Net8.0.CookiesBasedAuthentication.csproj", "{6190BFE8-8B0E-4AEA-BAE7-4688BEBD50D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore8.0.PermissionBasedAuthorization", "Examples\Example.NetCore8.0.PermissionBasedAuthorization\Example.NetCore8.0.PermissionBasedAuthorization.csproj", "{4C320ECC-388B-41CF-B391-20F6B1A31FA3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net8.0.PermissionBasedAuthorization", "Examples\Example.Net8.0.PermissionBasedAuthorization\Example.Net8.0.PermissionBasedAuthorization.csproj", "{4C320ECC-388B-41CF-B391-20F6B1A31FA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore8.0.RefreshTokenAuthAndRegistrationUsingIdentity", "Examples\Example.NetCore8.0.RefreshTokenAuthAndRegistrationUsingIdentity\Example.NetCore8.0.RefreshTokenAuthAndRegistrationUsingIdentity.csproj", "{80DFB643-D719-4C0B-ABD1-27ABCAA9B1F7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net8.0.RefreshTokenAuthAndRegistrationUsingIdentity", "Examples\Example.Net8.0.RefreshTokenAuthAndRegistrationUsingIdentity\Example.Net8.0.RefreshTokenAuthAndRegistrationUsingIdentity.csproj", "{80DFB643-D719-4C0B-ABD1-27ABCAA9B1F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore8.0.RefreshTokenWithConfidenceInterval", "Examples\Example.NetCore8.0.RefreshTokenWithConfidenceInterval\Example.NetCore8.0.RefreshTokenWithConfidenceInterval.csproj", "{CB5DE2FF-2BFE-4FA8-BE06-186EF64CC6C6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net8.0.RefreshTokenWithConfidenceInterval", "Examples\Example.Net8.0.RefreshTokenWithConfidenceInterval\Example.Net8.0.RefreshTokenWithConfidenceInterval.csproj", "{CB5DE2FF-2BFE-4FA8-BE06-186EF64CC6C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore8.0.WithCredentialsValidator", "Examples\Example.NetCore8.0.WithCredentialsValidator\Example.NetCore8.0.WithCredentialsValidator.csproj", "{48786B11-B83A-4134-85C6-4E9F959F9C06}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net8.0.WithCredentialsValidator", "Examples\Example.Net8.0.WithCredentialsValidator\Example.Net8.0.WithCredentialsValidator.csproj", "{48786B11-B83A-4134-85C6-4E9F959F9C06}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetCore8.0", "NetCore8.0", "{3DC4FB03-312C-4EFB-838C-F95431860DFC}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Net8.0", "Net8.0", "{3DC4FB03-312C-4EFB-838C-F95431860DFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore9.0.AuthenticationUsingGenericIdentityUser", "Examples\Example.NetCore9.0.AuthenticationUsingGenericIdentityUser\Example.NetCore9.0.AuthenticationUsingGenericIdentityUser.csproj", "{534CD87F-4858-47CC-BE27-8C60EAF98D75}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net9.0.AuthenticationUsingGenericIdentityUser", "Examples\Example.Net9.0.AuthenticationUsingGenericIdentityUser\Example.Net9.0.AuthenticationUsingGenericIdentityUser.csproj", "{534CD87F-4858-47CC-BE27-8C60EAF98D75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore9.0.AuthenticationUsingIdentityUser", "Examples\Example.NetCore9.0.AuthenticationUsingIdentityUser\Example.NetCore9.0.AuthenticationUsingIdentityUser.csproj", "{93EE0C9A-61C4-4E54-8B54-EF2BAC45A1F9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net9.0.AuthenticationUsingIdentityUser", "Examples\Example.Net9.0.AuthenticationUsingIdentityUser\Example.Net9.0.AuthenticationUsingIdentityUser.csproj", "{93EE0C9A-61C4-4E54-8B54-EF2BAC45A1F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore9.0.AuthenticationWithRefreshToken", "Examples\Example.NetCore9.0.AuthenticationWithRefreshToken\Example.NetCore9.0.AuthenticationWithRefreshToken.csproj", "{5B59AF22-4146-4881-884B-1123D39361CD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net9.0.AuthenticationWithRefreshToken", "Examples\Example.Net9.0.AuthenticationWithRefreshToken\Example.Net9.0.AuthenticationWithRefreshToken.csproj", "{5B59AF22-4146-4881-884B-1123D39361CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore9.0.BaseAuthentication", "Examples\Example.NetCore9.0.BaseAuthentication\Example.NetCore9.0.BaseAuthentication.csproj", "{E98221D9-DCAA-461E-BE07-13E612E914C0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net9.0.BaseAuthentication", "Examples\Example.Net9.0.BaseAuthentication\Example.Net9.0.BaseAuthentication.csproj", "{E98221D9-DCAA-461E-BE07-13E612E914C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore9.0.CookiesBasedAuthentication", "Examples\Example.NetCore9.0.CookiesBasedAuthentication\Example.NetCore9.0.CookiesBasedAuthentication.csproj", "{39F7B3D2-15F5-46C3-87CC-9E2916591930}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net9.0.CookiesBasedAuthentication", "Examples\Example.Net9.0.CookiesBasedAuthentication\Example.Net9.0.CookiesBasedAuthentication.csproj", "{39F7B3D2-15F5-46C3-87CC-9E2916591930}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore9.0.PermissionBasedAuthorization", "Examples\Example.NetCore9.0.PermissionBasedAuthorization\Example.NetCore9.0.PermissionBasedAuthorization.csproj", "{FACED86D-3326-4B98-98DA-87FC6A789560}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net9.0.PermissionBasedAuthorization", "Examples\Example.Net9.0.PermissionBasedAuthorization\Example.Net9.0.PermissionBasedAuthorization.csproj", "{FACED86D-3326-4B98-98DA-87FC6A789560}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore9.0.RefreshTokenAuthAndRegistrationUsingIdentity", "Examples\Example.NetCore9.0.RefreshTokenAuthAndRegistrationUsingIdentity\Example.NetCore9.0.RefreshTokenAuthAndRegistrationUsingIdentity.csproj", "{8B6E2110-1BD0-419C-B614-2CB2FC2683D0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net9.0.RefreshTokenAuthAndRegistrationUsingIdentity", "Examples\Example.Net9.0.RefreshTokenAuthAndRegistrationUsingIdentity\Example.Net9.0.RefreshTokenAuthAndRegistrationUsingIdentity.csproj", "{8B6E2110-1BD0-419C-B614-2CB2FC2683D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore9.0.RefreshTokenWithConfidenceInterval", "Examples\Example.NetCore9.0.RefreshTokenWithConfidenceInterval\Example.NetCore9.0.RefreshTokenWithConfidenceInterval.csproj", "{63A683E6-AD18-4FC2-87C2-E4043E1C696C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net9.0.RefreshTokenWithConfidenceInterval", "Examples\Example.Net9.0.RefreshTokenWithConfidenceInterval\Example.Net9.0.RefreshTokenWithConfidenceInterval.csproj", "{63A683E6-AD18-4FC2-87C2-E4043E1C696C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NetCore9.0.WithCredentialsValidator", "Examples\Example.NetCore9.0.WithCredentialsValidator\Example.NetCore9.0.WithCredentialsValidator.csproj", "{A8E18C36-BF99-42A7-9055-47E4C3449214}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Net9.0.WithCredentialsValidator", "Examples\Example.Net9.0.WithCredentialsValidator\Example.Net9.0.WithCredentialsValidator.csproj", "{A8E18C36-BF99-42A7-9055-47E4C3449214}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetCore9.0", "NetCore9.0", "{1190019C-C08E-4729-8C0D-BB651642C479}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Net9.0", "Net9.0", "{1190019C-C08E-4729-8C0D-BB651642C479}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

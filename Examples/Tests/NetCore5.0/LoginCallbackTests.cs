@@ -10,7 +10,7 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Services.Implementation;
 using Xunit;
 
-namespace Tests.NetCore5._0
+namespace Tests.Net5._0
 {
     public class LoginCallbackTests
     {

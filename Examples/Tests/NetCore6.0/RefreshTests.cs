@@ -7,9 +7,9 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 using Xunit;
 
-namespace Tests.NetCore6._0
+namespace Tests.Net6._0
 {
-    [Collection(nameof(Example.NetCore6._0.RefreshTokenAuthAndRegistrationUsingIdentity))]
+    [Collection(nameof(Example.Net6._0.RefreshTokenAuthAndRegistrationUsingIdentity))]
     public class RefreshTests
         : AuthTestsBase<Program>
     {

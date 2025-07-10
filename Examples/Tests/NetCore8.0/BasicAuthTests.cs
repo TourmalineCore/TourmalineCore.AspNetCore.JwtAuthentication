@@ -2,7 +2,7 @@ using System.Net;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 
-namespace Tests.NetCore8._0
+namespace Tests.Net8._0
 {
     public class BasicAuthTests : AuthTestsBase<Program>
     {
