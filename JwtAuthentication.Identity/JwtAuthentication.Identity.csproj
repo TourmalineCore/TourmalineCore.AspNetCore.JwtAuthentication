@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.0;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
     <PackageId>TourmalineCore.AspNetCore.JwtAuthentication.Identity</PackageId>
-    <Version>0.1.1</Version>
-    <Authors>Koval Maxim, Nikita Medvedev</Authors>
+    <Version>0.1.2</Version>
+    <Authors>Maxim Koval, Nikita Medvedev, Aleksandr Shinkarev, Vladislav Yusupov, Aleksandr Petrakov</Authors>
     <Company>Tourmaline Core</Company>
     <Product>JwtAuthentication</Product>
     <Description>
@@ -33,6 +33,10 @@
 
   <ItemGroup>
     <Folder Include="Middleware\Registration\Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Assets\logo.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>
