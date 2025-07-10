@@ -10,13 +10,16 @@ jobs:
   tests:
     name: Run tests
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         dotnet-version: ["3.1.x", "5.0.x", "6.0.x", "7.0.x", "8.0.x", "9.0.x"]
-
     steps:
       - uses: actions/checkout@v4
+      - name: Install libssl
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libssl-dev
+          sudo apt-get install -y libssl1.1 || true
       - name: Setup .NET ${{ matrix.dotnet-version }}
         uses: actions/setup-dotnet@v4
         with:
