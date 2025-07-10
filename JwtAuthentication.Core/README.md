@@ -51,9 +51,10 @@ dotnet add package TourmalineCore.AspNetCore.JwtAuthentication.Core
 
 <!-- TOC end -->
 
-The sections below will provide basic examples of how to use the package. More
-complete examples of applications for different versions of .NET can be found in
-the “Examples” folder of the project.
+The sections below will provide basic examples of how to use the package.  
+More complete examples of applications for different versions of .NET can be
+found in  
+the “[Examples](Examples/)” folder of the project.
 
 # Authentication
 
