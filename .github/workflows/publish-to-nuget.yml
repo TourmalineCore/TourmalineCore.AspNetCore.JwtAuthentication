@@ -1,0 +1,39 @@
+# ref article https://darthpedro.net/2024/10/17/github-action-to-publish-to-nuget-org/
+# ref docs https://github.com/actions/setup-dotnet?tab=readme-ov-file
+
+name: Publish NuGet Package
+ 
+on:
+  push:
+    branches:
+      - feature/publish-nuget-package
+ 
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Code
+    - uses: actions/checkout@v4
+
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: | 
+          3.0.x
+          3.1.x
+          5.0.x
+          6.0.x
+
+    - name: Restore Dependencies
+      run: dotnet restore
+ 
+    - name: Build the Project
+      run: dotnet build --configuration Release --no-restore
+ 
+    - name: Pack the NuGet Package
+      run: dotnet pack --configuration Release --no-build --output ./nupkg
+ 
+    # - name: Publish NuGet package
+    #   run: dotnet nuget push ./nupkg/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+    #   env:
+    #     NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
