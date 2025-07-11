@@ -3,7 +3,7 @@ name: .NET
 on:
   push:
     branches:
-      - feature/*
+      - "feature/*"
       - develop
       - master
   pull_request:
