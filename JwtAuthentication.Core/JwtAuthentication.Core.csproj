@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.0;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.0;netcoreapp3.1;net5.0;net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
     <PackageId>TourmalineCore.AspNetCore.JwtAuthentication.Core</PackageId>
-    <Version>0.3.5</Version>
-    <Authors>Maxim Koval, Nikita Medvedev, Aleksandr Shinkarev, Vladislav Yusupov, Aleksandr Petrakov</Authors>
+    <Version>1.0.0</Version>
+    <Authors>Maxim Koval, Nikita Medvedev, Aleksandr Shinkarev, Vladislav Yusupov, Oleg Klyavlin, Aleksandr Petrakov</Authors>
     <Company>Tourmaline Core</Company>
     <Product>JwtAuthentication</Product>
     <Description>
@@ -24,25 +24,41 @@
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' ">
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="[3.0.3, 3.1)" />
-	<PackageReference Include="TourmalineCore.AspNetCore.JwtAuthentication.ConfigurationAnalyzers" Version="0.1.0-alpha.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="[3.0.3, 3.1.32)" />
+    <PackageReference Include="TourmalineCore.AspNetCore.JwtAuthentication.ConfigurationAnalyzers" Version="0.1.0-alpha.1" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="[3.1.0, 5.0)" />
-	<PackageReference Include="TourmalineCore.AspNetCore.JwtAuthentication.ConfigurationAnalyzers" Version="0.1.0-alpha.1" />
+    <!--JwtBearer vulnerability GHSA-q7cg-43mg-qp69 avoided only after 5.0.8 version-->
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="[3.1.32, 5.0.9)" />
+    <PackageReference Include="TourmalineCore.AspNetCore.JwtAuthentication.ConfigurationAnalyzers" Version="0.1.0-alpha.1" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
     <!-- Accepts any version 5.0.0 and above.
      Will resolve to the smallest acceptable stable version.-->
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.0" />
-	<PackageReference Include="TourmalineCore.AspNetCore.JwtAuthentication.ConfigurationAnalyzers" Version="0.1.0-alpha.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.9" />
+    <PackageReference Include="TourmalineCore.AspNetCore.JwtAuthentication.ConfigurationAnalyzers" Version="0.1.0-alpha.1" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0" />
-	<PackageReference Include="TourmalineCore.AspNetCore.JwtAuthentication.ConfigurationAnalyzers" Version="0.1.0-alpha.1" />
+    <PackageReference Include="TourmalineCore.AspNetCore.JwtAuthentication.ConfigurationAnalyzers" Version="0.1.0-alpha.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net7.0' ">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.0" />
+    <PackageReference Include="TourmalineCore.AspNetCore.JwtAuthentication.ConfigurationAnalyzers" Version="0.1.0-alpha.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net8.0' ">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
+    <PackageReference Include="TourmalineCore.AspNetCore.JwtAuthentication.ConfigurationAnalyzers" Version="0.1.0-alpha.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net9.0' ">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0" />
+    <PackageReference Include="TourmalineCore.AspNetCore.JwtAuthentication.ConfigurationAnalyzers" Version="0.1.0-alpha.1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -6,7 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "Example.NetCore5.0.CookiesBasedAuthentication",
+			"name": "Example.Net5.0.CookiesBasedAuthentication",
 			"item": [
 				{
 					"name": "Call authorized endpoint without token",
@@ -120,7 +120,7 @@
 			]
 		},
 		{
-			"name": "Example.NetCore5.0.RefreshTokenAuthAndRegistrationUsingIdentity",
+			"name": "Example.Net5.0.RefreshTokenAuthAndRegistrationUsingIdentity",
 			"item": [
 				{
 					"name": "Call authorized endpoint without token",

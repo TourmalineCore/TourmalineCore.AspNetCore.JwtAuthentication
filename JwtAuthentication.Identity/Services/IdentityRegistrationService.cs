@@ -46,10 +46,10 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity.Services
             }
 
             return await _loginService.LoginAsync(new LoginRequestModel
-                    {
-                        Login = model.Login,
-                        Password = model.Password,
-                    }
+            {
+                Login = model.Login,
+                Password = model.Password,
+            }
                 );
         }
     }

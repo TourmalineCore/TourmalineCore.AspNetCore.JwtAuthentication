@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <TargetFramework>net6.0</TargetFramework>
-	  <IsPackable>false</IsPackable>
-	  <ImplicitUsings>enable</ImplicitUsings>
-	  <AssemblyName>Tests</AssemblyName>
+    <TargetFramework>net9.0</TargetFramework>
+	<IsPackable>false</IsPackable>
+	<ImplicitUsings>enable</ImplicitUsings>
+	<AssemblyName>Tests</AssemblyName>
   </PropertyGroup>
 
-	<ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.0" />
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.6" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
     <PackageReference Include="Moq" Version="4.16.1" />
     <PackageReference Include="MockQueryable.Moq" Version="5.0.1" />
@@ -23,26 +23,27 @@
     </PackageReference>
   </ItemGroup>
 
-	<ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Example.NetCore3.0.BaseAuthentication\Example.NetCore3.0.BaseAuthentication.csproj" />
-    <ProjectReference Include="..\Example.NetCore5.0.CookiesBasedAuthentication\Example.NetCore5.0.CookiesBasedAuthentication.csproj" />
-    <ProjectReference Include="..\Example.NetCore5.0.RefreshTokenAuthAndRegistrationUsingIdentity\Example.NetCore5.0.RefreshTokenAuthAndRegistrationUsingIdentity.csproj" />
+    <ProjectReference Include="..\Example.Net5.0.CookiesBasedAuthentication\Example.Net5.0.CookiesBasedAuthentication.csproj" />
+    <ProjectReference Include="..\Example.Net5.0.RefreshTokenAuthAndRegistrationUsingIdentity\Example.Net5.0.RefreshTokenAuthAndRegistrationUsingIdentity.csproj" />
     <ProjectReference Include="..\..\JwtAuthentication.Core\JwtAuthentication.Core.csproj" />
     <ProjectReference Include="..\..\JwtAuthentication.Identity\JwtAuthentication.Identity.csproj" />
-    <ProjectReference Include="..\Example.NetCore5.0.RefreshTokenWithConfidenceInterval\Example.NetCore5.0.RefreshTokenWithConfidenceInterval.csproj" />
-    <ProjectReference Include="..\Example.NetCore6.0.AuthenticationUsingGenericIdentityUser\Example.NetCore6.0.AuthenticationUsingGenericIdentityUser.csproj" />
-    <ProjectReference Include="..\Example.NetCore6.0.CookiesBasedAuthentication\Example.NetCore6.0.CookiesBasedAuthentication.csproj" />
-    <ProjectReference Include="..\Example.NetCore6.0.RefreshTokenAuthAndRegistrationUsingIdentity\Example.NetCore6.0.RefreshTokenAuthAndRegistrationUsingIdentity.csproj" />
-    <ProjectReference Include="..\Example.NetCore6.0.RefreshTokenWithConfidenceInterval\Example.NetCore6.0.RefreshTokenWithConfidenceInterval.csproj" />
+    <ProjectReference Include="..\Example.Net5.0.RefreshTokenWithConfidenceInterval\Example.Net5.0.RefreshTokenWithConfidenceInterval.csproj" />
+    <ProjectReference Include="..\Example.Net6.0.AuthenticationUsingGenericIdentityUser\Example.Net6.0.AuthenticationUsingGenericIdentityUser.csproj" />
+    <ProjectReference Include="..\Example.Net6.0.CookiesBasedAuthentication\Example.Net6.0.CookiesBasedAuthentication.csproj" />
+    <ProjectReference Include="..\Example.Net6.0.RefreshTokenAuthAndRegistrationUsingIdentity\Example.Net6.0.RefreshTokenAuthAndRegistrationUsingIdentity.csproj" />
+    <ProjectReference Include="..\Example.Net6.0.RefreshTokenWithConfidenceInterval\Example.Net6.0.RefreshTokenWithConfidenceInterval.csproj" />
+    <ProjectReference Include="..\Example.Net7.0.BaseAuthentication\Example.Net7.0.BaseAuthentication.csproj" />
   </ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Units\" />
-	</ItemGroup>
+  <ItemGroup>
+    <Folder Include="Units\" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<None Update="xunit.runner.json">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
+  <ItemGroup>
+    <None Update="xunit.runner.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

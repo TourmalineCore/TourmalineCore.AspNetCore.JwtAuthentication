@@ -1,4 +1,4 @@
-﻿using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
+using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
 
 namespace Tests;
 

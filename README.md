@@ -1,7 +1,7 @@
 # TourmalineCore.AspNetCore.JwtAuthentication
 
 This project contains libraries that will help you very easily connect the JWT-based authentication to your project.
-The libraries can be used for all projects based on .NET Core 3.0 - .NET Core 5.0.
+The libraries can be used for all projects based on .NET Core 3.0 - .NET 9.0.
 
 ## [JwtAuthentication.Core](https://github.com/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication/tree/master/JwtAuthentication.Core)
 Basic JWT-based authentication implementation.

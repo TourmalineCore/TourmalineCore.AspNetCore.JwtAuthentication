@@ -1,11 +1,11 @@
 using System.Net;
-using Example.NetCore5._0.CookiesBasedAuthentication;
+using Example.Net5._0.CookiesBasedAuthentication;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 
-namespace Tests.NetCore5._0
+namespace Tests.Net5._0
 {
-    [Collection(nameof(Example.NetCore5._0.CookiesBasedAuthentication))]
+    [Collection(nameof(Example.Net5._0.CookiesBasedAuthentication))]
     public class CookieTests
         : AuthTestsBase<Startup>
     {

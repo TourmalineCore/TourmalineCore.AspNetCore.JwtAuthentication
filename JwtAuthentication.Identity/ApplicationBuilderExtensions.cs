@@ -31,7 +31,7 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
             this IApplicationBuilder applicationBuilder,
             string username,
             string password)
-            where TContext : TourmalineDbContext<TUser> 
+            where TContext : TourmalineDbContext<TUser>
             where TUser : IdentityUser
         {
             using var serviceScope = applicationBuilder.ApplicationServices.CreateScope();
@@ -74,9 +74,9 @@ namespace TourmalineCore.AspNetCore.JwtAuthentication.Identity
         {
             using var serviceScope = applicationBuilder.ApplicationServices.CreateScope();
             var context = serviceScope.ServiceProvider.GetRequiredService<TContext>();
-            
+
             var user = Activator.CreateInstance<TUser>();
-            
+
             user.UserName = username;
             user.NormalizedUserName = username.ToUpper();
             user.EmailConfirmed = true;

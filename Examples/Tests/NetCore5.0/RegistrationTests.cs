@@ -1,21 +1,21 @@
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
-using Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity;
+using Example.Net5._0.RefreshTokenAuthAndRegistrationUsingIdentity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
 using Xunit;
 
-namespace Tests.NetCore5._0
+namespace Tests.Net5._0
 {
-    [Collection(nameof(Example.NetCore5._0.RefreshTokenAuthAndRegistrationUsingIdentity))]
+    [Collection(nameof(Example.Net5._0.RefreshTokenAuthAndRegistrationUsingIdentity))]
     public class RegistrationTests
         : AuthTestsBase<Startup>
     {
         private const string RegisterUrl = "/auth/register";
 
-        private const string Login = "test";
+        private const string Login = "test_net5";
         private const string Password = "Test1234.";
 
         public RegistrationTests(WebApplicationFactory<Startup> factory)
@@ -55,10 +55,10 @@ namespace Tests.NetCore5._0
             var client = _factory.CreateClient();
 
             var body = JsonContent.Create(new RegistrationRequestModel
-                    {
-                        Login = login,
-                        Password = password,
-                    }
+            {
+                Login = login,
+                Password = password,
+            }
                 );
 
             var response = await client.PostAsync(RegisterUrl, body);

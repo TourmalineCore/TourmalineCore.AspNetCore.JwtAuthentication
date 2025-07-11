@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using Xunit;
 
-namespace Tests.NetCore6._0
+namespace Tests.Net6._0
 {
-    [Collection(nameof(Example.NetCore6._0.RefreshTokenAuthAndRegistrationUsingIdentity))]
+    [Collection(nameof(Example.Net6._0.RefreshTokenAuthAndRegistrationUsingIdentity))]
     public class LogoutTest
         : AuthTestsBase<Program>
     {
@@ -28,9 +28,9 @@ namespace Tests.NetCore6._0
             var client = _factory.CreateClient();
 
             var body = JsonContent.Create(new RefreshTokenRequestModel
-                    {
-                        RefreshTokenValue = Guid.Parse(loginResult.authModel.RefreshToken.Value),
-                    }
+            {
+                RefreshTokenValue = Guid.Parse(loginResult.authModel.RefreshToken.Value),
+            }
                 );
 
             var logoutResult = await client.PostAsync(LogoutUrl, body);
@@ -44,9 +44,9 @@ namespace Tests.NetCore6._0
             var client = _factory.CreateClient();
 
             var body = JsonContent.Create(new RefreshTokenRequestModel
-                    {
-                        RefreshTokenValue = Guid.NewGuid(),
-                    }
+            {
+                RefreshTokenValue = Guid.NewGuid(),
+            }
                 );
 
             var logoutResult = await client.PostAsync(LogoutUrl, body);

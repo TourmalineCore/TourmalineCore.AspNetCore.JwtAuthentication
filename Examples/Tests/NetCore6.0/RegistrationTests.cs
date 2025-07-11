@@ -6,15 +6,15 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Request;
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Models.Response;
 using Xunit;
 
-namespace Tests.NetCore6._0
+namespace Tests.Net6._0
 {
-    [Collection(nameof(Example.NetCore6._0.RefreshTokenAuthAndRegistrationUsingIdentity))]
+    [Collection(nameof(Example.Net6._0.RefreshTokenAuthAndRegistrationUsingIdentity))]
     public class RegistrationTests
         : AuthTestsBase<Program>
     {
         private const string RegisterUrl = "/auth/register";
 
-        private const string Login = "test";
+        private const string Login = "test_net6";
         private const string Password = "Test1234.";
 
         public RegistrationTests(WebApplicationFactory<Program> factory)
@@ -54,10 +54,10 @@ namespace Tests.NetCore6._0
             var client = _factory.CreateClient();
 
             var body = JsonContent.Create(new RegistrationRequestModel
-                    {
-                        Login = login,
-                        Password = password,
-                    }
+            {
+                Login = login,
+                Password = password,
+            }
                 );
 
             var response = await client.PostAsync(RegisterUrl, body);
