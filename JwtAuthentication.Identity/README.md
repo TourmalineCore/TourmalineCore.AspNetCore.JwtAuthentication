@@ -1,64 +1,49 @@
 ﻿# TourmalineCore.AspNetCore.JwtAuthentication.Identity
-
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication/.NET?label=tests%20and%20build)
 
 The library can be used for all projects based on .NET Core 3.0 - .NET 9.0.
 
 Readme for usage on [.NET Core 3.0 - .NET 5.0](Usage%20for%20old%20.NET.md).
 
-This library contains middleware and authentication extensions. With this
-library, you can very easily connect the JWT-based authentication to your
-project with usage of EF Core and Identity to store users data. Optionally, you
-can enable usage of Refresh token to provide additional level of security to
-your app. Also, this library allows to easily implement registration and logout
-functionality.
+This library contains middleware and authentication extensions.
+With this library, you can very easily connect the JWT-based authentication to your project with usage of EF Core and Identity to store users data.
+Optionally, you can enable usage of Refresh token to provide additional level of security to your app. 
+Also, this library allows to easily implement registration and logout functionality.
 
-**NOTE**: This package is an extension of
-TourmalineCore.AspNetCore.JwtAuthentication.Core package, that contains basic
-functionality of JWT-based authentication. You can find more info about this
-package
-[here](https://github.com/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication/tree/master/JwtAuthentication.Core)
+**NOTE**: This package is an extension of TourmalineCore.AspNetCore.JwtAuthentication.Core package, that contains basic functionality of JWT-based authentication. You can find more info about this package [here](https://github.com/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication/tree/master/JwtAuthentication.Core)
 
 ## Installation
+![Nuget](https://img.shields.io/nuget/v/TourmalineCore.AspNetCore.JwtAuthentication.Identity?color=gre&label=stable%20version) ![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/TourmalineCore.AspNetCore.JwtAuthentication.Identity?label=pre-release%20version) ![Nuget](https://img.shields.io/nuget/dt/TourmalineCore.AspNetCore.JwtAuthentication.Identity)
 
-![Nuget](https://img.shields.io/nuget/v/TourmalineCore.AspNetCore.JwtAuthentication.Identity?color=gre&label=stable%20version)
-![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/TourmalineCore.AspNetCore.JwtAuthentication.Identity?label=pre-release%20version)
-![Nuget](https://img.shields.io/nuget/dt/TourmalineCore.AspNetCore.JwtAuthentication.Identity)
-
-TourmalineCore.AspNetCore.JwtAuthentication.Identity is available on
-[NuGet](https://www.nuget.org/packages/TourmalineCore.AspNetCore.JwtAuthentication.Identity/).
-But also you can install latest stable version using **.NET CLI**
-
-```sh
+TourmalineCore.AspNetCore.JwtAuthentication.Identity is available on [NuGet](https://www.nuget.org/packages/TourmalineCore.AspNetCore.JwtAuthentication.Identity/). But also you can install latest stable version using **.NET CLI**
+```
 dotnet add package TourmalineCore.AspNetCore.JwtAuthentication.Identity
 ```
 
 ## Table of Content
 
 - [TourmalineCore.AspNetCore.JwtAuthentication.Identity](#tourmalinecoreaspnetcorejwtauthenticationidentity)
-  - [Installation](#installation)
-  - [Table of Content](#table-of-content)
+  * [Installation](#installation)
+  * [Table of Content](#table-of-content)
 - [Basic usage](#basic-usage)
-  - [Generic ID feature](#generic-id-feature)
+  * [Generic ID feature](#generic-id-feature)
 - [Registration](#registration)
-  - [Registration request](#registration-request)
-  - [Registration Routing](#registration-routing)
+  * [Registration request](#registration-request)
+  * [Registration Routing](#registration-routing)
 - [Refresh token](#refresh-token)
-  - [Login request with a Refresh Token](#login-request-with-a-refresh-token)
-  - [Refresh Token Request](#refresh-token-request)
-  - [Refresh Token Options](#refresh-token-options)
-  - [Refresh Routing](#refresh-routing)
-  - [Refresh Confidence Interval](#refresh-confidence-interval)
+  * [Login request with a Refresh Token](#login-request-with-a-refresh-token)
+  * [Refresh Token Request](#refresh-token-request)
+  * [Refresh Token Options](#refresh-token-options)
+  * [Refresh Routing](#refresh-routing)
+  * [Refresh Confidence Interval](#refresh-confidence-interval)
 - [Logout](#logout)
-  - [Logout request](#logout-request)
+  * [Logout request](#logout-request)
 - [Authorization](#authorization)
+
 
 # Basic usage
 
-1. You will need to inherit your context from TourmalineDbContext, provided by
-   this package. It uses a generic parameter of user entity. This entity must
-   inherit from **IdentityUser** class of Microsoft.Identity package.
-
+1. You will need to inherit your context from TourmalineDbContext, provided by this package. It uses a generic parameter of user entity. This entity must inherit from **IdentityUser** class of Microsoft.Identity package.
 ```cs
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 
@@ -72,7 +57,6 @@ public class AppDbContext : TourmalineDbContext<CustomUser>
 ```
 
 2. Then you need to update startup like this:
-
 ```cs
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
@@ -91,11 +75,9 @@ var app = builder.Build();
 
 app
     .UseJwtAuthentication();
-}
 ```
 
 3. Optionally you can add the default user to the database
-
 ```cs
 var app = builder.Build();
 
@@ -105,11 +87,9 @@ app
 
 ## Generic ID feature
 
-By default, the id for the user and the role identities is created by the string
-type in which the guid value is stored.
+By default, the id for the user and the role identities is created by the string type in which the guid value is stored.
 
-But can also use your own ID type by passing a generic type key in the **TKey**
-parameter.
+But can also use your own ID type by passing a generic type key in the **TKey** parameter.
 
 For example, by creating a custom entity with its id long type.
 
@@ -120,11 +100,9 @@ public class CustomUser : IdentityUser<long> // where long is generic type
 }
 ```
 
-Further, in methods where the generic user id type is involved, you must
-explicitly specify the generic id type.
+Further, in methods where the generic user id type is involved, you must explicitly specify the generic id type.
 
-> AppDbContext.cs
-
+> AppDbContext.cs 
 ```cs
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 
@@ -162,19 +140,9 @@ app.UseRegistration<CustomUser, long>(x => new CustomUser
 
 # Registration
 
-Using Identity allows you to easily implement registration flow. To do that add
-the `AddRegistration` extension to **ConfigureServices**, and `UseRegistration`
-method to **Configure**. Both methods requires two generic parameters:
-
-- **User**: Entity representing the user of your app. It is must be inherited
-  from IdentityUser.
-- **RegistrationRequestModel**: Model that will be passed to registration
-  endpoint. Basically, it contains only two properties necessary for basic
-  registration flow - login and password. You can use
-  **RegistrationRequestModel** class, provided by this package, or your own
-  model inherited from this class. In `UseRegistration` you will also need to
-  pass a mapping function, which will be used to convert
-  **RegistrationRequestModel** to **User** entity.
+Using Identity allows you to easily implement registration flow. To do that add the `AddRegistration` extension to **ConfigureServices**, and `UseRegistration` method to **Configure**. Both methods requires two generic parameters: 
+- **User**: Entity representing the user of your app. It is must be inherited from IdentityUser.
+- **RegistrationRequestModel**: Model that will be passed to registration endpoint. Basically, it contains only two properties necessary for basic registration flow - login and password. You can use **RegistrationRequestModel** class, provided by this package, or your own model inherited from this class. In `UseRegistration` you will also need to pass a mapping function, which will be used to convert **RegistrationRequestModel** to **User** entity.
 
 ```cs
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
@@ -204,25 +172,20 @@ app
 
 ## Registration request
 
-You can call the registration endpoint, you need to use the POST method, add to
-the header `Content-Type: application/json` and pass the JSON object
-representing chosen **RegistrationRequestModel** in the request body. Like this:
-
+You can call the registration endpoint, you need to use the POST method, add to the header `Content-Type: application/json` and pass the JSON object representing chosen **RegistrationRequestModel** in the request body. Like this:
 ```json
-{
-  "login": "Admin",
-  "password": "Admin"
+{ 
+    "login": "Admin", 
+    "password": "Admin" 
 }
 ```
 
-As a successful result it will return **Access Token Model**, so user will be
-automatically logged in.
+As a successful result it will return **Access Token Model**, so user will be automatically logged in.
 
 ## Registration Routing
 
-The default route to the Registration endpoint is `/auth/register`. You can
-change it by passing in a **RegistrationEndpointOptions** object to the
-**UseRegistration** extension. Like this:
+The default route to the Registration endpoint is `/auth/register`.
+You can change it by passing in a **RegistrationEndpointOptions** object to the **UseRegistration** extension. Like this:
 
 ```cs
 var app = builder.Build();
@@ -233,17 +196,14 @@ app.UseRegistration<CustomUser, CustomRegistrationRequest>(requestModel => new C
         NormalizedUserName = requestModel.Login,
     },
     new RegistrationEndpointOptions()
-    {
-        RegistrationEndpointRoute = "/new-user"
+    { 
+        RegistrationEndpointRoute = "/new-user" 
     });
 ```
 
 # Refresh token
 
-If you want to add another layer of security to your application, you can use
-the refresh token. By using it you can reduce the lifetime of the access token,
-but provide the ability to update it without re-login with an additional
-long-live token stored in your database.
+If you want to add another layer of security to your application, you can use the refresh token. By using it you can reduce the lifetime of the access token, but  provide the ability to update it without re-login with an additional long-live token stored in your database.
 
 ```cs
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
@@ -266,17 +226,11 @@ app
     .UseDefaultLoginMiddleware()
     .UseRefreshTokenMiddleware();
 ```
-
 ## Login request with a Refresh Token
 
-Requesting login endpoint will be much the same, but you can optionally add a
-**clientFingerPrint** parameter, that will be saved in the database with a
-generated access token. If token has fingerprint, it can only be accessed by
-providing the same fingerprint value.
+Requesting login endpoint will be much the same, but you can optionally add a **clientFingerPrint** parameter, that will be saved in the database with a generated access token. If token has fingerprint, it can only be accessed by providing the same fingerprint value.
 
-In addition to a access token login request will also return a **refresh token**
-in the response.
-
+In addition to a access token login request will also return a **refresh token** in the response.
 ```json
 {
   "login": "Admin",
@@ -285,32 +239,28 @@ in the response.
 }
 ```
 
-When you use a refresh token, its value will be added to every successful login
-response (**Access Token Model**), so it will look like this:
+When you use a refresh token, its value will be added to every successful login response (**Access Token Model**), so it will look like this:
 
 ```json
 {
-  "accessToken": {
-    "value": "{{ACCESS_TOKEN_VALUE}}",
-    "expiresInUtc": "2021-01-01T00:00:00.0000000Z"
-  },
-  "refreshToken": {
-    "value": "{{REFRESH_TOKEN_VALUE}}",
-    "expiresInUtc": "2021-01-01T00:00:00.0000000Z"
-  }
+    "accessToken": {
+        "value": "{{ACCESS_TOKEN_VALUE}}",
+        "expiresInUtc": "2021-01-01T00:00:00.0000000Z"
+    },
+    "refreshToken": {
+        "value": "{{REFRESH_TOKEN_VALUE}}",
+        "expiresInUtc": "2021-01-01T00:00:00.0000000Z"
+    }
 }
 ```
 
 ## Refresh Token Request
 
-To call the Refresh Token Endpoint, you need to use the POST method, add to the
-header `Content-Type: application/json` and pass the token value (and optionally
-fingerprint) in the JSON format in the request body. Like this:
-
+To call the Refresh Token Endpoint, you need to use the POST method, add to the header `Content-Type: application/json` and pass the token value (and optionally fingerprint) in the JSON format in the request body. Like this:
 ```json
-{
-  "refreshTokenValue": "{{REFRESH_TOKEN}}",
-  "clientFingerPrint": "{{FINGERPRINT}}"
+{ 
+    "refreshTokenValue": "{{REFRESH_TOKEN}}", 
+    "clientFingerPrint": "{{FINGERPRINT}}" 
 }
 ```
 
@@ -318,13 +268,9 @@ As a successful result it will return **Access Token Model**.
 
 ## Refresh Token Options
 
-If you want to use your own values for options, then you need to pass
-RefreshAuthenticationOptions to the AddJwtAuthenticationWithRefreshToken(). This
-is inherit from basic AuthenticationOptions and share all the default
-parameters.
+If you want to use your own values for options, then you need to pass RefreshAuthenticationOptions to the AddJwtAuthenticationWithRefreshToken(). This is inherit from basic AuthenticationOptions and share all the default parameters.
 
-To use package you need to pass AuthenticationOptions to the
-AddJwtAuthentication().
+To use package you need to pass AuthenticationOptions to the AddJwtAuthentication().
 
 | Name                        | Type   | Default | Required | Description                                                         |
 | --------------------------- | ------ | ------- | -------- | ------------------------------------------------------------------- |
@@ -335,6 +281,7 @@ AddJwtAuthentication().
 | AccessTokenExpireInMinutes  | int    | 15      | no       | Lifetime of the Access Token                                        |
 | RefreshTokenExpireInMinutes | int    | 10080   | no       | Lifetime of the Refresh Token                                       |
 | IsDebugTokenEnabled         | bool   | false   | no       | If true, user credentials will not be checked during authentication |
+
 
 ```cs
 using TourmalineCore.AspNetCore.JwtAuthentication.Core.Options;
@@ -347,21 +294,19 @@ builder.services
 ```
 
 Minimum appsettings.json configuration:
-
 ```json
 {
-  "AuthenticationOptions": {
-    "PublicSigningKey": "<PUT YOUR PUBLIC RSA KEY HERE>",
-    "PrivateSigningKey": "<PUT YOUR PRIVATE RSA KEY HERE>"
-  }
+	"AuthenticationOptions": {
+		"PublicSigningKey": "<PUT YOUR PUBLIC RSA KEY HERE>",
+		"PrivateSigningKey": "<PUT YOUR PRIVATE RSA KEY HERE>"
+	}
 }
 ```
 
 ## Refresh Routing
 
-The default route to the refresh endpoint is `/auth/refresh`. You can change it
-by passing in a **RefreshEndpointOptions** object to the
-**UseRefreshTokenMiddleware** extension. Like this:
+The default route to the refresh endpoint is `/auth/refresh`.
+You can change it by passing in a **RefreshEndpointOptions** object to the **UseRefreshTokenMiddleware** extension. Like this:
 
 ```cs
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity.Options;
@@ -372,30 +317,23 @@ app
     .UseJwtAuthentication()
     .UseDefaultLoginMiddleware();
     .UseRefreshTokenMiddleware(new RefreshEndpointOptions
-    {
+    { 
         RefreshEndpointRoute = "/test/refresh",
     });
 ```
 
 ## Refresh Confidence Interval
 
-Sometimes there may be situations when you send the same refresh requests which
-causes an unexpected user logout.  
+Sometimes there may be situations when you send the same refresh requests which causes an unexpected user logout.  
 This usually happens in the following cases:
+1) You have opened several new tabs of your application almost at the same time
+2) You worked in your application in different tabs and updated them almost at the same time
 
-1. You have opened several new tabs of your application almost at the same time
-2. You worked in your application in different tabs and updated them almost at
-   the same time
+For example, you are working in your browser application, click on several links on a page that open other pages of the application in new tabs.  
+There may be a situation when you send the same refresh requests. What will happen in this case:
 
-For example, you are working in your browser application, click on several links
-on a page that open other pages of the application in new tabs.  
-There may be a situation when you send the same refresh requests. What will
-happen in this case:
-
-1. The authentication package will receive a first refresh request, will expire
-   refresh token and send a new pair of tokens
-1. The authentication package will receive a second refresh request, but this
-   refresh token is already expired and you will receive an error message
+1) The authentication package will receive a first refresh request, will expire refresh token and send a new pair of tokens
+2) The authentication package will receive a second refresh request, but this refresh token is already expired and you will receive an error message
 
 ```mermaid
 sequenceDiagram
@@ -408,27 +346,20 @@ sequenceDiagram
     Client->>Auth: POST auth/refresh {refreshTokenValue: "eea079d2-89e1-4cc6-a82c-31ac37d7996d" }
     note right of Auth: Token already expired!
     Auth-->>Client: Response 401 Unauthorized
-end
+    end
 ```
 
-Yes, you can try to solve this problem on the client side. However, what if you
-can't do this or do not want to complicate the frontend?  
+Yes, you can try to solve this problem on the client side. However, what if you can't do this or do not want to complicate the frontend?  
 So how can the refresh confidence interval can help us?
 
-The refresh confidence interval will allow you to correctly process refresh
-requests with potentially expired tokens if the interval between the current
-time and the token expiration time is less than the confidence interval time.
+The refresh confidence interval will allow you to correctly process refresh requests with potentially expired tokens if the interval between the current time and the token expiration time is less than the confidence interval time. 
 
 So in this case the requests processing will look like this:
-
-1. The authentication package will receive a first refresh request, will expire
-   refresh token and send a new pair of tokens
-1. The authentication package will receive a second refresh request.  
-   If the token is already expired, we look at a refresh confidence interval.  
-   We find the difference between the current application time and the token
-   expiration time.  
-   If this difference is greater than the confidence interval, you will receive
-   an error message, if not, then we send a new pair of tokens.
+1) The authentication package will receive a first refresh request, will expire refresh token and send a new pair of tokens
+2) The authentication package will receive a second refresh request.  
+If the token is already expired, we look at a refresh confidence interval.  
+We find the difference between the current application time and the token expiration time.  
+If this difference is greater than the confidence interval, you will receive an error message, if not, then we send a new pair of tokens.
 
 ```mermaid
 sequenceDiagram
@@ -447,14 +378,13 @@ sequenceDiagram
     else difference > refresh confidence interval
         rect rgb(240,128,128)
         Auth-->>Client: Response 401 Unauthorized
+        end
     end
-end
 ```
 
 Usage examples:
 
 You can set refresh confidence interval directly (in milliseconds)
-
 ```cs
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 
@@ -469,10 +399,8 @@ builder.Services
 ```
 
 You can also choose not to set a refresh confidence interval.  
-In this case, the refresh confidence interval will be set to 60,000
-milliseconds.  
-With this value you can be sure that multiple requests will be handled correctly
-and it is not large enough to constantly use expired tokens.
+In this case, the refresh confidence interval will be set to 60,000 milliseconds.  
+With this value you can be sure that multiple requests will be handled correctly and it is not large enough to constantly use expired tokens.
 
 ```cs
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
@@ -488,10 +416,7 @@ builder.Services
 
 # Logout
 
-If you are using the refresh token, you will probably want to have a possibility
-to remove token's data from the database, when user requests it. This can be
-achieved by implementing the Logout mechanism. You can simply enable it like
-this:
+If you are using the refresh token, you will probably want to have a possibility to remove token's data from the database, when user requests it. This can be achieved by implementing the Logout mechanism. You can simply enable it like this:
 
 ```cs
 using TourmalineCore.AspNetCore.JwtAuthentication.Core;
@@ -499,7 +424,7 @@ using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 
 
 var builder = WebApplication.CreateBuilder(args);
-
+...
 builder.services
     .AddJwtAuthenticationWithIdentity<AppDbContext, CustomUser>()
     .AddLoginWithRefresh(authenticationOptions)
@@ -516,14 +441,11 @@ app
 
 ## Logout request
 
-To call the Logout Endpoint, you need to use the POST method, add to the header
-`Content-Type: application/json` and pass the refresh token value (and
-optionally fingerprint) in the JSON format in the request body. Like this:
-
+To call the Logout Endpoint, you need to use the POST method, add to the header `Content-Type: application/json` and pass the refresh token value (and optionally fingerprint) in the JSON format in the request body. Like this:
 ```json
-{
-  "refreshTokenValue": "{{REFRESH_TOKEN}}",
-  "clientFingerPrint": "{{FINGERPRINT}}"
+{ 
+    "refreshTokenValue": "{{REFRESH_TOKEN}}", 
+    "clientFingerPrint": "{{FINGERPRINT}}" 
 }
 ```
 
@@ -531,28 +453,20 @@ If it was successful, it will return `true` in a response body.
 
 # Authorization
 
-The TourmalineCore.AspNetCore.JwtAuthentication.Identity extension implements
-claims-based authorization. With this, claims are added to the token payload and
-verified upon request. The basic implementation of authorization can be seen in
-the documentation of the package
-TourmalineCore.AspNetCore.JwtAuthentication.Core.
+The TourmalineCore.AspNetCore.JwtAuthentication.Identity extension implements claims-based authorization. With this, claims are added to the token payload and verified upon request. The basic implementation of authorization can be seen in the documentation of the package TourmalineCore.AspNetCore.JwtAuthentication.Core.
 
-The only difference in implementation will be in the second step when adding
-services.
+The only difference in implementation will be in the second step when adding services.
 
-Connect this provider in the Startup.cs. You can pass the name of the claim type
-you want to use as a parameter. `Default claim type = "Permission"`.
-
+Connect this provider in the Startup.cs.
+   You can pass the name of the claim type you want to use as a parameter. `Default claim type = "Permission"`.
 ```cs
 using TourmalineCore.AspNetCore.JwtAuthentication.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder.services
     .AddJwtAuthenticationWithIdentity<AppDbContext, User>()
     .AddLoginWithRefresh(authenticationOptions)
     .WithUserClaimsProvider<UserClaimsProvider>(UserClaimsProvider.ExampleClaimType);
 ```
 
-Please note that if you enable functionality for the refresh token, then
-`WithUserClaimsProvider` should be called after `AddLoginWithRefresh`.
+Please note that if you enable functionality for the refresh token, then `WithUserClaimsProvider` should be called after `AddLoginWithRefresh`.
