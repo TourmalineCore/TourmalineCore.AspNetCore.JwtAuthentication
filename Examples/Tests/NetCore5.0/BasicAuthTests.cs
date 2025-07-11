@@ -47,6 +47,8 @@ namespace Tests.NetCore5._0
         {
             var (response, _) = await LoginAsync(Login, "123");
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+            var testsVar = false;
+            Assert.True(testsVar);
         }
 
         [Fact]
