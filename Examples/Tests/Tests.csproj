@@ -35,10 +35,6 @@
     <ProjectReference Include="..\Example.Net6.0.RefreshTokenAuthAndRegistrationUsingIdentity\Example.Net6.0.RefreshTokenAuthAndRegistrationUsingIdentity.csproj" />
     <ProjectReference Include="..\Example.Net6.0.RefreshTokenWithConfidenceInterval\Example.Net6.0.RefreshTokenWithConfidenceInterval.csproj" />
     <ProjectReference Include="..\Example.Net7.0.BaseAuthentication\Example.Net7.0.BaseAuthentication.csproj" />
-    <ProjectReference Include="..\Example.Net10.0.AuthenticationUsingGenericIdentityUser\Example.Net6.0.AuthenticationUsingGenericIdentityUser.csproj" />
-    <ProjectReference Include="..\Example.Net10.0.CookiesBasedAuthentication\Example.Net6.0.CookiesBasedAuthentication.csproj" />
-    <ProjectReference Include="..\Example.Net10.0.RefreshTokenAuthAndRegistrationUsingIdentity\Example.Net6.0.RefreshTokenAuthAndRegistrationUsingIdentity.csproj" />
-    <ProjectReference Include="..\Example.Net10.0.RefreshTokenWithConfidenceInterval\Example.Net6.0.RefreshTokenWithConfidenceInterval.csproj" />
   </ItemGroup>
 
   <ItemGroup>
