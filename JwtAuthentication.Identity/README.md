@@ -1,9 +1,7 @@
 ﻿# TourmalineCore.AspNetCore.JwtAuthentication.Identity
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication/.NET?label=tests%20and%20build)
 
-The library can be used for all projects based on .NET Core 3.0 - .NET 9.0.
-
-Readme for usage on [.NET Core 3.0 - .NET 5.0](Usage%20for%20old%20.NET.md).
+The library can be used for all projects based on .NET 6.0 - .NET 10.0.
 
 This library contains middleware and authentication extensions.
 With this library, you can very easily connect the JWT-based authentication to your project with usage of EF Core and Identity to store users data.

@@ -1,9 +1,7 @@
 ﻿# TourmalineCore.AspNetCore.JwtAuthentication.Core
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/TourmalineCore/TourmalineCore.AspNetCore.JwtAuthentication/.NET?label=tests%20and%20build)
 
-The library can be used for all projects based on .NET Core 3.0 - .NET 9.0.
-
-Readme for usage on [.NET Core 3.0 - .NET 5.0](Usage%20for%20old%20.NET.md).
+The library can be used for all projects based on .NET 6.0 - .NET 10.0.
 
 We are using Microsoft.AspNetCore.Authentication.JwtBearer with RSA for signing the keys.
 This library contains middleware and authentication extensions.
