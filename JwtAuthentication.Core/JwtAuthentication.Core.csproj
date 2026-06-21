@@ -26,7 +26,7 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
 	 <!-- Accepts any version 6.0.0 and above.
      Will resolve to the smallest acceptable stable version.-->
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.36" />
     <PackageReference Include="TourmalineCore.AspNetCore.JwtAuthentication.ConfigurationAnalyzers" Version="0.1.0-alpha.1" />
   </ItemGroup>
 
