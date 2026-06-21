@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.0;netcoreapp3.1;net5.0;net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.0;netcoreapp3.1;net5.0;net6.0;net7.0;net8.0;net9.0;net10.0</TargetFrameworks>
     <PackageId>TourmalineCore.AspNetCore.JwtAuthentication.Core</PackageId>
     <Version>1.0.1</Version>
     <Authors>Maxim Koval, Nikita Medvedev, Aleksandr Shinkarev, Vladislav Yusupov, Oleg Klyavlin, Aleksandr Petrakov</Authors>
@@ -58,6 +58,11 @@
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net9.0' ">
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0" />
+    <PackageReference Include="TourmalineCore.AspNetCore.JwtAuthentication.ConfigurationAnalyzers" Version="0.1.0-alpha.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net10.0' ">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.9" />
     <PackageReference Include="TourmalineCore.AspNetCore.JwtAuthentication.ConfigurationAnalyzers" Version="0.1.0-alpha.1" />
   </ItemGroup>
 

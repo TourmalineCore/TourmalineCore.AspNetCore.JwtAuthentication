@@ -25,6 +25,8 @@ jobs:
             7.0.x
             8.0.x
             9.0.x
+            10.0.x
+
       - run: dotnet --list-sdks
       - run: dotnet restore ./Examples/Tests/Tests.csproj
       - run: dotnet test ./Examples/Tests/Tests.csproj --verbosity normal
