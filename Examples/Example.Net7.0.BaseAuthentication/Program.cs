@@ -18,10 +18,10 @@ if (environment.IsDevelopment())
 
 app.UseRouting();
 
-app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-
 app
     .UseDefaultLoginMiddleware()
     .UseJwtAuthentication();
+
+app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
 app.Run();

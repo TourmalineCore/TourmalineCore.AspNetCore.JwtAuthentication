@@ -32,9 +32,9 @@ app.UseCookieLoginMiddleware(new CookieAuthOptions
 
 app.UseJwtAuthentication();
 
-app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-
 app.UseAuthorization();
+
+app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
 app.MapControllers();
 
